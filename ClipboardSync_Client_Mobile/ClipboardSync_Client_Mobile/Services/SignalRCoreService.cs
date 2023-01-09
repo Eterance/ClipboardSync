@@ -139,6 +139,5 @@ namespace ClipboardSync_Client_Mobile.Services
                 UnexpectedError?.Invoke(this, ex);
             }
         }
-
     }
 }
