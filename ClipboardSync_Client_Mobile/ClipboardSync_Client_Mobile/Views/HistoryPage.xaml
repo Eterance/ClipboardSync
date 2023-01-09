@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:localization="clr-namespace:ClipboardSync_Client_Mobile.Localization"
+             x:Class="ClipboardSync_Client_Mobile.Views.HistoryPage"
+             Title="{x:Static localization:Resources.Clipboard}">
+    <ContentPage.Content>
+        <StackLayout Margin="20,20,20,20">
+            <CollectionView ItemsSource="{Binding HistoryList}"
+                            SelectionMode="Single"
+                            SelectionChanged="OnSelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="{x:Static localization:Resources.Copy}"
+                                               IconImageSource="favorite.png"
+                                               BackgroundColor="LightGreen" />
+                                    <SwipeItem Text="{x:Static localization:Resources.Detail}"
+                                               IconImageSource="favorite.png"
+                                               BackgroundColor="Yellow" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="{x:Static localization:Resources.Pin}"
+                                               IconImageSource="favorite.png"
+                                               BackgroundColor="blue" />
+                                    <SwipeItem Text="{x:Static localization:Resources.Delete}"
+                                               IconImageSource="favorite.png"
+                                               BackgroundColor="red" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <StackLayout Background="transparent">
+                                <Label Text="{Binding}"
+                                           Margin="10"
+                                           HeightRequest="80"
+                                           VerticalTextAlignment="Center"
+                                           MaxLines="4"
+                                           LineBreakMode="TailTruncation"
+                                           FontSize="Small"/>
+                            </StackLayout>
+                        </SwipeView>
+                        
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
