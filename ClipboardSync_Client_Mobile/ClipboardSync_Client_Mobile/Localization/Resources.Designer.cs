@@ -223,7 +223,7 @@ namespace ClipboardSync_Client_Mobile.Localization {
         }
         
         /// <summary>
-        ///   查找类似 English（英语） 的本地化字符串。
+        ///   查找类似 English（英文） 的本地化字符串。
         /// </summary>
         public static string Lang_en {
             get {

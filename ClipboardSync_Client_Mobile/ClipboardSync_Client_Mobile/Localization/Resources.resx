@@ -231,7 +231,7 @@ Restart the application to apply the change.</value>
     <value>未设置服务器地址，无法连接</value>
   </data>
   <data name="Lang_en" xml:space="preserve">
-    <value>English（英语）</value>
+    <value>English（英文）</value>
   </data>
   <data name="Lang_zh_cn" xml:space="preserve">
     <value>简体中文</value>
