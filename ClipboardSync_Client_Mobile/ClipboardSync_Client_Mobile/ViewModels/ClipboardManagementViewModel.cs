@@ -83,6 +83,9 @@ namespace ClipboardSync_Client_Mobile.ViewModels
         public ICommand SaveAndConnectCommand { get; set; }
         public ICommand ApplyServerCacheCapacityCommand { get; set; }
         public ICommand ApplyHistoryListCapacityCommand { get; set; }
+        /// <summary>
+        /// 负责暂时缓存需要发送的信息。
+        /// </summary>
         private Queue<string> tempList { get; set; }
 
         private bool _isConnected = false;
