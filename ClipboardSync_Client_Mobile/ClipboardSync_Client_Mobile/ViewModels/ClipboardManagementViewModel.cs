@@ -83,6 +83,7 @@ namespace ClipboardSync_Client_Mobile.ViewModels
         public ICommand SaveAndConnectCommand { get; set; }
         public ICommand ApplyServerCacheCapacityCommand { get; set; }
         public ICommand ApplyHistoryListCapacityCommand { get; set; }
+        private Queue<string> tempList { get; set; }
 
         private bool _isConnected = false;
         private string _ipEndPointsString;
