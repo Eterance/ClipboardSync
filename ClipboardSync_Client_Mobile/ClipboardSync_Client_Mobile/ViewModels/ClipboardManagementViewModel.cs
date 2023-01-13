@@ -1,4 +1,5 @@
 ﻿using ClipboardSync_Client_Mobile.Services;
+using ClipboardSync_Client_Mobile.ExtensionMethods;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -156,7 +157,7 @@ namespace ClipboardSync_Client_Mobile.ViewModels
         private void ApplyHistoryListCapacity()
         {
             Preferences.Set(_historyListCapacityKey, HistoryListCapacity);
-            CheckHistoryListCapacity();
+            HistoryList.ApplyCapacityLimit(HistoryListCapacity);
             if (HistoryListCapacity <= 0)
             {
                 ToastMessage?.Invoke(this, $"{Localization.Resources.ClipboardHistoryCapacityChanged2}{Localization.Resources.Unlimited}{Localization.Resources.Period}");
@@ -235,8 +236,9 @@ namespace ClipboardSync_Client_Mobile.ViewModels
             // 两张表里都没有，加进剪贴板
             if (HistoryList.Contains(message) != true && PinnedList.Contains(message) != true)
             {
-                HistoryList.Insert(0, message);
-                CheckHistoryListCapacity();
+                HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                //HistoryList.Insert(0, message);
+                //CheckHistoryListCapacity();
                 NeedClipboardSetText?.Invoke(this, message);
                 return true;
             }
@@ -244,8 +246,9 @@ namespace ClipboardSync_Client_Mobile.ViewModels
             else if (HistoryList.Contains(message) == true && PinnedList.Contains(message) != true && HistoryList[0] != message)
             {
                 HistoryList.Remove(message);
-                HistoryList.Insert(0, message);
-                CheckHistoryListCapacity();
+                HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                //HistoryList.Insert(0, message);
+                //CheckHistoryListCapacity();
                 NeedClipboardSetText?.Invoke(this, message);
                 return false;
             }
@@ -269,23 +272,6 @@ namespace ClipboardSync_Client_Mobile.ViewModels
         {
             AddNewHistory(message);
         }
-
-        /// <summary>
-        /// Check HistoryList capacity and remove extra items from tail. 
-        /// </summary>
-        private void CheckHistoryListCapacity()
-        {
-            if (HistoryListCapacity > 0 && HistoryList?.Count > HistoryListCapacity)
-            {
-                // Remove excess items
-                for (int i = HistoryList.Count - 1; i >= HistoryListCapacity; i--)
-                {
-                    HistoryList.RemoveAt(i);
-                }
-            }
-        }
-
-        
 
         public void SendText(string text)
         {
@@ -319,8 +305,9 @@ namespace ClipboardSync_Client_Mobile.ViewModels
             if (PinnedList.Contains(message))
             {
                 PinnedList.Remove(message);
-                HistoryList.Insert(0, message);
-                CheckHistoryListCapacity();
+                HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                //HistoryList.Insert(0, message);
+                //CheckHistoryListCapacity();
             }
         }
     }
