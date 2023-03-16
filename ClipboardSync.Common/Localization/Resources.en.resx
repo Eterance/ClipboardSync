@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Clipboard" xml:space="preserve">
+    <value>Clipboard</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Pinned" xml:space="preserve">
+    <value>Pinned</value>
+  </data>
+  <data name="InputSthHere" xml:space="preserve">
+    <value>Input something here...</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="SendClipboardText" xml:space="preserve">
+    <value>Send Clipboard Text</value>
+  </data>
+  <data name="ServerAddr" xml:space="preserve">
+    <value>Server Address</value>
+  </data>
+  <data name="ServerAddrDescription" xml:space="preserve">
+    <value>The format is IP:port, with multiple addresses separated by semicolons, such as: 
+192.168.1.2:6789; 10.20.31.54:2333
+When multiple addresses are specified, The front of the line is tried more first.</value>
+  </data>
+  <data name="ServerAddrPlaceholder" xml:space="preserve">
+    <value>You need to enter at least one server address!!!</value>
+  </data>
+  <data name="SaveAndReconnect" xml:space="preserve">
+    <value>Save &amp; Reconnect</value>
+  </data>
+  <data name="HistoryListCapacity" xml:space="preserve">
+    <value>Clipboard History Capacity</value>
+  </data>
+  <data name="HistoryListCapacityDescription" xml:space="preserve">
+    <value>Only this device will be affected. To not limit the size, enter a non-positive number.</value>
+  </data>
+  <data name="EnterIntegerPlaceholder" xml:space="preserve">
+    <value>Enter an integer</value>
+  </data>
+  <data name="ServerCacheCapacity" xml:space="preserve">
+    <value>Server History Cache Capacity</value>
+  </data>
+  <data name="ServerCacheCapacityDescription" xml:space="preserve">
+    <value>To not limit the size, enter a non-positive number.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="LanguageDescription" xml:space="preserve">
+    <value>Restart the application to apply the change.</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="Pin" xml:space="preserve">
+    <value>Pin</value>
+  </data>
+  <data name="Unpin" xml:space="preserve">
+    <value>Unpin</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CopyComplete" xml:space="preserve">
+    <value>Copied to the clipboard.</value>
+  </data>
+  <data name="Comma" xml:space="preserve">
+    <value>, </value>
+  </data>
+  <data name="Period" xml:space="preserve">
+    <value>. </value>
+  </data>
+  <data name="Try2Connect2" xml:space="preserve">
+    <value>Try to connect to</value>
+  </data>
+  <data name="ConnectAborted" xml:space="preserve">
+    <value>Connection attempt aborted.</value>
+  </data>
+  <data name="Connected2" xml:space="preserve">
+    <value>Connected to</value>
+  </data>
+  <data name="Failed2Connect2" xml:space="preserve">
+    <value>Failed to connect to</value>
+  </data>
+  <data name="AllServersAreUnavailable" xml:space="preserve">
+    <value>All servers are unavailable.</value>
+  </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Not Connected</value>
+  </data>
+  <data name="NoServerAddr" xml:space="preserve">
+    <value>No server address set, cannot connect</value>
+  </data>
+  <data name="Lang_en" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Lang_zh_cn" xml:space="preserve">
+    <value>简体中文 (Simplified Chinese)</value>
+  </data>
+  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
+    <value>Server history cache capacity changed to </value>
+  </data>
+  <data name="Sent" xml:space="preserve">
+    <value>Sent.</value>
+  </data>
+  <data name="ClipboardHistoryCapacityChanged2" xml:space="preserve">
+    <value>Clipboard history capacity changed to </value>
+  </data>
+  <data name="Unlimited" xml:space="preserve">
+    <value>Unlimited</value>
+  </data>
+</root>

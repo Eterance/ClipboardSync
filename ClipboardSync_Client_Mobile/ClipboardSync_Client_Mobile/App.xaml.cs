@@ -39,6 +39,7 @@ namespace ClipboardSync_Client_Mobile
         {
             InitializeComponent();
             Localization.Resources.Culture = new CultureInfo(Preferences.Get("Localization", "en"));
+            ClipboardSync.Common.Localization.Resources.Culture = new CultureInfo(Preferences.Get("Localization", "en"));
             MainPage = new AppShell();
         }
         

@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
 using System.Net;
-using ClipboardSync_Client_Mobile.Localization;
-using Xamarin.Forms;
 using System.Data.Common;
+using ClipboardSync.Common.Localization;
 
-namespace ClipboardSync_Client_Mobile.Services
+namespace ClipboardSync.Commom.Services
 {
     public class SignalRCoreService
     {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace ClipboardSync_Client_Mobile.Services
+namespace ClipboardSync.Commom.Services
 {
     public static class PinnedListFileService
     {
