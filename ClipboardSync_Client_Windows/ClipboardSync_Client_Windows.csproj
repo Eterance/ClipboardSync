@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="7.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ClipboardSync.Common\ClipboardSync.Common.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,4 @@
 ﻿using ClipboardSync_Client_Mobile.Services;
-using ClipboardSync_Client_Mobile.ExtensionMethods;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using ClipboardSync.Commom.ExtensionMethods;
 
 namespace ClipboardSync_Client_Mobile.ViewModels
 {

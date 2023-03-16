@@ -11,7 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardSync_Client_Mobile
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardSync_Client_Mobile.iOS", "ClipboardSync_Client_Mobile\ClipboardSync_Client_Mobile.iOS\ClipboardSync_Client_Mobile.iOS.csproj", "{49B44E44-1791-4BA2-A0D8-833C333DCFF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardSync_Client_Mobile", "ClipboardSync_Client_Mobile\ClipboardSync_Client_Mobile\ClipboardSync_Client_Mobile.csproj", "{39BAD2DD-BC41-48C9-A7EA-BBFC528B2D9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClipboardSync_Client_Mobile", "ClipboardSync_Client_Mobile\ClipboardSync_Client_Mobile\ClipboardSync_Client_Mobile.csproj", "{39BAD2DD-BC41-48C9-A7EA-BBFC528B2D9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardSync.Common", "ClipboardSync.Common\ClipboardSync.Common.csproj", "{14B3131B-9325-49F8-A915-46F617D22B0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,18 @@ Global
 		{39BAD2DD-BC41-48C9-A7EA-BBFC528B2D9E}.Release|iPhone.Build.0 = Release|Any CPU
 		{39BAD2DD-BC41-48C9-A7EA-BBFC528B2D9E}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{39BAD2DD-BC41-48C9-A7EA-BBFC528B2D9E}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Release|iPhone.Build.0 = Release|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{14B3131B-9325-49F8-A915-46F617D22B0D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
