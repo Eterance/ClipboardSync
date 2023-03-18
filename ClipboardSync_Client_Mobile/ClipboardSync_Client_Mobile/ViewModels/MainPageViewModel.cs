@@ -1,4 +1,5 @@
-﻿using ClipboardSync_Client_Mobile.Models;
+﻿using ClipboardSync.Commom.Models;
+using ClipboardSync_Client_Mobile.Models;
 using ClipboardSync_Client_Mobile.Services;
 using System;
 using System.Collections.Generic;

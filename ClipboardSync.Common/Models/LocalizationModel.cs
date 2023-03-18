@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ClipboardSync_Client_Mobile.Models
+namespace ClipboardSync.Commom.Models
 {
     public class LocalizationModel
     {

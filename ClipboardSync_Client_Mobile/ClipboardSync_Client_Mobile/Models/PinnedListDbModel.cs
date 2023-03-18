@@ -6,6 +6,7 @@ using System.Text;
 
 namespace ClipboardSync_Client_Mobile.Models
 {
+    [Obsolete("This is useless, but keep it here.")]
     public class PinnedListDbModel
     {
         // https://learn.microsoft.com/en-us/xamarin/get-started/quickstarts/database?pivots=windows
