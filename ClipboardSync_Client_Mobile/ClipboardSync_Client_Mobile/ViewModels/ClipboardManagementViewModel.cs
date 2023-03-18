@@ -9,6 +9,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using ClipboardSync.Commom.ExtensionMethods;
 using ClipboardSync.Commom.Services;
+using Prism.Commands;
 
 namespace ClipboardSync_Client_Mobile.ViewModels
 {
@@ -80,10 +81,13 @@ namespace ClipboardSync_Client_Mobile.ViewModels
                 OnPropertyChanged();
             }
         }
-            
-        public ICommand SaveAndConnectCommand { get; set; }
-        public ICommand ApplyServerCacheCapacityCommand { get; set; }
-        public ICommand ApplyHistoryListCapacityCommand { get; set; }
+
+        // Because Xamarin.Forms.Command can't use at WPF
+        // Use a cross-platform command
+        // https://prismlibrary.com/docs/commands/commanding.html
+        public DelegateCommand SaveAndConnectCommand { get; private set; }
+        public DelegateCommand ApplyServerCacheCapacityCommand { get; private set; }
+        public DelegateCommand ApplyHistoryListCapacityCommand { get; private set; }
         /// <summary>
         /// 负责暂时缓存需要发送的信息。
         /// </summary>
@@ -144,9 +148,9 @@ namespace ClipboardSync_Client_Mobile.ViewModels
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
 
             
-            SaveAndConnectCommand = new Command(SetIPEndPointsAsync);
-            ApplyServerCacheCapacityCommand = new Command(ApplyServerCacheCapacity);
-            ApplyHistoryListCapacityCommand = new Command(ApplyHistoryListCapacity);
+            SaveAndConnectCommand = new DelegateCommand(SetIPEndPointsAsync);
+            ApplyServerCacheCapacityCommand = new DelegateCommand(ApplyServerCacheCapacity);
+            ApplyHistoryListCapacityCommand = new DelegateCommand(ApplyHistoryListCapacity);
         }
 
         private void ApplyServerCacheCapacity()
