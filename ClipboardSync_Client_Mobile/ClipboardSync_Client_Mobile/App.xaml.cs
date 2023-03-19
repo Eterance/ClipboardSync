@@ -1,5 +1,4 @@
 ﻿using ClipboardSync_Client_Mobile.Services;
-using ClipboardSync_Client_Mobile.ViewModels;
 using ClipboardSync_Client_Mobile.Views;
 using ClipboardSync_Client_Mobile.Localization;
 using System;
@@ -8,6 +7,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Globalization;
+using ClipboardSync.Commom.ViewModels;
 
 namespace ClipboardSync_Client_Mobile
 {
@@ -21,7 +21,13 @@ namespace ClipboardSync_Client_Mobile
             {
                 if (viewModel == null)
                 {
-                    viewModel = new ClipboardManagementViewModel();
+                    viewModel = new ClipboardManagementViewModel(
+                        (key, defaultValue) => Preferences.Get(key, defaultValue),
+                        (key, defaultValue) => Preferences.Get(key, defaultValue),
+                        (key, newValue) => Preferences.Set(key, newValue),
+                        (key, newValue) => Preferences.Set(key, newValue),
+                        (key) => Preferences.ContainsKey(key)
+                        );
                     viewModel.ToastMessage += (sender, e) =>
                     {
                         MainThread.BeginInvokeOnMainThread(() =>

@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using ClipboardSync.Common.Localization;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
-using System.Net;
-using System.Data.Common;
-using ClipboardSync.Common.Localization;
+using System.Threading.Tasks;
 
 namespace ClipboardSync.Commom.Services
 {

@@ -16,7 +16,7 @@
                        HorizontalTextAlignment="Center"
                        FontSize="Large"
                    />
-                <!-- Layout children in two columns -->
+                <!-- Clipboard Send -->
                 <Grid ColumnDefinitions="2*,*"                      
                       Margin="0,40,0,0">
                     <Editor x:Name="SendEditor"
@@ -28,10 +28,11 @@
                             Command="{Binding SendPlaygroundTextCommand}" />
                 </Grid>
                 <Button Margin="0,20,0,0"
+                        HeightRequest = "120"
                         IsEnabled="{Binding SubViewModel.IsConnected}"
                         Text="{x:Static localization:Resources.SendClipboardText}"
                         Command="{Binding SendClipboardTextAsyncCommand}"/>
-
+                <!-- Server Address -->
                 <Label Margin="0,40,0,0"
                        Text="{x:Static localization:Resources.ServerAddr}" 
                        FontSize="Title"/>
@@ -44,7 +45,7 @@
                 <Button Text="{x:Static localization:Resources.SaveAndReconnect}" 
                             Margin="0,0,0,0"
                             Command="{Binding SubViewModel.SaveAndConnectCommand}"/>
-
+                <!-- HistoryList Settings -->
                 <Label Margin="0,40,0,0"
                        Text="{x:Static localization:Resources.HistoryListCapacity}" 
                        FontSize="Title"/>
@@ -60,7 +61,7 @@
                             Text="{x:Static localization:Resources.Save}" 
                             Command="{Binding SubViewModel.ApplyHistoryListCapacityCommand}"/>
                 </Grid>
-
+                <!-- Server Settings -->
                 <Label Margin="0,40,0,0"
                        Text="{x:Static localization:Resources.ServerCacheCapacity}" 
                        FontSize="Title"/>
@@ -76,7 +77,7 @@
                             Text="{x:Static localization:Resources.Save}" 
                             Command="{Binding SubViewModel.ApplyServerCacheCapacityCommand}"/>
                 </Grid>
-
+                <!-- Language Settings -->
                 <Label Margin="0,40,0,0"
                        Text="{x:Static localization:Resources.Language}"
                        FontSize="Title"/>

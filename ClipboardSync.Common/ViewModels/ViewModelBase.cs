@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace ClipboardSync_Client_Mobile.ViewModels
+namespace ClipboardSync.Commom.ViewModels
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
