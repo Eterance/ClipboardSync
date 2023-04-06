@@ -11,15 +11,40 @@
                             SelectionChanged="OnSelectionChanged">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout>
-                            <Label Text="{Binding}"
-                                   Margin="10"
-                                   HeightRequest="80"
-                                   VerticalTextAlignment="Center"
-                                   MaxLines="4"
-                                   LineBreakMode="TailTruncation"
-                                   FontSize="Small"/>
-                        </StackLayout>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="{x:Static localization:Resources.Delete}"
+                                               IconImageSource="favorite.png"
+                                               Invoked="SwipeItem_Invoked_Delete"
+                                               CommandParameter="{Binding .}"
+                                               BackgroundColor="red" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="{x:Static localization:Resources.Detail}"
+                                               IconImageSource="favorite.png"
+                                               Invoked="SwipeItem_Invoked_Detail"
+                                               CommandParameter="{Binding .}"
+                                               BackgroundColor="Yellow" />
+                                    <SwipeItem Text="{x:Static localization:Resources.Unpin}"
+                                               IconImageSource="favorite.png"
+                                               Invoked="SwipeItem_Invoked_Unpin"
+                                               CommandParameter="{Binding .}"
+                                               BackgroundColor="blue" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <StackLayout Background="transparent">
+                                <Label Text="{Binding}"
+                                       Margin="10"
+                                       HeightRequest="100"
+                                       VerticalTextAlignment="Center"
+                                       MaxLines="4"
+                                       LineBreakMode="TailTruncation"
+                                       FontSize="Small"/>
+                            </StackLayout>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

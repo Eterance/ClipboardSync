@@ -26,10 +26,15 @@ namespace ClipboardSync_Client_Mobile.Views
         {
             if (e.CurrentSelection != null && e.CurrentSelection.Count > 0)
             {
-                // Navigate to the NoteEntryPage, passing the filename as a query parameter.
                 string message = (string)e.CurrentSelection.FirstOrDefault();
-                string action = await DisplayActionSheet(
-                    message, 
+                MainThread.BeginInvokeOnMainThread(async () =>
+                    {
+                        // Code to run on the main thread
+                        await Clipboard.SetTextAsync(message);
+                    });
+                DependencyService.Get<IToast>().ShortAlert(Localization.Resources.CopyComplete);
+/*                string action = await DisplayActionSheet(
+                    message,
                     Localization.Resources.Cancel,
                     Localization.Resources.Delete,
                     Localization.Resources.Copy,
@@ -56,23 +61,10 @@ namespace ClipboardSync_Client_Mobile.Views
                 {
                     await DisplayAlert(Localization.Resources.Detail, message, Localization.Resources.Close);
                 }
-                (sender as CollectionView).SelectedItem = null;
+                (sender as CollectionView).SelectedItem = null;*/
             }
         }
-
-        private void SwipeItem_Invoked_Copy(object sender, EventArgs e)
-        {
-            // https://stackoverflow.com/questions/72379310/c-sharp-getting-swipeview-item-object-that-invoked-event
-            var swipeview = sender as SwipeItem;
-            string message = swipeview.CommandParameter as string;
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                // Code to run on the main thread
-                await Clipboard.SetTextAsync(message);
-            });
-            DependencyService.Get<IToast>().ShortAlert(Localization.Resources.CopyComplete);
-        }
-
+        
         async private void SwipeItem_Invoked_Detail(object sender, EventArgs e)
         {
             var swipeview = sender as SwipeItem;

@@ -14,30 +14,25 @@
                         <SwipeView>
                             <SwipeView.LeftItems>
                                 <SwipeItems>
-                                    <SwipeItem Text="{x:Static localization:Resources.Copy}"
-                                               IconImageSource="favorite.png"
-                                               Invoked="SwipeItem_Invoked_Copy"
-                                               CommandParameter="{Binding .}"
-                                               BackgroundColor="LightGreen" />
-                                    <SwipeItem Text="{x:Static localization:Resources.Detail}"
-                                               IconImageSource="favorite.png"
-                                               Invoked="SwipeItem_Invoked_Detail"
-                                               CommandParameter="{Binding .}"
-                                               BackgroundColor="Yellow" />
-                                </SwipeItems>
-                            </SwipeView.LeftItems>
-                            <SwipeView.RightItems>
-                                <SwipeItems>
-                                    <SwipeItem Text="{x:Static localization:Resources.Pin}"
-                                               IconImageSource="favorite.png"
-                                               Invoked="SwipeItem_Invoked_Pin"
-                                               CommandParameter="{Binding .}"
-                                               BackgroundColor="blue" />
                                     <SwipeItem Text="{x:Static localization:Resources.Delete}"
                                                IconImageSource="favorite.png"
                                                Invoked="SwipeItem_Invoked_Delete"
                                                CommandParameter="{Binding .}"
                                                BackgroundColor="red" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="{x:Static localization:Resources.Detail}"
+                                               IconImageSource="favorite.png"
+                                               Invoked="SwipeItem_Invoked_Detail"
+                                               CommandParameter="{Binding .}"
+                                               BackgroundColor="Yellow" />
+                                    <SwipeItem Text="{x:Static localization:Resources.Pin}"
+                                               IconImageSource="favorite.png"
+                                               Invoked="SwipeItem_Invoked_Pin"
+                                               CommandParameter="{Binding .}"
+                                               BackgroundColor="blue" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
                             <StackLayout Background="transparent">

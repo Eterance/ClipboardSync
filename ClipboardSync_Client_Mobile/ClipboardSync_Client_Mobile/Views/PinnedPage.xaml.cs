@@ -27,7 +27,13 @@ namespace ClipboardSync_Client_Mobile.Views
             {
                 // Navigate to the NoteEntryPage, passing the filename as a query parameter.
                 string message = (string)e.CurrentSelection.FirstOrDefault();
-                string action = await DisplayActionSheet(message,
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    // Code to run on the main thread
+                    await Clipboard.SetTextAsync(message);
+                });
+                DependencyService.Get<IToast>().ShortAlert(Localization.Resources.CopyComplete);
+                /*string action = await DisplayActionSheet(message,
                     Localization.Resources.Cancel,
                     Localization.Resources.Delete,
                     Localization.Resources.Copy,
@@ -54,8 +60,29 @@ namespace ClipboardSync_Client_Mobile.Views
                 {
                     await DisplayAlert(Localization.Resources.Detail, message, Localization.Resources.Close);
                 }
-                (sender as CollectionView).SelectedItem = null;
+                (sender as CollectionView).SelectedItem = null;*/
             }
+        }
+
+        async private void SwipeItem_Invoked_Detail(object sender, EventArgs e)
+        {
+            var swipeview = sender as SwipeItem;
+            string message = swipeview.CommandParameter as string;
+            await DisplayAlert(Localization.Resources.Detail, message, Localization.Resources.Close);
+        }
+
+        private void SwipeItem_Invoked_Unpin(object sender, EventArgs e)
+        {
+            var swipeview = sender as SwipeItem;
+            string message = swipeview.CommandParameter as string;
+            App.ViewModel.Unpin(message);
+        }
+
+        private void SwipeItem_Invoked_Delete(object sender, EventArgs e)
+        {
+            var swipeview = sender as SwipeItem;
+            string message = swipeview.CommandParameter as string;
+            App.ViewModel.HistoryList.Remove(message);
         }
     }
 }
