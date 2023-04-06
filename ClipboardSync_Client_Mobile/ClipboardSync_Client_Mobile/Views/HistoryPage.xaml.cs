@@ -59,5 +59,39 @@ namespace ClipboardSync_Client_Mobile.Views
                 (sender as CollectionView).SelectedItem = null;
             }
         }
+
+        private void SwipeItem_Invoked_Copy(object sender, EventArgs e)
+        {
+            // https://stackoverflow.com/questions/72379310/c-sharp-getting-swipeview-item-object-that-invoked-event
+            var swipeview = sender as SwipeItem;
+            string message = swipeview.CommandParameter as string;
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                // Code to run on the main thread
+                await Clipboard.SetTextAsync(message);
+            });
+            DependencyService.Get<IToast>().ShortAlert(Localization.Resources.CopyComplete);
+        }
+
+        async private void SwipeItem_Invoked_Detail(object sender, EventArgs e)
+        {
+            var swipeview = sender as SwipeItem;
+            string message = swipeview.CommandParameter as string;
+            await DisplayAlert(Localization.Resources.Detail, message, Localization.Resources.Close);
+        }
+
+        private void SwipeItem_Invoked_Pin(object sender, EventArgs e)
+        {
+            var swipeview = sender as SwipeItem;
+            string message = swipeview.CommandParameter as string;
+            App.ViewModel.PinFromHistory(message);
+        }
+
+        private void SwipeItem_Invoked_Delete(object sender, EventArgs e)
+        {
+            var swipeview = sender as SwipeItem;
+            string message = swipeview.CommandParameter as string;
+            App.ViewModel.HistoryList.Remove(message);
+        }
     }
 }
