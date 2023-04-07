@@ -13,25 +13,25 @@ namespace ClipboardSync_Client_Mobile
 {
     public partial class App : Application
     {
-        static ClipboardManagementViewModel viewModel;
+        static ClipboardManagementViewModel clipboardManagementViewModel;
         
-        public static ClipboardManagementViewModel ViewModel
+        public static ClipboardManagementViewModel ClipboardManagementViewModel
         {
             get
             {
-                if (viewModel == null)
+                if (clipboardManagementViewModel == null)
                 {
-                    viewModel = new ClipboardManagementViewModel(new XamarinSettingsService());
-                    viewModel.ToastMessage += (sender, e) =>
+                    clipboardManagementViewModel = new ClipboardManagementViewModel(new XamarinSettingsService());
+                    clipboardManagementViewModel.ToastMessage += (sender, e) =>
                     {
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
                             DependencyService.Get<IToast>().ShortAlert(e);
                         });
                     };
-                    viewModel.Initialize();
+                    clipboardManagementViewModel.Initialize();
                 }
-                return viewModel;
+                return clipboardManagementViewModel;
             }
         }
         
@@ -54,9 +54,9 @@ namespace ClipboardSync_Client_Mobile
 
         protected override async void OnResume()
         {
-            if (ViewModel.IsConnected == false)
+            if (ClipboardManagementViewModel.IsConnected == false)
             {
-                await ViewModel.ConnectAsync();
+                await ClipboardManagementViewModel.ConnectAsync();
             }
         }
         

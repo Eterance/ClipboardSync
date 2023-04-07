@@ -19,7 +19,7 @@ namespace ClipboardSync_Client_Mobile.Views
         public MainPage()
         {
             InitializeComponent();
-            MainPageViewModel viewModel = new(App.ViewModel);
+            MainPageViewModel viewModel = new(App.ClipboardManagementViewModel);
             BindingContext = viewModel;
         }
 

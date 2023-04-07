@@ -18,7 +18,7 @@ namespace ClipboardSync_Client_Mobile.Views
 		public PinnedPage ()
 		{
 			InitializeComponent ();
-            BindingContext = App.ViewModel;
+            BindingContext = App.ClipboardManagementViewModel;
         }
 
         private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -75,14 +75,14 @@ namespace ClipboardSync_Client_Mobile.Views
         {
             var swipeview = sender as SwipeItem;
             string message = swipeview.CommandParameter as string;
-            App.ViewModel.Unpin(message);
+            App.ClipboardManagementViewModel.Unpin(message);
         }
 
         private void SwipeItem_Invoked_Delete(object sender, EventArgs e)
         {
             var swipeview = sender as SwipeItem;
             string message = swipeview.CommandParameter as string;
-            App.ViewModel.PinnedList.Remove(message);
+            App.ClipboardManagementViewModel.PinnedList.Remove(message);
         }
     }
 }

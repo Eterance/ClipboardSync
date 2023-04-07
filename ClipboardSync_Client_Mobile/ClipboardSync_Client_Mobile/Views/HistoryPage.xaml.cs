@@ -18,7 +18,7 @@ namespace ClipboardSync_Client_Mobile.Views
 		public HistoryPage ()
 		{
 			InitializeComponent ();
-            BindingContext = App.ViewModel;
+            BindingContext = App.ClipboardManagementViewModel;
         }
 
         
@@ -76,14 +76,14 @@ namespace ClipboardSync_Client_Mobile.Views
         {
             var swipeview = sender as SwipeItem;
             string message = swipeview.CommandParameter as string;
-            App.ViewModel.PinFromHistory(message);
+            App.ClipboardManagementViewModel.PinFromHistory(message);
         }
 
         private void SwipeItem_Invoked_Delete(object sender, EventArgs e)
         {
             var swipeview = sender as SwipeItem;
             string message = swipeview.CommandParameter as string;
-            App.ViewModel.HistoryList.Remove(message);
+            App.ClipboardManagementViewModel.HistoryList.Remove(message);
         }
     }
 }
