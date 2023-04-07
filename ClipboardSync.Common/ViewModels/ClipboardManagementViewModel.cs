@@ -299,7 +299,7 @@ namespace ClipboardSync.Commom.ViewModels
         /// Move the message from HistoryList to the top of PinnedList.
         /// </summary>
         /// <param name="message"></param>
-        public void PinFromHistory(string message)
+        public void Pin(string message)
         {
             if (HistoryList.Contains(message))
             {

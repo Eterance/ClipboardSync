@@ -76,7 +76,7 @@ namespace ClipboardSync_Client_Mobile.Views
         {
             var swipeview = sender as SwipeItem;
             string message = swipeview.CommandParameter as string;
-            App.ClipboardManagementViewModel.PinFromHistory(message);
+            App.ClipboardManagementViewModel.Pin(message);
         }
 
         private void SwipeItem_Invoked_Delete(object sender, EventArgs e)
