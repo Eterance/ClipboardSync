@@ -80,6 +80,11 @@ namespace ClipboardSync.Commom.ViewModels
             }
         }
 
+        public ISettingsService SettingsService
+        {
+            get { return settingsService; }
+        }
+
         // Because Xamarin.Forms.Command can't use at WPF
         // Use a cross-platform command
         // https://prismlibrary.com/docs/commands/commanding.html

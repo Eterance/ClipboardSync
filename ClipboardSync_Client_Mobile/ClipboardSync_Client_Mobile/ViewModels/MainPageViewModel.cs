@@ -1,5 +1,6 @@
 ﻿using ClipboardSync.Commom.Models;
 using ClipboardSync.Commom.ViewModels;
+using ClipboardSync.Common.Services;
 using ClipboardSync_Client_Mobile.Models;
 using ClipboardSync_Client_Mobile.Services;
 using System;
@@ -22,7 +23,7 @@ namespace ClipboardSync_Client_Mobile.ViewModels
             {
                 if (selectedLanguage == null)
                 {
-                    return SearchLanguage(Preferences.Get(localizationSettingName, "en"));
+                    return SearchLanguage(settings.Get(localizationSettingName, "en"));
                 }
                 return selectedLanguage; 
             }
@@ -31,7 +32,7 @@ namespace ClipboardSync_Client_Mobile.ViewModels
                 if (selectedLanguage != value)
                 {
                     selectedLanguage = value;
-                    Preferences.Set(localizationSettingName, selectedLanguage.LanguageID);
+                    settings.Set(localizationSettingName, selectedLanguage.LanguageID);
                     OnPropertyChanged();
                 }
             }
@@ -55,13 +56,15 @@ namespace ClipboardSync_Client_Mobile.ViewModels
         private string _playgroundText;
         private LocalizationModel selectedLanguage;
         private readonly string localizationSettingName = "Localization";
+        private ISettingsService settings;
 
-        public MainPageViewModel(ClipboardManagementViewModel viewModel)
+        public MainPageViewModel(ClipboardManagementViewModel viewModel, ISettingsService _settings)
         {
             SubViewModel = viewModel;
 
             SendPlaygroundTextCommand = new Command(SendPlaygroundText);
             SendClipboardTextAsyncCommand = new Command(SendClipboardTextAsync);
+            settings = _settings;
 
             if (LanguageList == null)
             {
