@@ -82,7 +82,7 @@ namespace ClipboardSync_Client_Mobile.Views
         {
             var swipeview = sender as SwipeItem;
             string message = swipeview.CommandParameter as string;
-            App.ViewModel.HistoryList.Remove(message);
+            App.ViewModel.PinnedList.Remove(message);
         }
     }
 }

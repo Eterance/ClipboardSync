@@ -21,13 +21,7 @@ namespace ClipboardSync_Client_Mobile
             {
                 if (viewModel == null)
                 {
-                    viewModel = new ClipboardManagementViewModel(
-                        (key, defaultValue) => Preferences.Get(key, defaultValue),
-                        (key, defaultValue) => Preferences.Get(key, defaultValue),
-                        (key, newValue) => Preferences.Set(key, newValue),
-                        (key, newValue) => Preferences.Set(key, newValue),
-                        (key) => Preferences.ContainsKey(key)
-                        );
+                    viewModel = new ClipboardManagementViewModel(new XamarinSettingsService());
                     viewModel.ToastMessage += (sender, e) =>
                     {
                         MainThread.BeginInvokeOnMainThread(() =>

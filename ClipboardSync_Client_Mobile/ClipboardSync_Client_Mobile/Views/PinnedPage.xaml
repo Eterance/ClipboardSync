@@ -38,7 +38,7 @@
                             <StackLayout Background="transparent">
                                 <Label Text="{Binding}"
                                        Margin="10"
-                                       HeightRequest="100"
+                                       HeightRequest="80"
                                        VerticalTextAlignment="Center"
                                        MaxLines="4"
                                        LineBreakMode="TailTruncation"

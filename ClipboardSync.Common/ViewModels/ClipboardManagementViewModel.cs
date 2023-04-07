@@ -7,6 +7,7 @@ using ClipboardSync.Commom.ExtensionMethods;
 using ClipboardSync.Commom.Services;
 using Prism.Commands;
 using ClipboardSync.Common.Localization;
+using ClipboardSync.Common.Services;
 
 namespace ClipboardSync.Commom.ViewModels
 {
@@ -27,24 +28,6 @@ namespace ClipboardSync.Commom.ViewModels
         public EventHandler<string> NeedClipboardSetText { get; set; }
         public EventHandler<Exception> UnexpectedError { get; set; }
         public EventHandler<string> ToastMessage { get; set; }
-        public Func<string, bool> IsSettingsContainsKey { get; set; }
-        /// <summary>
-        /// key, defaultValue, output
-        /// </summary>
-        public Func<string, int, int> GetSettingInt { get; set; }
-        /// <summary>
-        /// key, defaultValue, output
-        /// </summary>
-        public Func<string, string, string> GetSettingString { get; set; }
-        /// <summary>
-        /// key, newValue
-        /// </summary>
-        public Action<string, int> SetSettingInt { get; set; }
-        /// <summary>
-        /// key, newValue
-        /// </summary>
-        public Action<string, string> SetSettingString { get; set; }
-
 
         public ObservableCollection<string> HistoryList { get; set; }
         public ObservableCollection<string> PinnedList { get; set; }
@@ -119,21 +102,11 @@ namespace ClipboardSync.Commom.ViewModels
         private SignalRCoreService _signalRCoreService;
         
         private CancellationTokenSource conncetingTokenSource;
+        private ISettingsService settingsService;
 
-        public ClipboardManagementViewModel(
-            Func<string, int, int> getSettingInt,
-            Func<string, string, string> getSettingString,
-            Action<string, int> setSettingInt,
-            Action<string, string> setSettingString,
-            Func<string, bool> isSettingsContainsKey,
-            SignalRCoreService service = null)
+        public ClipboardManagementViewModel(ISettingsService settings, SignalRCoreService service = null)
         {
-            // Set the Setting read/write delegates
-            GetSettingInt = getSettingInt;
-            GetSettingString = getSettingString;
-            SetSettingInt = setSettingInt;
-            SetSettingString = setSettingString;
-            IsSettingsContainsKey = isSettingsContainsKey;
+            settingsService = settings;
 
             //Singleton = this;
             _signalRCoreService = service ?? new SignalRCoreService();
@@ -171,7 +144,7 @@ namespace ClipboardSync.Commom.ViewModels
 
 
             HistoryList = new();
-            HistoryListCapacity = GetSettingInt(_historyListCapacityKey, 30);
+            HistoryListCapacity = settingsService.Get(_historyListCapacityKey, 30);
             // System.InvalidOperationException: 'Cannot change ObservableCollection during a CollectionChanged event.'
             //HistoryList.CollectionChanged += (sender, e) => CheckHistoryListCapacity();
             PinnedList = new(PinnedListFileService.Load<string>());
@@ -190,7 +163,7 @@ namespace ClipboardSync.Commom.ViewModels
 
         private void ApplyHistoryListCapacity()
         {
-            SetSettingInt(_historyListCapacityKey, HistoryListCapacity);
+            settingsService.Set(_historyListCapacityKey, HistoryListCapacity);
             HistoryList.ApplyCapacityLimit(HistoryListCapacity);
             if (HistoryListCapacity <= 0)
             {
@@ -211,12 +184,12 @@ namespace ClipboardSync.Commom.ViewModels
         {
             ConnectionStatusInstruction = Resources.NotConnected;
             
-            HistoryListCapacity = GetSettingInt(_historyListCapacityKey, 30);
+            HistoryListCapacity = settingsService.Get(_historyListCapacityKey, 30);
 
-            bool hasIpKey = IsSettingsContainsKey(_ipEndPointsKey);
+            bool hasIpKey = settingsService.IsContainsKey(_ipEndPointsKey);
             if (hasIpKey == true)
             {
-                IPEndPointsString = GetSettingString(_ipEndPointsKey, "");
+                IPEndPointsString = settingsService.Get(_ipEndPointsKey, "");
                 _ = ConnectAsync();
             }
             else 
@@ -229,7 +202,7 @@ namespace ClipboardSync.Commom.ViewModels
         private async void SetIPEndPointsAsync()
         {
             IPEndPointsString = IPEndPointsString.Trim();
-            SetSettingString(_ipEndPointsKey, IPEndPointsString);
+            settingsService.Set(_ipEndPointsKey, IPEndPointsString);
             await ConnectAsync();
         }
 
@@ -241,7 +214,7 @@ namespace ClipboardSync.Commom.ViewModels
                 conncetingTokenSource.Cancel();
             }
             IsConnected = false;
-            string ipEndPointsString = GetSettingString(_ipEndPointsKey, "");
+            string ipEndPointsString = settingsService.Get(_ipEndPointsKey, "");
             conncetingTokenSource = new();
             await _signalRCoreService.ConnectAsync(SeperateIPEndPoints(ipEndPointsString), conncetingTokenSource.Token);
         }

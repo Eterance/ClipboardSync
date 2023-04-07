@@ -1,4 +1,4 @@
-﻿<Window x:Class="ClipboardSync_Client_Windows.MainWindow"
+﻿<Window x:Class="ClipboardSync_Client_Windows.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -224,7 +224,7 @@
 
     </Window.Resources>
     <Grid Background="#101010">
-        <Button Content="Button" HorizontalAlignment="Left" Margin="658,250,0,0" VerticalAlignment="Top" Height="60" Width="120" Click="Button_Click"/>
+        <Button Content="连接" HorizontalAlignment="Left" Margin="658,250,0,0" VerticalAlignment="Top" Height="60" Width="120" Click="Button_Click"/>
         <TextBox x:Name="tb_ip" HorizontalAlignment="Left" Height="30" Margin="645,105,0,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="145"/>
 
         

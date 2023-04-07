@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ClipboardSync.Commom.ViewModels;
+using ClipboardSync_Client_Windows.Services;
+using ClipboardSync_Client_Windows.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -18,7 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ClipboardSync_Client_Windows
+namespace ClipboardSync_Client_Windows.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -39,11 +42,13 @@ namespace ClipboardSync_Client_Windows
             mainWindow = this;
             ClipBroadChangedEvent += ClipBroadChanged;
 
-
+            ClipboardManagementViewModel viewModel = new ClipboardManagementViewModel(new WindowsSettingsService());
+            // No need to Toast in desktop platform
+            // viewModel.ToastMessage += (sender, e) => {};
+            viewModel.Initialize();
             ListBox_HistoryList.ItemsSource = _historyList;
             ListBox_PinnedList.ItemsSource = _PinnedList;
-
-            
+            DataContext = new MainWindowViewModel(viewModel);
         }
 
         public async void connectServer()
