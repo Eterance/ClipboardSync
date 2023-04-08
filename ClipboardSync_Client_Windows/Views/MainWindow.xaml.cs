@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -42,6 +43,14 @@ namespace ClipboardSync_Client_Windows.Views
             ClipBroadChangedEvent += ClipBroadChanged;
             var wss = new WindowsSettingsService();
             clipboardViewModel = new ClipboardManagementViewModel(wss);
+            clipboardViewModel.UIDispatcherInvoker = (act) =>
+            {
+                // https://stackoverflow.com/questions/18331723/this-type-of-collectionview-does-not-support-changes-to-its-sourcecollection-fro
+                App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+                {
+                    act();
+                });
+            };
             // No need to Toast in desktop platform
             // viewModel.ToastMessage += (sender, e) => {};
             clipboardViewModel.Initialize();
@@ -54,12 +63,9 @@ namespace ClipboardSync_Client_Windows.Views
             MessageBox.Show(message);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
         private void ListBox_History_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
         }
 
         private void ListBox_Pinned_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -281,11 +287,7 @@ namespace ClipboardSync_Client_Windows.Views
         {
             //Popup_ClipBroad.IsOpen = false;
         }
-
-        private void Delete_All_Button_Click(object sender, RoutedEventArgs e)
-        {
-            _historyList.Clear();
-        }
+        
         
     }
 }

@@ -25,6 +25,11 @@ namespace ClipboardSync.Commom.ViewModels
                 OnPropertyChanged();
             }
         }
+        /// <summary>
+        /// On WPF, ObservableCollection cannot modify out of the dispatch thread
+        /// If UIDispatcherInvoker assigned, meaning all ObservableCollection modification will using this DispatcherInvoke
+        /// </summary>
+        public Action<Action> UIDispatcherInvoker { get; set; }
         public EventHandler<string> NeedClipboardSetText { get; set; }
         public EventHandler<Exception> UnexpectedError { get; set; }
         public EventHandler<string> ToastMessage { get; set; }
@@ -171,7 +176,10 @@ namespace ClipboardSync.Commom.ViewModels
         private void ApplyHistoryListCapacity()
         {
             settingsService.Set(_historyListCapacityKey, HistoryListCapacity);
-            HistoryList.ApplyCapacityLimit(HistoryListCapacity);
+            UseUIDispatcherInvoke((Action)delegate // <--- HERE
+            {
+                HistoryList.ApplyCapacityLimit(HistoryListCapacity);
+            });
             if (HistoryListCapacity <= 0)
             {
                 ToastMessage?.Invoke(this, $"{Resources.ClipboardHistoryCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
@@ -184,7 +192,10 @@ namespace ClipboardSync.Commom.ViewModels
 
         private void ClearHistoryList()
         {
-            HistoryList.Clear();
+            UseUIDispatcherInvoke((Action)delegate // <--- HERE
+            {
+                HistoryList.Clear();
+            });
         }
 
         private void SavePinnedList()
@@ -244,7 +255,24 @@ namespace ClipboardSync.Commom.ViewModels
             }
             return ipEndPointList;
         }
-        
+
+        /// <summary>
+        /// In WPF platform, change binding list outside Ui thread is illegal.
+        /// </summary>
+        /// <param name="act"></param>
+        private void UseUIDispatcherInvoke(Action act)
+        {
+            // https://stackoverflow.com/questions/18331723/this-type-of-collectionview-does-not-support-changes-to-its-sourcecollection-fro
+            if (UIDispatcherInvoker != null)
+            {
+                UIDispatcherInvoker(act);
+            }
+            else
+            {
+                act();
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -255,7 +283,10 @@ namespace ClipboardSync.Commom.ViewModels
             // 两张表里都没有，加进剪贴板
             if (HistoryList.Contains(message) != true && PinnedList.Contains(message) != true)
             {
-                HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                UseUIDispatcherInvoke((Action)delegate // <--- HERE
+                {
+                    HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                });                
                 //HistoryList.Insert(0, message);
                 //CheckHistoryListCapacity();
                 NeedClipboardSetText?.Invoke(this, message);
@@ -264,8 +295,11 @@ namespace ClipboardSync.Commom.ViewModels
             // 剪贴板有，并且不在第一位，移到前面
             else if (HistoryList.Contains(message) == true && PinnedList.Contains(message) != true && HistoryList[0] != message)
             {
-                HistoryList.Remove(message);
-                HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                UseUIDispatcherInvoke((Action)delegate // <--- HERE
+                {
+                    HistoryList.Remove(message);
+                    HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                });
                 //HistoryList.Insert(0, message);
                 //CheckHistoryListCapacity();
                 NeedClipboardSetText?.Invoke(this, message);
@@ -310,8 +344,11 @@ namespace ClipboardSync.Commom.ViewModels
         {
             if (HistoryList.Contains(message))
             {
-                HistoryList.Remove(message);
-                PinnedList.Insert(0, message);
+                UseUIDispatcherInvoke((Action)delegate // <--- HERE
+                {
+                    HistoryList.Remove(message);
+                    PinnedList.Insert(0, message);
+                });
             }
         }
 
@@ -323,8 +360,11 @@ namespace ClipboardSync.Commom.ViewModels
         {
             if (PinnedList.Contains(message))
             {
-                PinnedList.Remove(message);
-                HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                UseUIDispatcherInvoke((Action)delegate // <--- HERE
+                {
+                    PinnedList.Remove(message);
+                    HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                });
                 //HistoryList.Insert(0, message);
                 //CheckHistoryListCapacity();
             }

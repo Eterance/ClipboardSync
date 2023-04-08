@@ -15,13 +15,13 @@ namespace ClipboardSync_Client_Windows.Services
     {
         private Dictionary<string, string> stringSettings;
         private Dictionary<string, int> intSettings;
-        private string intSettingsFileName = "intSettings.xml";
-        private string stringSettingsFileName = "stringSettings.xml";
+        private string intSettingsFileName = "intSettings.ini";
+        private string stringSettingsFileName = "stringSettings.ini";
 
         public WindowsSettingsService()
         {
-            intSettings = Deserialize<int>(intSettingsFileName);
-            stringSettings = Deserialize<string>(stringSettingsFileName);
+            intSettings = DeserializeInt(intSettingsFileName);
+            stringSettings = DeserializeString(stringSettingsFileName);
         }
 
         int ISettingsService.Get(string key, int defaultValue)
@@ -69,7 +69,7 @@ namespace ClipboardSync_Client_Windows.Services
 
         private void Serialize<T>(Dictionary<string, T> dict, string dictFileName)
         {
-            // Create a DataContractSerializer instance for the dictionary type
+            /*// Create a DataContractSerializer instance for the dictionary type
             DataContractSerializer serializer = new DataContractSerializer(typeof(Dictionary<int, string>));
 
             // Open a file stream to save the serialized data
@@ -80,26 +80,50 @@ namespace ClipboardSync_Client_Windows.Services
 
                 // Serialize the dictionary to the XmlWriter
                 serializer.WriteObject(writer, dict);
+            }*/
+            using (StreamWriter sw = new StreamWriter(dictFileName))
+            {
+                foreach (KeyValuePair<string, T> kvp in dict)
+                {
+                    sw.WriteLine("{0}={1}", kvp.Key, kvp.Value);
+                }
             }
         }
 
-        private Dictionary<string, T> Deserialize<T>(string dictFileName)
+        private Dictionary<string, int> DeserializeInt(string dictFileName)
         {
             if (File.Exists(dictFileName) == false)
             {
-                return new Dictionary<string, T>();
+                return new Dictionary<string, int>();
             }
-            // Create a DataContractSerializer instance for the dictionary type
-            DataContractSerializer serializer = new DataContractSerializer(typeof(Dictionary<int, string>));
-            Dictionary<string, T> dict;
-            // Open the file stream containing the serialized data
-            using (FileStream stream = new FileStream("dictFileName", FileMode.Open))
+            Dictionary<string, int> dict = new();
+            using (StreamReader sr = new StreamReader(dictFileName))
             {
-                // Create an XmlReader to read the serialized data from the file stream
-                XmlReader reader = XmlReader.Create(stream);
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    string[] keyValue = line.Split('=');
+                    dict[keyValue[0]] = int.Parse(keyValue[1]);
+                }
+            }
+            return dict;
+        }
 
-                // Deserialize the dictionary from the XmlReader
-                dict = (Dictionary<string, T>)serializer.ReadObject(reader);
+        private Dictionary<string, string> DeserializeString(string dictFileName)
+        {
+            if (File.Exists(dictFileName) == false)
+            {
+                return new Dictionary<string, string>();
+            }
+            Dictionary<string, string> dict = new();
+            using (StreamReader sr = new StreamReader(dictFileName))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    string[] keyValue = line.Split('=');
+                    dict[keyValue[0]] = keyValue[1];
+                }
             }
             return dict;
         }

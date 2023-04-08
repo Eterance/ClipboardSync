@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClipboardSync_Client_Windows"
         xmlns:converter="clr-namespace:ClipboardSync_Client_Windows.Converters"
+        xmlns:localization="clr-namespace:ClipboardSync_Client_Windows.Localization"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
 
@@ -94,30 +95,30 @@
                             Click="Back_Button_Click"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.BackButton.Background}"
-                            Content="返回"/>
+                            Content="{x:Static localization:Resources.Back}"/>
                     <Button Grid.Column="1" 
                             x:Name="Pin_Button"
                             Click="Pin_Button_Click"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.PinButton.Background}"
-                            Content="固定"/>
+                            Content="{x:Static localization:Resources.Pin}"/>
                     <Button Grid.Column="2" 
                             x:Name="Delete_History_Button"
                             Click="Delete_History_Button_Click"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.DeleteButton.Background}"
-                            Content="删除"/>
+                            Content="{x:Static localization:Resources.Delete}"/>
                     <!-- &#x0a; 代表换行-->
                     <!-- https://stackoverflow.com/questions/8525396/how-to-put-a-new-line-into-a-wpf-textblock-control -->
                     <Button Grid.Column="3" 
                             x:Name="Delete_All_Button"
-                            Click="Delete_All_Button_Click"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.DeleteAllButton.Background}"
-                            Content="全部&#x0a;删除"/>
+                            Content="{x:Static localization:Resources.Detail}"/>
                 </Grid>
-            </Grid>            
+            </Grid>
         </DataTemplate>
+
         <!-- 剪贴板listbox容器模板 -->
         <Style TargetType="{x:Type ListBoxItem}" x:Key="ContainerStyle_History">
             <Setter Property="Margin" Value="16 4 14 4"/>
@@ -199,19 +200,32 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="0"
                             x:Name="Back_Button"
                             Click="Back_Button_Click"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.BackButton.Background}"
-                            Content="返回"/>
+                            Content="{x:Static localization:Resources.Back}"/>
                     <Button Grid.Column="1" 
+                            x:Name="Pin_Button"
+                            Click="Pin_Button_Click"
+                            Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                            Background="{StaticResource ResourceKey=Button.PinButton.Background}"
+                            Content="{x:Static localization:Resources.Unpin}"/>
+                    <Button Grid.Column="3" 
                             x:Name="Delete_Pinned_Button"
                             Click="Delete_Pinned_Button_Click"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.DeleteButton.Background}"
-                            Content="删除"/>
+                            Content="{x:Static localization:Resources.Delete}"/>
+                    <Button Grid.Column="3" 
+                            x:Name="Delete_All_Button"
+                            Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                            Background="{StaticResource ResourceKey=Button.DeleteAllButton.Background}"
+                            Content="{x:Static localization:Resources.Detail}"/>
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -219,13 +233,11 @@
         <Style TargetType="{x:Type ListBoxItem}" x:Key="ContainerStyle_Pinned" BasedOn="{StaticResource ContainerStyle_History}">
             <Setter Property="ContentTemplate" Value="{StaticResource Pinned_Item_Template}" />
         </Style>
-
-
-
     </Window.Resources>
+    
     <Grid Background="#101010">
-        <Button Content="连接" HorizontalAlignment="Left" Margin="658,250,0,0" VerticalAlignment="Top" Height="60" Width="120" Click="Button_Click"/>
-        <TextBox x:Name="tb_ip" HorizontalAlignment="Left" Height="30" Margin="645,105,0,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="145"/>
+        <Button Content="连接" HorizontalAlignment="Left" Margin="658,250,0,0" VerticalAlignment="Top" Height="60" Width="120" Command="{Binding SubViewModel.SaveAndConnectCommand}"/>
+        <TextBox x:Name="tb_ip" HorizontalAlignment="Left" Height="30" Margin="573,100,0,0" TextWrapping="Wrap" Text="{Binding SubViewModel.IPEndPointsString}" VerticalAlignment="Top" Width="145"/>
 
         
         <Grid Width="200" Height="300" Margin="0 10 0 0 " HorizontalAlignment="Left" Background="Aqua">
@@ -247,7 +259,7 @@
                 </Button>
             </Grid>
         </Grid>
-        <TextBox x:Name="tb_port" HorizontalAlignment="Left" Height="30" Margin="645,145,0,0" TextWrapping="Wrap" Text="50001" VerticalAlignment="Top" Width="145"/>
+        <TextBox x:Name="tb_port" HorizontalAlignment="Left" Height="30" Margin="645,145,0,0" Text="127.0.0.1:50001" VerticalAlignment="Top" Width="145"/>
 
         <Popup 
             x:Name="Popup_ClipBroad" 
