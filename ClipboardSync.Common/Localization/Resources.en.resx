@@ -117,86 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Clipboard" xml:space="preserve">
-    <value>Clipboard</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>Home</value>
-  </data>
-  <data name="Pinned" xml:space="preserve">
-    <value>Pinned</value>
-  </data>
-  <data name="InputSthHere" xml:space="preserve">
-    <value>Input something here...</value>
-  </data>
-  <data name="Send" xml:space="preserve">
-    <value>Send</value>
-  </data>
-  <data name="SendClipboardText" xml:space="preserve">
-    <value>Send Clipboard Text</value>
-  </data>
-  <data name="ServerAddr" xml:space="preserve">
-    <value>Server Address</value>
-  </data>
-  <data name="ServerAddrDescription" xml:space="preserve">
-    <value>The format is IP:port, with multiple addresses separated by semicolons, such as: 
-192.168.1.2:6789; 10.20.31.54:2333
-When multiple addresses are specified, The front of the line is tried more first.</value>
-  </data>
-  <data name="ServerAddrPlaceholder" xml:space="preserve">
-    <value>You need to enter at least one server address!!!</value>
-  </data>
-  <data name="SaveAndReconnect" xml:space="preserve">
-    <value>Save &amp; Reconnect</value>
-  </data>
-  <data name="HistoryListCapacity" xml:space="preserve">
-    <value>Clipboard History Capacity</value>
-  </data>
-  <data name="HistoryListCapacityDescription" xml:space="preserve">
-    <value>Only this device will be affected. To not limit the size, enter a non-positive number.</value>
-  </data>
-  <data name="EnterIntegerPlaceholder" xml:space="preserve">
-    <value>Enter an integer</value>
-  </data>
-  <data name="ServerCacheCapacity" xml:space="preserve">
-    <value>Server History Cache Capacity</value>
-  </data>
-  <data name="ServerCacheCapacityDescription" xml:space="preserve">
-    <value>To not limit the size, enter a non-positive number.</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="LanguageDescription" xml:space="preserve">
-    <value>Restart the application to apply the change.</value>
-  </data>
-  <data name="Copy" xml:space="preserve">
-    <value>Copy</value>
-  </data>
-  <data name="Detail" xml:space="preserve">
-    <value>Detail</value>
-  </data>
-  <data name="Pin" xml:space="preserve">
-    <value>Pin</value>
-  </data>
-  <data name="Unpin" xml:space="preserve">
-    <value>Unpin</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="CopyComplete" xml:space="preserve">
-    <value>Copied to the clipboard.</value>
-  </data>
   <data name="Comma" xml:space="preserve">
     <value>, </value>
   </data>
@@ -224,15 +144,6 @@ When multiple addresses are specified, The front of the line is tried more first
   <data name="NoServerAddr" xml:space="preserve">
     <value>No server address set, cannot connect</value>
   </data>
-  <data name="Lang_en" xml:space="preserve">
-    <value>English</value>
-  </data>
-  <data name="Lang_zh_cn" xml:space="preserve">
-    <value>简体中文 (Simplified Chinese)</value>
-  </data>
-  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
-    <value>Server history cache capacity changed to </value>
-  </data>
   <data name="Sent" xml:space="preserve">
     <value>Sent.</value>
   </data>
@@ -241,5 +152,8 @@ When multiple addresses are specified, The front of the line is tried more first
   </data>
   <data name="Unlimited" xml:space="preserve">
     <value>Unlimited</value>
+  </data>
+  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
+    <value>Server history cache capacity changed to </value>
   </data>
 </root>

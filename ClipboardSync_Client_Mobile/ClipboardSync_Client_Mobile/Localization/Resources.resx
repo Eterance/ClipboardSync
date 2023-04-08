@@ -201,52 +201,11 @@ Restart the application to apply the change.</value>
     <value>已复制到剪贴板。</value>
     
   </data>
-  <data name="Comma" xml:space="preserve">
-    <value>，</value>
-    <comment>@MutedRule(WhiteSpaceTail)</comment>
-  </data>
-  <data name="Period" xml:space="preserve">
-    <value>。</value>
-    <comment>@MutedRule(WhiteSpaceTail)</comment>
-  </data>
-  <data name="Try2Connect2" xml:space="preserve">
-    <value>尝试连接到</value>
-  </data>
-  <data name="ConnectAborted" xml:space="preserve">
-    <value>连接尝试被中止。</value>
-  </data>
-  <data name="Connected2" xml:space="preserve">
-    <value>已连接至</value>
-  </data>
-  <data name="Failed2Connect2" xml:space="preserve">
-    <value>无法连接到</value>
-  </data>
-  <data name="AllServersAreUnavailable" xml:space="preserve">
-    <value>所有服务器均无法连接。</value>
-  </data>
-  <data name="NotConnected" xml:space="preserve">
-    <value>未连接</value>
-  </data>
-  <data name="NoServerAddr" xml:space="preserve">
-    <value>未设置服务器地址，无法连接</value>
-  </data>
   <data name="Lang_en" xml:space="preserve">
     <value>English（英文）</value>
   </data>
   <data name="Lang_zh_cn" xml:space="preserve">
     <value>简体中文</value>
-  </data>
-  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
-    <value>服务器历史记录缓存容量更改为 </value>
-  </data>
-  <data name="Sent" xml:space="preserve">
-    <value>已发送。</value>
-  </data>
-  <data name="ClipboardHistoryCapacityChanged2" xml:space="preserve">
-    <value>剪贴板历史记录容量更改为 </value>
-  </data>
-  <data name="Unlimited" xml:space="preserve">
-    <value>无限</value>
   </data>
   <data name="ClearAllHistoryList" xml:space="preserve">
     <value>删除所有</value>

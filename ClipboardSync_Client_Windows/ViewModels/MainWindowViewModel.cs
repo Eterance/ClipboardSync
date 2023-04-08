@@ -1,5 +1,6 @@
 ﻿using ClipboardSync.Commom.Models;
 using ClipboardSync.Commom.ViewModels;
+using ClipboardSync.Common.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,7 +20,7 @@ namespace ClipboardSync_Client_Windows.ViewModels
             {
                 if (selectedLanguage == null)
                 {
-                    return SearchLanguage(Preferences.Get(localizationSettingName, "en"));
+                    return SearchLanguage(settings.Get(localizationSettingName, "en"));
                 }
                 return selectedLanguage; 
             }
@@ -28,13 +29,11 @@ namespace ClipboardSync_Client_Windows.ViewModels
                 if (selectedLanguage != value)
                 {
                     selectedLanguage = value;
-                    Preferences.Set(localizationSettingName, selectedLanguage.LanguageID);
+                    settings.Set(localizationSettingName, selectedLanguage.LanguageID);
                     OnPropertyChanged();
                 }
             }
         }
-        public ICommand SendPlaygroundTextCommand { get; set; }
-        public ICommand SendClipboardTextAsyncCommand { get; set; }
 
         public ObservableCollection<LocalizationModel> LanguageList { get; set; }
 
@@ -52,10 +51,12 @@ namespace ClipboardSync_Client_Windows.ViewModels
         private string _playgroundText;
         private LocalizationModel selectedLanguage;
         private readonly string localizationSettingName = "Localization";
+        private ISettingsService settings;
 
-        public MainWindowViewModel(ClipboardManagementViewModel viewModel)
+        public MainWindowViewModel(ClipboardManagementViewModel viewModel, ISettingsService _settings)
         {
             SubViewModel = viewModel;
+            settings = _settings;
 
             if (LanguageList == null)
             {
@@ -67,7 +68,7 @@ namespace ClipboardSync_Client_Windows.ViewModels
             }
         }
         
-        private async void SendClipboardTextAsync(string text)
+        public void SendClipboardText(string text)
         {
             SubViewModel.SendText(text);
         }

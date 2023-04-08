@@ -70,38 +70,11 @@ namespace ClipboardSync.Common.Localization {
         }
         
         /// <summary>
-        ///   查找类似 取消 的本地化字符串。
-        /// </summary>
-        public static string Cancel {
-            get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 剪贴板 的本地化字符串。
-        /// </summary>
-        public static string Clipboard {
-            get {
-                return ResourceManager.GetString("Clipboard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 剪贴板历史记录容量更改为  的本地化字符串。
         /// </summary>
         public static string ClipboardHistoryCapacityChanged2 {
             get {
                 return ResourceManager.GetString("ClipboardHistoryCapacityChanged2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 关闭 的本地化字符串。
-        /// </summary>
-        public static string Close {
-            get {
-                return ResourceManager.GetString("Close", resourceCulture);
             }
         }
         
@@ -133,129 +106,11 @@ namespace ClipboardSync.Common.Localization {
         }
         
         /// <summary>
-        ///   查找类似 复制 的本地化字符串。
-        /// </summary>
-        public static string Copy {
-            get {
-                return ResourceManager.GetString("Copy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 已复制到剪贴板。 的本地化字符串。
-        /// </summary>
-        public static string CopyComplete {
-            get {
-                return ResourceManager.GetString("CopyComplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 删除 的本地化字符串。
-        /// </summary>
-        public static string Delete {
-            get {
-                return ResourceManager.GetString("Delete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 详细 的本地化字符串。
-        /// </summary>
-        public static string Detail {
-            get {
-                return ResourceManager.GetString("Detail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 输入整数数字 的本地化字符串。
-        /// </summary>
-        public static string EnterIntegerPlaceholder {
-            get {
-                return ResourceManager.GetString("EnterIntegerPlaceholder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 无法连接到 的本地化字符串。
         /// </summary>
         public static string Failed2Connect2 {
             get {
                 return ResourceManager.GetString("Failed2Connect2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 剪贴板历史记录容量 的本地化字符串。
-        /// </summary>
-        public static string HistoryListCapacity {
-            get {
-                return ResourceManager.GetString("HistoryListCapacity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 只会影响本设备。输入非正数表示不限制大小。 的本地化字符串。
-        /// </summary>
-        public static string HistoryListCapacityDescription {
-            get {
-                return ResourceManager.GetString("HistoryListCapacityDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 主页 的本地化字符串。
-        /// </summary>
-        public static string Home {
-            get {
-                return ResourceManager.GetString("Home", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 在这里输入什么…… 的本地化字符串。
-        /// </summary>
-        public static string InputSthHere {
-            get {
-                return ResourceManager.GetString("InputSthHere", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 English（英文） 的本地化字符串。
-        /// </summary>
-        public static string Lang_en {
-            get {
-                return ResourceManager.GetString("Lang_en", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 简体中文 的本地化字符串。
-        /// </summary>
-        public static string Lang_zh_cn {
-            get {
-                return ResourceManager.GetString("Lang_zh_cn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 语言 (Language) 的本地化字符串。
-        /// </summary>
-        public static string Language {
-            get {
-                return ResourceManager.GetString("Language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 重启应用生效。
-        ///Restart the application to apply the change. 的本地化字符串。
-        /// </summary>
-        public static string LanguageDescription {
-            get {
-                return ResourceManager.GetString("LanguageDescription", resourceCulture);
             }
         }
         
@@ -287,60 +142,6 @@ namespace ClipboardSync.Common.Localization {
         }
         
         /// <summary>
-        ///   查找类似 固定 的本地化字符串。
-        /// </summary>
-        public static string Pin {
-            get {
-                return ResourceManager.GetString("Pin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 已固定 的本地化字符串。
-        /// </summary>
-        public static string Pinned {
-            get {
-                return ResourceManager.GetString("Pinned", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 保存 的本地化字符串。
-        /// </summary>
-        public static string Save {
-            get {
-                return ResourceManager.GetString("Save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 保存并重新连接 的本地化字符串。
-        /// </summary>
-        public static string SaveAndReconnect {
-            get {
-                return ResourceManager.GetString("SaveAndReconnect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 发送 的本地化字符串。
-        /// </summary>
-        public static string Send {
-            get {
-                return ResourceManager.GetString("Send", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 发送剪贴板的内容 的本地化字符串。
-        /// </summary>
-        public static string SendClipboardText {
-            get {
-                return ResourceManager.GetString("SendClipboardText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 已发送。 的本地化字符串。
         /// </summary>
         public static string Sent {
@@ -350,58 +151,11 @@ namespace ClipboardSync.Common.Localization {
         }
         
         /// <summary>
-        ///   查找类似 服务器地址 的本地化字符串。
-        /// </summary>
-        public static string ServerAddr {
-            get {
-                return ResourceManager.GetString("ServerAddr", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 格式为 IP:port，多个地址分号隔开，如：
-        ///192.168.1.2:6789; 10.20.31.54:2333
-        ///当指定多个地址时，优先尝试排在前面的。 的本地化字符串。
-        /// </summary>
-        public static string ServerAddrDescription {
-            get {
-                return ResourceManager.GetString("ServerAddrDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 你需要输入至少一个服务器地址！！！ 的本地化字符串。
-        /// </summary>
-        public static string ServerAddrPlaceholder {
-            get {
-                return ResourceManager.GetString("ServerAddrPlaceholder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 服务器历史记录缓存容量 的本地化字符串。
-        /// </summary>
-        public static string ServerCacheCapacity {
-            get {
-                return ResourceManager.GetString("ServerCacheCapacity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 服务器历史记录缓存容量更改为  的本地化字符串。
         /// </summary>
         public static string ServerCacheCapacityChanged2 {
             get {
                 return ResourceManager.GetString("ServerCacheCapacityChanged2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 输入非正数表示不限制大小。 的本地化字符串。
-        /// </summary>
-        public static string ServerCacheCapacityDescription {
-            get {
-                return ResourceManager.GetString("ServerCacheCapacityDescription", resourceCulture);
             }
         }
         
@@ -420,15 +174,6 @@ namespace ClipboardSync.Common.Localization {
         public static string Unlimited {
             get {
                 return ResourceManager.GetString("Unlimited", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 取消固定 的本地化字符串。
-        /// </summary>
-        public static string Unpin {
-            get {
-                return ResourceManager.GetString("Unpin", resourceCulture);
             }
         }
     }

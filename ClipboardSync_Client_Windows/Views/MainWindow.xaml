@@ -283,6 +283,7 @@
                          SelectionMode="Single" 
                          ItemContainerStyle="{StaticResource ContainerStyle_History}" 
                          Grid.Row="1"
+                         ItemsSource="{Binding SubViewModel.HistoryList}"
                          SelectionChanged="ListBox_History_SelectionChanged">
                     </ListBox>
                     <ListBox x:Name="ListBox_PinnedList" 
@@ -296,6 +297,7 @@
                          Margin="-1,0,0,0" SelectionMode="Single" 
                          ItemContainerStyle="{StaticResource ContainerStyle_Pinned}" 
                          Grid.Row="1" 
+                         ItemsSource="{Binding SubViewModel.PinnedList}"
                          SelectionChanged="ListBox_Pinned_SelectionChanged" >
                     </ListBox>
                 </Grid>

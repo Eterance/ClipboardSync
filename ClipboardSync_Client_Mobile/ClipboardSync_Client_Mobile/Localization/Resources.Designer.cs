@@ -61,15 +61,6 @@ namespace ClipboardSync_Client_Mobile.Localization {
         }
         
         /// <summary>
-        ///   查找类似 所有服务器均无法连接。 的本地化字符串。
-        /// </summary>
-        public static string AllServersAreUnavailable {
-            get {
-                return ResourceManager.GetString("AllServersAreUnavailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 取消 的本地化字符串。
         /// </summary>
         public static string Cancel {
@@ -97,47 +88,11 @@ namespace ClipboardSync_Client_Mobile.Localization {
         }
         
         /// <summary>
-        ///   查找类似 剪贴板历史记录容量更改为  的本地化字符串。
-        /// </summary>
-        public static string ClipboardHistoryCapacityChanged2 {
-            get {
-                return ResourceManager.GetString("ClipboardHistoryCapacityChanged2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 关闭 的本地化字符串。
         /// </summary>
         public static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 ， 的本地化字符串。
-        /// </summary>
-        public static string Comma {
-            get {
-                return ResourceManager.GetString("Comma", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 连接尝试被中止。 的本地化字符串。
-        /// </summary>
-        public static string ConnectAborted {
-            get {
-                return ResourceManager.GetString("ConnectAborted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 已连接至 的本地化字符串。
-        /// </summary>
-        public static string Connected2 {
-            get {
-                return ResourceManager.GetString("Connected2", resourceCulture);
             }
         }
         
@@ -183,15 +138,6 @@ namespace ClipboardSync_Client_Mobile.Localization {
         public static string EnterIntegerPlaceholder {
             get {
                 return ResourceManager.GetString("EnterIntegerPlaceholder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 无法连接到 的本地化字符串。
-        /// </summary>
-        public static string Failed2Connect2 {
-            get {
-                return ResourceManager.GetString("Failed2Connect2", resourceCulture);
             }
         }
         
@@ -269,33 +215,6 @@ namespace ClipboardSync_Client_Mobile.Localization {
         }
         
         /// <summary>
-        ///   查找类似 未设置服务器地址，无法连接 的本地化字符串。
-        /// </summary>
-        public static string NoServerAddr {
-            get {
-                return ResourceManager.GetString("NoServerAddr", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 未连接 的本地化字符串。
-        /// </summary>
-        public static string NotConnected {
-            get {
-                return ResourceManager.GetString("NotConnected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 。 的本地化字符串。
-        /// </summary>
-        public static string Period {
-            get {
-                return ResourceManager.GetString("Period", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 固定 的本地化字符串。
         /// </summary>
         public static string Pin {
@@ -350,15 +269,6 @@ namespace ClipboardSync_Client_Mobile.Localization {
         }
         
         /// <summary>
-        ///   查找类似 已发送。 的本地化字符串。
-        /// </summary>
-        public static string Sent {
-            get {
-                return ResourceManager.GetString("Sent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 服务器地址 的本地化字符串。
         /// </summary>
         public static string ServerAddr {
@@ -397,38 +307,11 @@ namespace ClipboardSync_Client_Mobile.Localization {
         }
         
         /// <summary>
-        ///   查找类似 服务器历史记录缓存容量更改为  的本地化字符串。
-        /// </summary>
-        public static string ServerCacheCapacityChanged2 {
-            get {
-                return ResourceManager.GetString("ServerCacheCapacityChanged2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 输入非正数表示不限制大小。 的本地化字符串。
         /// </summary>
         public static string ServerCacheCapacityDescription {
             get {
                 return ResourceManager.GetString("ServerCacheCapacityDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 尝试连接到 的本地化字符串。
-        /// </summary>
-        public static string Try2Connect2 {
-            get {
-                return ResourceManager.GetString("Try2Connect2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 无限 的本地化字符串。
-        /// </summary>
-        public static string Unlimited {
-            get {
-                return ResourceManager.GetString("Unlimited", resourceCulture);
             }
         }
         

@@ -28,10 +28,9 @@ namespace ClipboardSync_Client_Windows.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        SignalRCoreClientLib _signalRCoreClientLib;
+        ClipboardManagementViewModel clipboardViewModel;
+        MainWindowViewModel mainViewModel;
         public static MainWindow? mainWindow;
-        BindingList<string> _historyList = new();
-        BindingList<string> _PinnedList = new();
         Grid _InOperatingGrid_History;
         Grid _InOperatingGrid_Pinned;
         string _lastClipBroadMessage = "";
@@ -41,39 +40,13 @@ namespace ClipboardSync_Client_Windows.Views
             InitializeComponent();
             mainWindow = this;
             ClipBroadChangedEvent += ClipBroadChanged;
-
-            ClipboardManagementViewModel viewModel = new ClipboardManagementViewModel(new WindowsSettingsService());
+            var wss = new WindowsSettingsService();
+            clipboardViewModel = new ClipboardManagementViewModel(wss);
             // No need to Toast in desktop platform
             // viewModel.ToastMessage += (sender, e) => {};
-            viewModel.Initialize();
-            ListBox_HistoryList.ItemsSource = _historyList;
-            ListBox_PinnedList.ItemsSource = _PinnedList;
-            DataContext = new MainWindowViewModel(viewModel);
-        }
-
-        public async void connectServer()
-        {
-            await _signalRCoreClientLib.Connect(tb_ip.Text, int.Parse(tb_port.Text));
-        }
-
-        private void SyncMessages(object? sender, List<string> messages)
-        {
-            foreach (var message in messages)
-            {
-                mainWindow.Dispatcher.Invoke((() =>
-                {
-                    AddNewHistory(message);
-                }));
-            }
-        }
-        
-        private void ReceiveMessage(object? sender, string message)
-        {
-            mainWindow.Dispatcher.Invoke((() =>
-            {
-                AddNewHistory(message);
-            }));
-            
+            clipboardViewModel.Initialize();
+            mainViewModel = new MainWindowViewModel(clipboardViewModel, wss);
+            DataContext = mainViewModel;
         }
 
         private void ErrorOcurred(object? sender, string message)
@@ -83,13 +56,6 @@ namespace ClipboardSync_Client_Windows.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //_signalRCoreClientLib.SendMessage(tb1.Text);
-            //_historyList.Insert(0, tb1.Text);
-            _signalRCoreClientLib = new SignalRCoreClientLib();
-            _signalRCoreClientLib.MessagesSync += SyncMessages;
-            _signalRCoreClientLib.MessageReceived += ReceiveMessage;
-            _signalRCoreClientLib.ErrorOcurr += ErrorOcurred;
-            connectServer();
         }
 
         private void ListBox_History_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -134,8 +100,6 @@ namespace ClipboardSync_Client_Windows.Views
             }
         }
 
-
-
         private void Grid_History_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             //string history = ListBox_HistoryList.SelectedItem as string;
@@ -167,8 +131,7 @@ namespace ClipboardSync_Client_Windows.Views
         private void Delete_History_Button_Click(object sender, RoutedEventArgs e)
         {
             //string history = ListBox_HistoryList.SelectedItem as string;
-            
-            _historyList.Remove(GetChoosenItemText(sender));
+            clipboardViewModel.HistoryList.Remove(GetChoosenItemText(sender));
         }
 
         private string GetChoosenItemText(object sender)
@@ -181,14 +144,12 @@ namespace ClipboardSync_Client_Windows.Views
         private void Delete_Pinned_Button_Click(object sender, RoutedEventArgs e)
         {
             //string history = ListBox_PinnedList.SelectedItem as string;
-            _PinnedList.Remove(GetChoosenItemText(sender));
+            clipboardViewModel.Unpin(GetChoosenItemText(sender));
         }
 
         private void Pin_Button_Click(object sender, RoutedEventArgs e)
         {
-            string history = GetChoosenItemText(sender);
-            _historyList.Remove(history);
-            _PinnedList.Insert(0, history);
+            clipboardViewModel.Pin(GetChoosenItemText(sender));
         }
 
         // https://blog.csdn.net/gfg2007/article/details/108898788
@@ -302,28 +263,9 @@ namespace ClipboardSync_Client_Windows.Views
 
         private void ClipBroadChanged(object? sender, string e)
         {
-            _ = _signalRCoreClientLib.SendMessage(e);
-            AddNewHistory(e);
+            mainViewModel.SendClipboardText(e);
         }
-
         
-        private void AddNewHistory(string message)
-        {
-            // 两张表里都没有，加进剪贴板
-            if (_historyList.Contains(message) != true && _PinnedList.Contains(message) != true)
-            {
-                _historyList.Insert(0, message);
-            }
-            // 剪贴板有，移到前面
-            else if (_historyList.Contains(message) == true && _PinnedList.Contains(message) != true)
-            {
-                _historyList.Remove(message);
-                _historyList.Insert(0, message);
-            }
-        }
-
-
-
         private void OnHotKeyAltV()
         {
             // convert Popup_ClipBroad.IsOpen

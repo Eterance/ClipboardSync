@@ -117,90 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Clipboard" xml:space="preserve">
-    <value>剪贴板</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>主页</value>
-  </data>
-  <data name="Pinned" xml:space="preserve">
-    <value>已固定</value>
-  </data>
-  <data name="InputSthHere" xml:space="preserve">
-    <value>在这里输入什么……</value>
-    <comment>@MutedRule(PunctuationTail)</comment>
-  </data>
-  <data name="Send" xml:space="preserve">
-    <value>发送</value>
-  </data>
-  <data name="SendClipboardText" xml:space="preserve">
-    <value>发送剪贴板的内容</value>
-  </data>
-  <data name="ServerAddr" xml:space="preserve">
-    <value>服务器地址</value>
-  </data>
-  <data name="ServerAddrDescription" xml:space="preserve">
-    <value>格式为 IP:port，多个地址分号隔开，如：
-192.168.1.2:6789; 10.20.31.54:2333
-当指定多个地址时，优先尝试排在前面的。</value>
-  </data>
-  <data name="ServerAddrPlaceholder" xml:space="preserve">
-    <value>你需要输入至少一个服务器地址！！！</value>
-    
-  </data>
-  <data name="SaveAndReconnect" xml:space="preserve">
-    <value>保存并重新连接</value>
-  </data>
-  <data name="HistoryListCapacity" xml:space="preserve">
-    <value>剪贴板历史记录容量</value>
-  </data>
-  <data name="HistoryListCapacityDescription" xml:space="preserve">
-    <value>只会影响本设备。输入非正数表示不限制大小。</value>
-  </data>
-  <data name="EnterIntegerPlaceholder" xml:space="preserve">
-    <value>输入整数数字</value>
-  </data>
-  <data name="ServerCacheCapacity" xml:space="preserve">
-    <value>服务器历史记录缓存容量</value>
-  </data>
-  <data name="ServerCacheCapacityDescription" xml:space="preserve">
-    <value>输入非正数表示不限制大小。</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>保存</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>语言 (Language)</value>
-  </data>
-  <data name="LanguageDescription" xml:space="preserve">
-    <value>重启应用生效。
-Restart the application to apply the change.</value>
-  </data>
-  <data name="Copy" xml:space="preserve">
-    <value>复制</value>
-  </data>
-  <data name="Detail" xml:space="preserve">
-    <value>详细</value>
-  </data>
-  <data name="Pin" xml:space="preserve">
-    <value>固定</value>
-  </data>
-  <data name="Unpin" xml:space="preserve">
-    <value>取消固定</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>删除</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>取消</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>关闭</value>
-  </data>
-  <data name="CopyComplete" xml:space="preserve">
-    <value>已复制到剪贴板。</value>
-    
-  </data>
   <data name="Comma" xml:space="preserve">
     <value>，</value>
     <comment>@MutedRule(WhiteSpaceTail)</comment>
@@ -230,15 +146,6 @@ Restart the application to apply the change.</value>
   <data name="NoServerAddr" xml:space="preserve">
     <value>未设置服务器地址，无法连接</value>
   </data>
-  <data name="Lang_en" xml:space="preserve">
-    <value>English（英文）</value>
-  </data>
-  <data name="Lang_zh_cn" xml:space="preserve">
-    <value>简体中文</value>
-  </data>
-  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
-    <value>服务器历史记录缓存容量更改为 </value>
-  </data>
   <data name="Sent" xml:space="preserve">
     <value>已发送。</value>
   </data>
@@ -247,5 +154,8 @@ Restart the application to apply the change.</value>
   </data>
   <data name="Unlimited" xml:space="preserve">
     <value>无限</value>
+  </data>
+  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
+    <value>服务器历史记录缓存容量更改为 </value>
   </data>
 </root>
