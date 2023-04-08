@@ -6,7 +6,11 @@
              Title="{x:Static localization:Resources.Clipboard}">
     <ContentPage.Content>
         <StackLayout Margin="20,20,20,20">
-            <CollectionView ItemsSource="{Binding HistoryList}"
+            <Button Margin="40,0,40,0"
+                    Text="{x:Static localization:Resources.ClearAllHistoryList}" 
+                    Command="{Binding ClearHistoryListCommand}"/>
+            <CollectionView Margin="0,10,0,0"
+                            ItemsSource="{Binding HistoryList}"
                             SelectionMode="Single"
                             SelectionChanged="OnSelectionChanged">
                 <CollectionView.ItemTemplate>
@@ -44,8 +48,7 @@
                                            LineBreakMode="TailTruncation"
                                            FontSize="Small"/>
                             </StackLayout>
-                        </SwipeView>
-                        
+                        </SwipeView>                        
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

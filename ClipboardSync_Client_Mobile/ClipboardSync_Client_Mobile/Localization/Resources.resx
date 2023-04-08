@@ -248,4 +248,7 @@ Restart the application to apply the change.</value>
   <data name="Unlimited" xml:space="preserve">
     <value>无限</value>
   </data>
+  <data name="ClearAllHistoryList" xml:space="preserve">
+    <value>删除所有</value>
+  </data>
 </root>

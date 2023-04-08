@@ -79,6 +79,15 @@ namespace ClipboardSync_Client_Mobile.Localization {
         }
         
         /// <summary>
+        ///   查找类似 删除所有 的本地化字符串。
+        /// </summary>
+        public static string ClearAllHistoryList {
+            get {
+                return ResourceManager.GetString("ClearAllHistoryList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 剪贴板 的本地化字符串。
         /// </summary>
         public static string Clipboard {

@@ -242,4 +242,7 @@ When multiple addresses are specified, The front of the line is tried more first
   <data name="Unlimited" xml:space="preserve">
     <value>Unlimited</value>
   </data>
+  <data name="ClearAllHistoryList" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
 </root>

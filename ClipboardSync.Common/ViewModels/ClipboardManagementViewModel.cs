@@ -91,6 +91,7 @@ namespace ClipboardSync.Commom.ViewModels
         public DelegateCommand SaveAndConnectCommand { get; private set; }
         public DelegateCommand ApplyServerCacheCapacityCommand { get; private set; }
         public DelegateCommand ApplyHistoryListCapacityCommand { get; private set; }
+        public DelegateCommand ClearHistoryListCommand { get; private set; }
         /// <summary>
         /// 负责暂时缓存需要发送的信息。
         /// </summary>
@@ -159,6 +160,7 @@ namespace ClipboardSync.Commom.ViewModels
             SaveAndConnectCommand = new DelegateCommand(SetIPEndPointsAsync);
             ApplyServerCacheCapacityCommand = new DelegateCommand(ApplyServerCacheCapacity);
             ApplyHistoryListCapacityCommand = new DelegateCommand(ApplyHistoryListCapacity);
+            ClearHistoryListCommand = new DelegateCommand(ClearHistoryList);
         }
 
         private void ApplyServerCacheCapacity()
@@ -178,6 +180,11 @@ namespace ClipboardSync.Commom.ViewModels
             {
                 ToastMessage?.Invoke(this, $"{Resources.ClipboardHistoryCapacityChanged2}{HistoryListCapacity}{Resources.Period}");
             }
+        }
+
+        private void ClearHistoryList()
+        {
+            HistoryList.Clear();
         }
 
         private void SavePinnedList()
