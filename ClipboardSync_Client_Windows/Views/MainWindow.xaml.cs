@@ -142,8 +142,8 @@ namespace ClipboardSync_Client_Windows.Views
 
         private string GetChoosenItemText(object sender)
         {
-            Grid garndpa = (Grid)((Grid)((Button)sender).Parent).Parent;
-            List<TextBlock> result = FindChildControl.GetChildObjects<TextBlock>(garndpa, typeof(TextBlock));
+            Grid grandpa = (Grid)((Grid)((Button)sender).Parent).Parent;
+            List<TextBlock> result = FindChildControl.GetChildObjects<TextBlock>(grandpa, typeof(TextBlock));
             return result[0].Text;
         }
         

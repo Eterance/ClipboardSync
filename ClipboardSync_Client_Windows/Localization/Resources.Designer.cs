@@ -134,7 +134,8 @@ namespace ClipboardSync_Client_Windows.Localization {
         }
         
         /// <summary>
-        ///   查找类似 取消&amp;#x0a;固定 的本地化字符串。
+        ///   查找类似 取消
+        ///固定 的本地化字符串。
         /// </summary>
         public static string Unpin {
             get {

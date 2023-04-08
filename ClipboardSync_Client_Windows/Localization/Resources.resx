@@ -137,7 +137,8 @@ Restart the application to apply the change.</value>
     <value>固定</value>
   </data>
   <data name="Unpin" xml:space="preserve">
-    <value>取消&amp;#x0a;固定</value>
+    <value>取消
+固定</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>删除</value>
