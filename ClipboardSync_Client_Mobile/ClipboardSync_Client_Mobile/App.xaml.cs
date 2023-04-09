@@ -7,7 +7,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Globalization;
-using ClipboardSync.Commom.ViewModels;
+using ClipboardSync.Common.ViewModels;
 
 namespace ClipboardSync_Client_Mobile
 {

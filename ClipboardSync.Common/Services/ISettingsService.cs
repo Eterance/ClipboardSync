@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace ClipboardSync.Common.Services
 {
     public interface ISettingsService
@@ -12,5 +9,6 @@ namespace ClipboardSync.Common.Services
         public void Set(string key, string value);
 
         public bool IsContainsKey(string key);
+        public PinnedListFileService PinnedListFile { get; set; }
     }
 }

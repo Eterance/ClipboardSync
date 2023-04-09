@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ClipboardSync.Commom.Services
+namespace ClipboardSync.Common.Services
 {
     public class SignalRCoreService
     {

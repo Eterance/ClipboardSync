@@ -1,4 +1,4 @@
-﻿using ClipboardSync.Commom.ViewModels;
+﻿using ClipboardSync.Common.ViewModels;
 using ClipboardSync_Client_Windows.Services;
 using ClipboardSync_Client_Windows.ViewModels;
 using System;

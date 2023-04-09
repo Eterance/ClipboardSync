@@ -4,19 +4,29 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace ClipboardSync.Commom.Services
+namespace ClipboardSync.Common.Services
 {
-    public static class PinnedListFileService
+    public class PinnedListFileService
     {
         readonly static string _xmlName = "pinnedList.xml";
+        private string fileName;
+
+        public PinnedListFileService(string folderName)
+        {
+            string directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), folderName);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            fileName = Path.Combine(directoryPath, _xmlName);
+        }
 
         /// <summary>
         /// Serialize the list to xml file. Using UTF-8.
         /// </summary>
         /// <param name="list"></param>
-        public static void Save<T>(List<T> list)
+        public void Save<T>(List<T> list)
         {
-            string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), _xmlName);
             XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.UTF8))
             {
@@ -28,9 +38,8 @@ namespace ClipboardSync.Commom.Services
         /// Deserialize the list from xml file. Using UTF-8.
         /// </summary>
         /// <returns></returns>
-        public static List<T> Load<T>()
+        public List<T> Load<T>()
         {
-            string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), _xmlName);
             if (File.Exists(fileName) == false)
             {
                 Save(new List<string>());

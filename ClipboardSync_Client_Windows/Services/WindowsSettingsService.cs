@@ -18,8 +18,18 @@ namespace ClipboardSync_Client_Windows.Services
         private string intSettingsFileName = "intSettings.ini";
         private string stringSettingsFileName = "stringSettings.ini";
 
-        public WindowsSettingsService()
+        public PinnedListFileService PinnedListFile { get; set; }
+
+        public WindowsSettingsService(PinnedListFileService? pinnedListFileService = null)
         {
+            if (pinnedListFileService == null)
+            {
+                PinnedListFile = new("ClipboardSync_Desktop");
+            }
+            else
+            {
+                PinnedListFile = pinnedListFileService;
+            }
             intSettings = DeserializeInt(intSettingsFileName);
             stringSettings = DeserializeString(stringSettingsFileName);
         }

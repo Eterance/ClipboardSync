@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace ClipboardSync.Commom.ExtensionMethods
+namespace ClipboardSync.Common.ExtensionMethods
 {
     public enum DeleteDirection
     {

@@ -1,15 +1,14 @@
-﻿using System;
+﻿using ClipboardSync.Common.ExtensionMethods;
+using ClipboardSync.Common.Services;
+using ClipboardSync.Common.Localization;
+using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
-using ClipboardSync.Commom.ExtensionMethods;
-using ClipboardSync.Commom.Services;
-using Prism.Commands;
-using ClipboardSync.Common.Localization;
-using ClipboardSync.Common.Services;
 
-namespace ClipboardSync.Commom.ViewModels
+namespace ClipboardSync.Common.ViewModels
 {
     public class ClipboardManagementViewModel : ViewModelBase
     {
@@ -158,7 +157,7 @@ namespace ClipboardSync.Commom.ViewModels
             HistoryListCapacity = settingsService.Get(_historyListCapacityKey, 30);
             // System.InvalidOperationException: 'Cannot change ObservableCollection during a CollectionChanged event.'
             //HistoryList.CollectionChanged += (sender, e) => CheckHistoryListCapacity();
-            PinnedList = new(PinnedListFileService.Load<string>());
+            PinnedList = new(settingsService.PinnedListFile.Load<string>());
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
 
             
@@ -200,7 +199,7 @@ namespace ClipboardSync.Commom.ViewModels
 
         private void SavePinnedList()
         {
-            PinnedListFileService.Save(new List<string>(PinnedList));
+            settingsService.PinnedListFile.Save(new List<string>(PinnedList));
         }
 
         public void Initialize()

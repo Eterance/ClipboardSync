@@ -1,5 +1,5 @@
-﻿using ClipboardSync.Commom.Models;
-using ClipboardSync.Commom.ViewModels;
+﻿using ClipboardSync.Common.Models;
+using ClipboardSync.Common.ViewModels;
 using ClipboardSync.Common.Services;
 using System;
 using System.Collections.Generic;
