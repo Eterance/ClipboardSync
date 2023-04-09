@@ -7,10 +7,13 @@
         xmlns:converter="clr-namespace:ClipboardSync_Client_Windows.Converters"
         xmlns:localization="clr-namespace:ClipboardSync_Client_Windows.Localization"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
+        Title="MainWindow" 
+        Height="640" 
+        Width="400" 
+        Closing="Window_Closing" 
+        WindowStartupLocation="CenterScreen" StateChanged="Window_StateChanged">
 
     <Window.Resources>
-        
         <converter:IsCheck2VisibilityConverter x:Key="IsCheck2VisibilityConverter"/>
         <ItemsPanelTemplate x:Key="ListBoxItemsPanel2">
             <StackPanel Orientation="Vertical">
@@ -72,7 +75,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock 
                     Text="{Binding}" 
-                    FontSize="{DynamicResource fontSize16}" 
+                    FontSize="{DynamicResource FontSize.Normal}" 
                     TextTrimming="CharacterEllipsis" 
                     TextWrapping="Wrap" 
                     Margin="4 4 4 4"
@@ -95,21 +98,21 @@
                             x:Name="Back_Button"
                             Click="Back_Button_Click"
                             CommandParameter="{Binding .}"
-                            Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                            Style="{DynamicResource ResourceKey=HiddenStyleButton}"
                             Background="{StaticResource ResourceKey=Button.BackButton.Background}"
                             Content="{x:Static localization:Resources.Back}"/>
                     <Button Grid.Column="1" 
                             x:Name="Pin_Button"
                             Click="Pin_Button_Click"
                             CommandParameter="{Binding .}"
-                            Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                            Style="{DynamicResource ResourceKey=HiddenStyleButton}"
                             Background="{StaticResource ResourceKey=Button.PinButton.Background}"
                             Content="{x:Static localization:Resources.Pin}"/>
                     <Button Grid.Column="2" 
                             x:Name="Delete_History_Button"
                             Click="Delete_History_Button_Click"
                             CommandParameter="{Binding .}"
-                            Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                            Style="{DynamicResource ResourceKey=HiddenStyleButton}"
                             Background="{StaticResource ResourceKey=Button.DeleteButton.Background}"
                             Content="{x:Static localization:Resources.Delete}"/>
                     <!-- &#x0a; 代表换行-->
@@ -118,7 +121,7 @@
                             x:Name="Detail_Button"
                             Click="Detail_Button_Click"
                             CommandParameter="{Binding .}"
-                            Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                            Style="{DynamicResource ResourceKey=HiddenStyleButton}"
                             Background="{StaticResource ResourceKey=Button.DeleteAllButton.Background}"
                             Content="{x:Static localization:Resources.Detail}"/>
                 </Grid>
@@ -127,7 +130,7 @@
 
         <!-- 剪贴板listbox容器模板 -->
         <Style TargetType="{x:Type ListBoxItem}" x:Key="ContainerStyle_History">
-            <Setter Property="Margin" Value="16 4 14 4"/>
+            <Setter Property="Margin" Value="16 4 16 4"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="ContentTemplate" Value="{StaticResource History_Item_Template}" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -190,7 +193,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock 
                     Text="{Binding}" 
-                    FontSize="{DynamicResource fontSize16}" 
+                    FontSize="{DynamicResource FontSize.Normal}" 
                     TextTrimming="CharacterEllipsis" 
                     TextWrapping="Wrap" 
                     Margin="4 4 4 4"
@@ -213,28 +216,28 @@
                             x:Name="Back_Button"
                             Click="Back_Button_Click"
                             CommandParameter="{Binding .}"
-                            Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                            Style="{DynamicResource ResourceKey=HiddenStyleButton}"
                             Background="{StaticResource ResourceKey=Button.BackButton.Background}"
                             Content="{x:Static localization:Resources.Back}"/>
                     <Button Grid.Column="1" 
                             x:Name="Unpin_Button"
                             Click="Unpin_Button_Click"
                             CommandParameter="{Binding .}"
-                            Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                            Style="{DynamicResource ResourceKey=HiddenStyleButton}"
                             Background="{StaticResource ResourceKey=Button.PinButton.Background}"
                             Content="{x:Static localization:Resources.Unpin}"/>
                     <Button Grid.Column="2" 
                             x:Name="Delete_Pinned_Button"
                             Click="Delete_Pinned_Button_Click"
                             CommandParameter="{Binding .}"
-                            Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                            Style="{DynamicResource ResourceKey=HiddenStyleButton}"
                             Background="{StaticResource ResourceKey=Button.DeleteButton.Background}"
                             Content="{x:Static localization:Resources.Delete}"/>
                     <Button Grid.Column="3" 
                             x:Name="Detail_Button"
                             Click="Detail_Button_Click"
                             CommandParameter="{Binding .}"
-                            Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                            Style="{DynamicResource ResourceKey=HiddenStyleButton}"
                             Background="{StaticResource ResourceKey=Button.DeleteAllButton.Background}"
                             Content="{x:Static localization:Resources.Detail}"/>
                 </Grid>
@@ -245,32 +248,125 @@
             <Setter Property="ContentTemplate" Value="{StaticResource Pinned_Item_Template}" />
         </Style>
     </Window.Resources>
-    
-    <Grid>
-        <Button Content="连接" HorizontalAlignment="Left" Margin="658,250,0,0" VerticalAlignment="Top" Height="60" Width="120" Command="{Binding SubViewModel.SaveAndConnectCommand}"/>
-        <TextBox x:Name="tb_ip" HorizontalAlignment="Left" Height="30" Margin="573,100,0,0" TextWrapping="Wrap" Text="{Binding SubViewModel.IPEndPointsString}" VerticalAlignment="Top" Width="145"/>
 
-        
-        <Grid Width="200" Height="300" Margin="0 10 0 0 " HorizontalAlignment="Left" Background="Aqua">
-            <Grid Height="64" Width="auto" HorizontalAlignment="Stretch" Background="Transparent" Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="98*"/>
-                    <ColumnDefinition Width="64"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock 
-                    Text="skjnhkjwhsiuhkjanwixahskjbqliwkjhsakjqkwhiuhaksjxklqjw阿斯利康京哈看见我是电脑开机三点看来今年撒肯定就你查克拉时间看见那深刻理解都能看见了" 
-                    FontSize="{DynamicResource fontSize16}" 
-                    TextTrimming="CharacterEllipsis" 
-                    TextWrapping="Wrap" 
-                    Margin="4 4 4 4"
-                    Foreground="{DynamicResource Foreground.MainColor}" 
-                />
-                <Button Grid.Column="1" Style="{DynamicResource ResourceKey=ButtonStyleDark}" Content="ddd">
-                    
-                </Button>
-            </Grid>
-        </Grid>
-        <TextBox x:Name="tb_port" HorizontalAlignment="Left" Height="30" Margin="645,145,0,0" Text="127.0.0.1:50001" VerticalAlignment="Top" Width="145"/>
+    <Grid>
+        <local:SmoothScrollViewer Margin="8, 8, 0, 8"
+                      Style="{DynamicResource ResourceKey=UWPstyle_scrollviewer}">
+            <StackPanel x:Name="Main_StackPanel"
+                        Margin="0, 0, 8, 0">
+                <Label x:Name="ConnectionStatusLabel"
+                       FontSize="{StaticResource FontSize.Title}"
+                       HorizontalContentAlignment="Center"
+                       VerticalContentAlignment="Center" 
+                       FontWeight="Bold">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{Binding SubViewModel.ConnectionStatusInstruction}" />
+                </Label>
+                <!-- Server Address -->
+                <Label Margin="0,20,0,0"
+                       FontSize="{StaticResource FontSize.Title}">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{x:Static localization:Resources.ServerAddr}" />
+                </Label>
+                <Label FontSize="{StaticResource FontSize.Description}">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{x:Static localization:Resources.ServerAddrDescription}" />
+                </Label>
+                <TextBox x:Name="IpEndPointsEditor" 
+                         Margin="0,8,0,0"
+                         Height="60" 
+                         FontSize="{StaticResource FontSize.Description}"
+                         TextWrapping="Wrap" 
+                         HorizontalAlignment="Stretch"
+                         Text="{Binding SubViewModel.IPEndPointsString}"/>
+                <Button Content="{x:Static localization:Resources.SaveAndReconnect}" 
+                        Margin="20,8,20,0"
+                        Height="40"
+                         FontSize="{StaticResource FontSize.Normal}"
+                        Command="{Binding SubViewModel.SaveAndConnectCommand}"/>
+                <!-- HistoryList Settings -->
+                <Label Margin="0,40,0,0"
+                       FontSize="{StaticResource FontSize.Title}">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{x:Static localization:Resources.HistoryListCapacity}" />
+                </Label>
+                <Label FontSize="{StaticResource FontSize.Description}">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{x:Static localization:Resources.HistoryListCapacityDescription}" />
+                </Label>
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0"
+                             Margin="0,8,20,0"
+                             Height="40" 
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             FontSize="{StaticResource FontSize.Description}"
+                             TextWrapping="Wrap" 
+                             Text="{Binding SubViewModel.HistoryListCapacity}"/>
+                    <Button Grid.Column="1"
+                            Margin="0,8,0,0"
+                            FontSize="{StaticResource FontSize.Normal}"
+                            Content="{x:Static localization:Resources.Save}" 
+                            Command="{Binding SubViewModel.ApplyHistoryListCapacityCommand}"/>
+                </Grid>
+                <!-- Server Settings -->
+                <Label Margin="0,40,0,0"
+                       FontSize="{StaticResource FontSize.Title}">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{x:Static localization:Resources.ServerCacheCapacity}" />
+                </Label>
+                <Label FontSize="{StaticResource FontSize.Description}">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{x:Static localization:Resources.ServerCacheCapacityDescription}" />
+                </Label>
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0"
+                             Margin="0,8,20,0"
+                             Height="40" 
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             FontSize="{StaticResource FontSize.Description}"
+                             TextWrapping="Wrap" 
+                             Text="{Binding SubViewModel.ServerCacheCapacity}"/>
+                    <Button Grid.Column="1"
+                            Margin="0,8,0,0"
+                            FontSize="{StaticResource FontSize.Normal}"
+                            IsEnabled="{Binding SubViewModel.IsConnected}"
+                            Content="{x:Static localization:Resources.Save}" 
+                            Command="{Binding SubViewModel.ApplyServerCacheCapacityCommand}"/>
+                </Grid>
+                <!-- Language Settings -->
+                <Label Margin="0,40,0,0"
+                       FontSize="{StaticResource FontSize.Title}">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{x:Static localization:Resources.Language}" />
+                </Label>
+                <ComboBox ItemsSource="{Binding LanguageList}"
+                          SelectedItem="{Binding SelectedLanguage}"
+                          Margin="0,8,0,0"
+                          Height="40"
+                          VerticalContentAlignment="Center">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayLanguage}"
+                                       FontSize="{StaticResource FontSize.Description}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+        </local:SmoothScrollViewer>
 
         <Popup 
             x:Name="Popup_ClipBroad" 
@@ -291,41 +387,66 @@
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <RadioButton x:Name="History_Radiobutton" Content="剪贴板" Style="{DynamicResource ResourceKey=RadioButtonStyleDark}" Grid.Column="0" IsChecked="True"/>
-                        <RadioButton x:Name="Pinned_Radiobutton" Content="已固定" Style="{DynamicResource ResourceKey=RadioButtonStyleDark}" Grid.Column="1"/>
-                        <Button x:Name="Setting_Button" Grid.Column="2" Style="{DynamicResource ResourceKey=ButtonStyleDark}" Content="设置"/>
+                        <RadioButton 
+                            x:Name="History_Radiobutton" 
+                            Content="{x:Static localization:Resources.Clipboard}" 
+                            Style="{DynamicResource ResourceKey=RadioButtonStyleDark}" 
+                            Grid.Column="0" 
+                            IsChecked="True"/>
+                        <RadioButton 
+                            x:Name="Pinned_Radiobutton" 
+                            Content="{x:Static localization:Resources.Pinned}" 
+                            Style="{DynamicResource ResourceKey=RadioButtonStyleDark}" 
+                            Grid.Column="1"/>
+                        <Button x:Name="Setting_Button" 
+                                Grid.Column="2" 
+                                Click="Setting_Button_Click"
+                                Style="{DynamicResource ResourceKey=HiddenStyleButton}" 
+                                Content="{x:Static localization:Resources.Settings}"/>
                     </Grid>
-                    <ListBox x:Name="ListBox_HistoryList" 
-                         Visibility="{Binding ElementName=History_Radiobutton, Path=IsChecked, Converter={StaticResource IsCheck2VisibilityConverter}}" 
-                         ItemsPanel="{DynamicResource ListBoxItemsPanel2}"
-                         Style="{DynamicResource ResourceKey=ListBox_History_style}" 
-                         VirtualizingPanel.ScrollUnit="Pixel" 
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                         BorderThickness="0" Margin="-1,0,0,0" 
-                         SelectionMode="Single" 
-                         ItemContainerStyle="{StaticResource ContainerStyle_History}" 
-                         Grid.Row="1"
-                         ItemsSource="{Binding SubViewModel.HistoryList}"
-                         SelectionChanged="ListBox_History_SelectionChanged">
-                    </ListBox>
+                    <Grid Grid.Row="1"
+                          Visibility="{Binding ElementName=History_Radiobutton, Path=IsChecked, Converter={StaticResource IsCheck2VisibilityConverter}}"
+                          >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Button Grid.Row="1" 
+                                Margin="16 4 16 4"
+                                Style="{DynamicResource ResourceKey=HiddenStyleButton}" 
+                                Content="{x:Static localization:Resources.ClearAll}"
+                                Command="{Binding SubViewModel.ClearHistoryListCommand}"/>
+                        <ListBox x:Name="ListBox_HistoryList"                                  
+                                 ItemsPanel="{DynamicResource ListBoxItemsPanel2}"
+                                 Style="{DynamicResource ResourceKey=ListBox_History_style}" 
+                                 VirtualizingPanel.ScrollUnit="Pixel" 
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                 ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                                 BorderThickness="0" 
+                                 Margin="-1,0,0,0" 
+                                 SelectionMode="Single" 
+                                 ItemContainerStyle="{StaticResource ContainerStyle_History}" 
+                                 Grid.Row="0"
+                                 ItemsSource="{Binding SubViewModel.HistoryList}"
+                                 SelectionChanged="ListBox_History_SelectionChanged">
+                        </ListBox>
+                    </Grid>
                     <ListBox x:Name="ListBox_PinnedList" 
-                         Visibility="{Binding ElementName=Pinned_Radiobutton, Path=IsChecked, Converter={StaticResource IsCheck2VisibilityConverter}}" 
-                         ItemsPanel="{DynamicResource ListBoxItemsPanel2}"
-                         Style="{DynamicResource ResourceKey=ListBox_History_style}" 
-                         VirtualizingPanel.ScrollUnit="Pixel" 
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                         BorderThickness="0"
-                         Margin="-1,0,0,0" SelectionMode="Single" 
-                         ItemContainerStyle="{StaticResource ContainerStyle_Pinned}" 
-                         Grid.Row="1" 
-                         ItemsSource="{Binding SubViewModel.PinnedList}"
-                         SelectionChanged="ListBox_Pinned_SelectionChanged" >
+                            Visibility="{Binding ElementName=Pinned_Radiobutton, Path=IsChecked, Converter={StaticResource IsCheck2VisibilityConverter}}" 
+                            ItemsPanel="{DynamicResource ListBoxItemsPanel2}"
+                            Style="{DynamicResource ResourceKey=ListBox_History_style}" 
+                            VirtualizingPanel.ScrollUnit="Pixel" 
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                            ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                            BorderThickness="0"
+                            Margin="-1,0,0,0" SelectionMode="Single" 
+                            ItemContainerStyle="{StaticResource ContainerStyle_Pinned}" 
+                            Grid.Row="1" 
+                            ItemsSource="{Binding SubViewModel.PinnedList}"
+                            SelectionChanged="ListBox_Pinned_SelectionChanged" >
                     </ListBox>
                 </Grid>
             </Grid>
         </Popup>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="658,325,0,0" VerticalAlignment="Top" Height="60" Width="120" Click="Button_Click2"/>
     </Grid>
 </Window>

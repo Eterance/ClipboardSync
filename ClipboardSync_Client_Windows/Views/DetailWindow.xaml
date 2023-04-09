@@ -31,14 +31,14 @@
                 x:Name="Copy_Button"
                 Click="Copy_Button_Click"
                 Margin="4"
-                Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                Style="{DynamicResource ResourceKey=HiddenStyleButton}"
                 Background="{DynamicResource Radiobutton.Background.Unchecked}"
                 Content="{x:Static localization:Resources.CopyAll}"/>
             <Button Grid.Column="1"
                 x:Name="Back_Button"
                 Click="Back_Button_Click"
                 Margin="4"
-                Style="{DynamicResource ResourceKey=ButtonStyleDark}"
+                Style="{DynamicResource ResourceKey=HiddenStyleButton}"
                 Background="{DynamicResource Radiobutton.Background.Unchecked}"
                 Content="{x:Static localization:Resources.Close}"/>
         </Grid>

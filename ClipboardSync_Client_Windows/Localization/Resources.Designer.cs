@@ -70,6 +70,24 @@ namespace ClipboardSync_Client_Windows.Localization {
         }
         
         /// <summary>
+        ///   查找类似 清空全部 的本地化字符串。
+        /// </summary>
+        public static string ClearAll {
+            get {
+                return ResourceManager.GetString("ClearAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 剪贴板 的本地化字符串。
+        /// </summary>
+        public static string Clipboard {
+            get {
+                return ResourceManager.GetString("Clipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 关闭 的本地化字符串。
         /// </summary>
         public static string Close {
@@ -106,6 +124,24 @@ namespace ClipboardSync_Client_Windows.Localization {
         }
         
         /// <summary>
+        ///   查找类似 剪贴板历史记录容量 的本地化字符串。
+        /// </summary>
+        public static string HistoryListCapacity {
+            get {
+                return ResourceManager.GetString("HistoryListCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 只会影响本设备。输入非正数表示不限制大小。 的本地化字符串。
+        /// </summary>
+        public static string HistoryListCapacityDescription {
+            get {
+                return ResourceManager.GetString("HistoryListCapacityDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 English（英文） 的本地化字符串。
         /// </summary>
         public static string Lang_en {
@@ -134,7 +170,7 @@ namespace ClipboardSync_Client_Windows.Localization {
         
         /// <summary>
         ///   查找类似 重启应用生效。
-        ///Restart the application to apply the change. 的本地化字符串。
+        ///Restart the application to apply the language change. 的本地化字符串。
         /// </summary>
         public static string LanguageDescription {
             get {
@@ -148,6 +184,89 @@ namespace ClipboardSync_Client_Windows.Localization {
         public static string Pin {
             get {
                 return ResourceManager.GetString("Pin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 已固定 的本地化字符串。
+        /// </summary>
+        public static string Pinned {
+            get {
+                return ResourceManager.GetString("Pinned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 保存 的本地化字符串。
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 保存并重新连接 的本地化字符串。
+        /// </summary>
+        public static string SaveAndReconnect {
+            get {
+                return ResourceManager.GetString("SaveAndReconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 服务器地址 的本地化字符串。
+        /// </summary>
+        public static string ServerAddr {
+            get {
+                return ResourceManager.GetString("ServerAddr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 格式为 IP:port，多个地址分号隔开，如：
+        ///192.168.1.2:6789; 10.20.31.54:2333
+        ///当指定多个地址时，优先尝试排在前面的。 的本地化字符串。
+        /// </summary>
+        public static string ServerAddrDescription {
+            get {
+                return ResourceManager.GetString("ServerAddrDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 你需要输入至少一个服务器地址！！！ 的本地化字符串。
+        /// </summary>
+        public static string ServerAddrPlaceholder {
+            get {
+                return ResourceManager.GetString("ServerAddrPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 服务器历史记录缓存容量 的本地化字符串。
+        /// </summary>
+        public static string ServerCacheCapacity {
+            get {
+                return ResourceManager.GetString("ServerCacheCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 输入非正数表示不限制大小。 的本地化字符串。
+        /// </summary>
+        public static string ServerCacheCapacityDescription {
+            get {
+                return ResourceManager.GetString("ServerCacheCapacityDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 设置 的本地化字符串。
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         

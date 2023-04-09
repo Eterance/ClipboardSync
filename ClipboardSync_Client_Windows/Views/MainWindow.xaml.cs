@@ -325,5 +325,24 @@ namespace ClipboardSync_Client_Windows.Views
             //Popup_ClipBroad.IsOpen = false;
         }
 
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (WindowState == WindowState.Minimized)
+            {
+                this.ShowInTaskbar = false;
+            }
+            else
+            {
+                this.ShowInTaskbar = true;
+            }
+        }
+
+        private void Setting_Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Normal;
+            this.Topmost = true;
+            Popup_ClipBroad.IsOpen = false;
+            this.Topmost = false;
+        }
     }
 }

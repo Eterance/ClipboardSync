@@ -128,7 +128,7 @@
   </data>
   <data name="LanguageDescription" xml:space="preserve">
     <value>重启应用生效。
-Restart the application to apply the change.</value>
+Restart the application to apply the language change.</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>返回</value>
@@ -151,5 +151,46 @@ Restart the application to apply the change.</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>关闭</value>
+  </data>
+  <data name="Clipboard" xml:space="preserve">
+    <value>剪贴板</value>
+  </data>
+  <data name="Pinned" xml:space="preserve">
+    <value>已固定</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>清空全部</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="ServerAddr" xml:space="preserve">
+    <value>服务器地址</value>
+  </data>
+  <data name="ServerAddrDescription" xml:space="preserve">
+    <value>格式为 IP:port，多个地址分号隔开，如：
+192.168.1.2:6789; 10.20.31.54:2333
+当指定多个地址时，优先尝试排在前面的。</value>
+  </data>
+  <data name="ServerAddrPlaceholder" xml:space="preserve">
+    <value>你需要输入至少一个服务器地址！！！</value>
+  </data>
+  <data name="SaveAndReconnect" xml:space="preserve">
+    <value>保存并重新连接</value>
+  </data>
+  <data name="HistoryListCapacity" xml:space="preserve">
+    <value>剪贴板历史记录容量</value>
+  </data>
+  <data name="HistoryListCapacityDescription" xml:space="preserve">
+    <value>只会影响本设备。输入非正数表示不限制大小。</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="ServerCacheCapacity" xml:space="preserve">
+    <value>服务器历史记录缓存容量</value>
+  </data>
+  <data name="ServerCacheCapacityDescription" xml:space="preserve">
+    <value>输入非正数表示不限制大小。</value>
   </data>
 </root>

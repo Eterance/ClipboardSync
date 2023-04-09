@@ -171,7 +171,8 @@ When multiple addresses are specified, The front of the line is tried more first
     <value>Language</value>
   </data>
   <data name="LanguageDescription" xml:space="preserve">
-    <value>Restart the application to apply the change.</value>
+    <value>重启应用生效。
+Restart the application to apply the language change.</value>
   </data>
   <data name="Copy" xml:space="preserve">
     <value>Copy</value>

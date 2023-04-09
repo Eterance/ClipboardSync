@@ -8,6 +8,8 @@ using System.IO.Packaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Toolkit.Uwp.Notifications;
+using ClipboardSync_Client_Windows.Localization;
 
 namespace ClipboardSync_Client_Windows.ViewModels
 {
@@ -26,10 +28,17 @@ namespace ClipboardSync_Client_Windows.ViewModels
             }
             set
             {
+                var before = selectedLanguage;
                 if (selectedLanguage != value)
                 {
                     selectedLanguage = value;
                     settings.Set(localizationSettingName, selectedLanguage.LanguageID);
+                    if (before != null)
+                    {
+                        new ToastContentBuilder()
+                            .AddText(Resources.LanguageDescription)
+                            .Show();
+                    }
                     OnPropertyChanged();
                 }
             }

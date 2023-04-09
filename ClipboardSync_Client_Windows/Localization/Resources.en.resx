@@ -127,7 +127,7 @@
     <value>Language</value>
   </data>
   <data name="LanguageDescription" xml:space="preserve">
-    <value>Restart the application to apply the change.</value>
+    <value>Restart the application to apply the language change.</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>Back</value>
@@ -149,5 +149,46 @@
   </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
+  </data>
+  <data name="Clipboard" xml:space="preserve">
+    <value>Clipboard</value>
+  </data>
+  <data name="Pinned" xml:space="preserve">
+    <value>Pinned</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="ServerAddr" xml:space="preserve">
+    <value>Server Address</value>
+  </data>
+  <data name="ServerAddrDescription" xml:space="preserve">
+    <value>The format is IP:port, with multiple addresses separated by semicolons, such as: 
+192.168.1.2:6789; 10.20.31.54:2333
+When multiple addresses are specified, The front of the line is tried more first.</value>
+  </data>
+  <data name="ServerAddrPlaceholder" xml:space="preserve">
+    <value>You need to enter at least one server address!!!</value>
+  </data>
+  <data name="SaveAndReconnect" xml:space="preserve">
+    <value>Save &amp; Reconnect</value>
+  </data>
+  <data name="HistoryListCapacity" xml:space="preserve">
+    <value>Clipboard History Capacity</value>
+  </data>
+  <data name="HistoryListCapacityDescription" xml:space="preserve">
+    <value>Only this device will be affected. To not limit the size, enter a non-positive number.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ServerCacheCapacity" xml:space="preserve">
+    <value>Server History Cache Capacity</value>
+  </data>
+  <data name="ServerCacheCapacityDescription" xml:space="preserve">
+    <value>To not limit the size, enter a non-positive number.</value>
   </data>
 </root>

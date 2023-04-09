@@ -206,7 +206,7 @@ namespace ClipboardSync_Client_Mobile.Localization {
         
         /// <summary>
         ///   查找类似 重启应用生效。
-        ///Restart the application to apply the change. 的本地化字符串。
+        ///Restart the application to apply the language change. 的本地化字符串。
         /// </summary>
         public static string LanguageDescription {
             get {

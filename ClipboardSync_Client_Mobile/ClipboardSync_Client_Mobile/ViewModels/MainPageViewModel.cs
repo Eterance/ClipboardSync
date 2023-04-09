@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using ClipboardSync_Client_Mobile.Localization;
 
 namespace ClipboardSync_Client_Mobile.ViewModels
 {
@@ -29,10 +30,15 @@ namespace ClipboardSync_Client_Mobile.ViewModels
             }
             set
             {
+                var before = selectedLanguage;
                 if (selectedLanguage != value)
                 {
                     selectedLanguage = value;
                     settings.Set(localizationSettingName, selectedLanguage.LanguageID);
+                    if (before != null)
+                    { 
+                        DependencyService.Get<IToast>().LongAlert(Resources.LanguageDescription);
+                    }
                     OnPropertyChanged();
                 }
             }
