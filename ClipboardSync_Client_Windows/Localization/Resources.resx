@@ -193,4 +193,7 @@ Restart the application to apply the language change.</value>
   <data name="ServerCacheCapacityDescription" xml:space="preserve">
     <value>输入非正数表示不限制大小。</value>
   </data>
+  <data name="BrandName" xml:space="preserve">
+    <value>剪贴板同步 桌面版</value>
+  </data>
 </root>

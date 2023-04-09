@@ -70,6 +70,15 @@ namespace ClipboardSync_Client_Windows.Localization {
         }
         
         /// <summary>
+        ///   查找类似 剪贴板同步 桌面版 的本地化字符串。
+        /// </summary>
+        public static string BrandName {
+            get {
+                return ResourceManager.GetString("BrandName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 清空全部 的本地化字符串。
         /// </summary>
         public static string ClearAll {

@@ -191,4 +191,7 @@ When multiple addresses are specified, The front of the line is tried more first
   <data name="ServerCacheCapacityDescription" xml:space="preserve">
     <value>To not limit the size, enter a non-positive number.</value>
   </data>
+  <data name="BrandName" xml:space="preserve">
+    <value>ClipBoardSync Desktop</value>
+  </data>
 </root>
