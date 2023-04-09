@@ -146,4 +146,10 @@ Restart the application to apply the change.</value>
   <data name="Detail" xml:space="preserve">
     <value>详细</value>
   </data>
+  <data name="CopyAll" xml:space="preserve">
+    <value>复制全部</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
 </root>

@@ -32,6 +32,7 @@ namespace ClipboardSync.Common.ViewModels
         public EventHandler<string> NeedClipboardSetText { get; set; }
         public EventHandler<Exception> UnexpectedError { get; set; }
         public EventHandler<string> ToastMessage { get; set; }
+        public bool SuppressSendTextToastMessage { get; set; } = false;
 
         public ObservableCollection<string> HistoryList { get; set; }
         public ObservableCollection<string> PinnedList { get; set; }
@@ -330,7 +331,10 @@ namespace ClipboardSync.Common.ViewModels
             if (HistoryList.Contains(text) != true && PinnedList.Contains(text) != true)
             {
                 _ = _signalRCoreService.SendMessage(text);
-                ToastMessage?.Invoke(this, Resources.Sent);
+                if (!SuppressSendTextToastMessage)
+                { 
+                    ToastMessage?.Invoke(this, Resources.Sent);
+                }
                 AddNewHistory(text);
             }
         }

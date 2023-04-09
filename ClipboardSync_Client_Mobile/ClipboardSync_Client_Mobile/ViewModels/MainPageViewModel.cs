@@ -79,7 +79,11 @@ namespace ClipboardSync_Client_Mobile.ViewModels
         private async void SendClipboardTextAsync()
         {
             string text = await Clipboard.GetTextAsync();
-            SubViewModel.SendText(text);
+            if (text != null) 
+            { 
+                SubViewModel.SendText(text); 
+            }
+            
         }
 
         private void SendPlaygroundText()

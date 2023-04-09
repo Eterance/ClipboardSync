@@ -10,6 +10,7 @@
         Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
 
     <Window.Resources>
+        
         <converter:IsCheck2VisibilityConverter x:Key="IsCheck2VisibilityConverter"/>
         <ItemsPanelTemplate x:Key="ListBoxItemsPanel2">
             <StackPanel Orientation="Vertical">
@@ -93,25 +94,30 @@
                     <Button Grid.Column="0"
                             x:Name="Back_Button"
                             Click="Back_Button_Click"
+                            CommandParameter="{Binding .}"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.BackButton.Background}"
                             Content="{x:Static localization:Resources.Back}"/>
                     <Button Grid.Column="1" 
                             x:Name="Pin_Button"
                             Click="Pin_Button_Click"
+                            CommandParameter="{Binding .}"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.PinButton.Background}"
                             Content="{x:Static localization:Resources.Pin}"/>
                     <Button Grid.Column="2" 
                             x:Name="Delete_History_Button"
                             Click="Delete_History_Button_Click"
+                            CommandParameter="{Binding .}"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.DeleteButton.Background}"
                             Content="{x:Static localization:Resources.Delete}"/>
                     <!-- &#x0a; 代表换行-->
                     <!-- https://stackoverflow.com/questions/8525396/how-to-put-a-new-line-into-a-wpf-textblock-control -->
                     <Button Grid.Column="3" 
-                            x:Name="Delete_All_Button"
+                            x:Name="Detail_Button"
+                            Click="Detail_Button_Click"
+                            CommandParameter="{Binding .}"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.DeleteAllButton.Background}"
                             Content="{x:Static localization:Resources.Detail}"/>
@@ -206,23 +212,28 @@
                     <Button Grid.Column="0"
                             x:Name="Back_Button"
                             Click="Back_Button_Click"
+                            CommandParameter="{Binding .}"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.BackButton.Background}"
                             Content="{x:Static localization:Resources.Back}"/>
                     <Button Grid.Column="1" 
-                            x:Name="Pin_Button"
-                            Click="Pin_Button_Click"
+                            x:Name="Unpin_Button"
+                            Click="Unpin_Button_Click"
+                            CommandParameter="{Binding .}"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.PinButton.Background}"
                             Content="{x:Static localization:Resources.Unpin}"/>
                     <Button Grid.Column="2" 
                             x:Name="Delete_Pinned_Button"
                             Click="Delete_Pinned_Button_Click"
+                            CommandParameter="{Binding .}"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.DeleteButton.Background}"
                             Content="{x:Static localization:Resources.Delete}"/>
                     <Button Grid.Column="3" 
-                            x:Name="Delete_All_Button"
+                            x:Name="Detail_Button"
+                            Click="Detail_Button_Click"
+                            CommandParameter="{Binding .}"
                             Style="{DynamicResource ResourceKey=ButtonStyleDark}"
                             Background="{StaticResource ResourceKey=Button.DeleteAllButton.Background}"
                             Content="{x:Static localization:Resources.Detail}"/>
@@ -235,7 +246,7 @@
         </Style>
     </Window.Resources>
     
-    <Grid Background="#101010">
+    <Grid>
         <Button Content="连接" HorizontalAlignment="Left" Margin="658,250,0,0" VerticalAlignment="Top" Height="60" Width="120" Command="{Binding SubViewModel.SaveAndConnectCommand}"/>
         <TextBox x:Name="tb_ip" HorizontalAlignment="Left" Height="30" Margin="573,100,0,0" TextWrapping="Wrap" Text="{Binding SubViewModel.IPEndPointsString}" VerticalAlignment="Top" Width="145"/>
 

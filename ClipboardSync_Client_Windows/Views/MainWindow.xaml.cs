@@ -1,6 +1,7 @@
 ﻿using ClipboardSync.Common.ViewModels;
 using ClipboardSync_Client_Windows.Services;
 using ClipboardSync_Client_Windows.ViewModels;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -51,8 +52,14 @@ namespace ClipboardSync_Client_Windows.Views
                     act();
                 });
             };
-            // No need to Toast in desktop platform
-            // viewModel.ToastMessage += (sender, e) => {};
+            clipboardViewModel.ToastMessage += (sender, e) => 
+            {
+                // https://learn.microsoft.com/zh-cn/windows/apps/design/shell/tiles-and-notifications/send-local-toast?tabs=desktop-msix
+                new ToastContentBuilder()
+                    .AddText(e)
+                    .Show();
+            };
+            clipboardViewModel.SuppressSendTextToastMessage = true;
             clipboardViewModel.Initialize();
             mainViewModel = new MainWindowViewModel(clipboardViewModel, wss);
             DataContext = mainViewModel;
@@ -127,6 +134,31 @@ namespace ClipboardSync_Client_Windows.Views
             return "";
         }
         
+        private TResult? GetControlCommandParameter<TResult>(Button control) where TResult: class
+        {
+            TResult? message = control.CommandParameter as TResult;
+            return message;
+        }
+
+
+        static bool IsTypeHasCommandParameter(Type type)
+        {
+            if ((type == typeof(ButtonBase)) || (type == typeof(Grid)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private string GetChoosenItemText(object sender)
+        {
+            Grid grandpa = (Grid)((Grid)((Button)sender).Parent).Parent;
+            List<TextBlock> result = FindChildControl.GetChildObjects<TextBlock>(grandpa, typeof(TextBlock));
+            return result[0].Text;
+        }
 
         private void Back_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -136,26 +168,29 @@ namespace ClipboardSync_Client_Windows.Views
 
         private void Delete_History_Button_Click(object sender, RoutedEventArgs e)
         {
-            //string history = ListBox_HistoryList.SelectedItem as string;
-            clipboardViewModel.HistoryList.Remove(GetChoosenItemText(sender));
+            clipboardViewModel.HistoryList.Remove(GetControlCommandParameter<string>(sender as Button));
+        }
+        
+        private void Detail_Button_Click(object sender, RoutedEventArgs e)
+        {
+            DetailWindow detailWindow = new(GetControlCommandParameter<string>(sender as Button));
+            detailWindow.ShowDialog();
         }
 
-        private string GetChoosenItemText(object sender)
+        private void Unpin_Button_Click(object sender, RoutedEventArgs e)
         {
-            Grid grandpa = (Grid)((Grid)((Button)sender).Parent).Parent;
-            List<TextBlock> result = FindChildControl.GetChildObjects<TextBlock>(grandpa, typeof(TextBlock));
-            return result[0].Text;
+            clipboardViewModel.Unpin(GetControlCommandParameter<string>(sender as Button));
         }
         
         private void Delete_Pinned_Button_Click(object sender, RoutedEventArgs e)
         {
             //string history = ListBox_PinnedList.SelectedItem as string;
-            clipboardViewModel.Unpin(GetChoosenItemText(sender));
+            clipboardViewModel.Unpin(GetControlCommandParameter<string>(sender as Button));
         }
 
         private void Pin_Button_Click(object sender, RoutedEventArgs e)
         {
-            clipboardViewModel.Pin(GetChoosenItemText(sender));
+            clipboardViewModel.Pin(GetControlCommandParameter<string>(sender as Button));
         }
 
         // https://blog.csdn.net/gfg2007/article/details/108898788
@@ -263,6 +298,8 @@ namespace ClipboardSync_Client_Windows.Views
 
             //注销键盘快捷键
             Hotkey.UnRegist(this, OnHotKeyAltV);
+            // https://learn.microsoft.com/zh-cn/windows/apps/design/shell/tiles-and-notifications/send-local-toast?tabs=desktop#step-4-handling-uninstallation
+            ToastNotificationManagerCompat.Uninstall();
         }
 
         public EventHandler<string> ClipBroadChangedEvent;
@@ -287,7 +324,6 @@ namespace ClipboardSync_Client_Windows.Views
         {
             //Popup_ClipBroad.IsOpen = false;
         }
-        
-        
+
     }
 }
