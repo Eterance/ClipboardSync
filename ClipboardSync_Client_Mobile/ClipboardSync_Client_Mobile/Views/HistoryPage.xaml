@@ -5,17 +5,17 @@
              x:Class="ClipboardSync_Client_Mobile.Views.HistoryPage"
              Title="{x:Static localization:Resources.Clipboard}">
     <ContentPage.Content>
-        <StackLayout Margin="20,20,20,20">
-            <Button Margin="40,0,40,0"
+        <StackLayout>
+            <Button Margin="40,20,40,0"
                     Text="{x:Static localization:Resources.ClearAllHistoryList}" 
                     Command="{Binding ClearHistoryListCommand}"/>
-            <CollectionView Margin="0,10,0,0"
+            <CollectionView Margin="8,10,8,0"
                             ItemsSource="{Binding HistoryList}"
                             SelectionMode="Single"
                             SelectionChanged="OnSelectionChanged">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <SwipeView>
+                        <SwipeView Margin="0, 0, 0, 0">
                             <SwipeView.LeftItems>
                                 <SwipeItems>
                                     <SwipeItem Text="{x:Static localization:Resources.Delete}"
@@ -39,14 +39,24 @@
                                                BackgroundColor="blue" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <StackLayout Background="transparent">
-                                <Label Text="{Binding}"
-                                           Margin="10"
-                                           HeightRequest="80"
-                                           VerticalTextAlignment="Center"
-                                           MaxLines="4"
-                                           LineBreakMode="TailTruncation"
-                                           FontSize="Small"/>
+                            <StackLayout>
+                                <!-- https://montemagno.com/xamarin-forms-how-to-clip-images-with-rounded-corners/ -->
+                                <Frame CornerRadius="4" 
+                                       Margin="0, 1, 0, 1"
+                                       Padding="0"
+                                       IsClippedToBounds="True">
+                                    <Grid Margin="0"
+                                          Background="gray">
+                                        <Label Text="{Binding}"
+                                               Margin="8, 4, 8, 4"
+                                               HeightRequest="80"
+                                               VerticalTextAlignment="Center"
+                                               MaxLines="4"
+                                               Background="gray"
+                                               LineBreakMode="TailTruncation"
+                                               FontSize="Small"/>
+                                    </Grid>
+                                </Frame>
                             </StackLayout>
                         </SwipeView>                        
                     </DataTemplate>

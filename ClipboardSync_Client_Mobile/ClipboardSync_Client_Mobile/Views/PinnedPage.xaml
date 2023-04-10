@@ -5,8 +5,9 @@
              xmlns:localization="clr-namespace:ClipboardSync_Client_Mobile.Localization"
              Title="{x:Static localization:Resources.Pinned}">
     <ContentPage.Content>
-        <StackLayout Margin="20,20,20,20">
-            <CollectionView ItemsSource="{Binding PinnedList}"
+        <StackLayout>
+            <CollectionView Margin="8,10,8,0"
+                            ItemsSource="{Binding PinnedList}"
                             SelectionMode="Single"
                             SelectionChanged="OnSelectionChanged">
                 <CollectionView.ItemTemplate>
@@ -18,7 +19,7 @@
                                                IconImageSource="favorite.png"
                                                Invoked="SwipeItem_Invoked_Delete"
                                                CommandParameter="{Binding .}"
-                                               BackgroundColor="red" />
+                                               BackgroundColor="red"/>
                                 </SwipeItems>
                             </SwipeView.LeftItems>
                             <SwipeView.RightItems>
@@ -35,14 +36,23 @@
                                                BackgroundColor="blue" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <StackLayout Background="transparent">
-                                <Label Text="{Binding}"
-                                       Margin="10"
-                                       HeightRequest="80"
-                                       VerticalTextAlignment="Center"
-                                       MaxLines="4"
-                                       LineBreakMode="TailTruncation"
-                                       FontSize="Small"/>
+                            <StackLayout>
+                                <Frame CornerRadius="4" 
+                                       Margin="0, 1, 0, 1"
+                                       Padding="0"
+                                       IsClippedToBounds="True">
+                                    <Grid Margin="0"
+                                          Background="gray">
+                                        <Label Text="{Binding}"
+                                               Margin="8, 4, 8, 4"
+                                               HeightRequest="80"
+                                               VerticalTextAlignment="Center"
+                                               MaxLines="4"
+                                               Background="gray"
+                                               LineBreakMode="TailTruncation"
+                                               FontSize="Small"/>
+                                    </Grid>
+                                </Frame>
                             </StackLayout>
                         </SwipeView>
                     </DataTemplate>
