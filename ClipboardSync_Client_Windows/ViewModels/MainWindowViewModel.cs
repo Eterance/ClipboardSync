@@ -31,7 +31,7 @@ namespace ClipboardSync_Client_Windows.ViewModels
                 var before = selectedLanguage;
                 if (selectedLanguage != value)
                 {
-                    selectedLanguage = value;
+                    SetValue(ref selectedLanguage, value);
                     settings.Set(localizationSettingName, selectedLanguage.LanguageID);
                     if (before != null)
                     {
@@ -39,7 +39,6 @@ namespace ClipboardSync_Client_Windows.ViewModels
                             .AddText(Resources.LanguageDescription)
                             .Show();
                     }
-                    OnPropertyChanged();
                 }
             }
         }

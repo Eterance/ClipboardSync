@@ -9,7 +9,7 @@
              x:Name="Mainpage"
              Title="{x:Static localization:Resources.Home}">
     <ContentPage.Content>
-        <ScrollView Margin="20, 0, 4, 0">
+        <ScrollView Margin="20, 0, 4, 4">
             <StackLayout Margin="0, 0, 16, 0">
                 <Label x:Name="ConnectionStatusLabel"
                        Text="{Binding SubViewModel.ConnectionStatusInstruction}"

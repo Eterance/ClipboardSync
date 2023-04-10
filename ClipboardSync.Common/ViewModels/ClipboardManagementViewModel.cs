@@ -14,14 +14,10 @@ namespace ClipboardSync.Common.ViewModels
     {
         public bool IsConnected 
         {
-            get
-            {
-                return _isConnected;
-            }
+            get => _isConnected;
             private set
             {
-                _isConnected = value;
-                OnPropertyChanged();
+                SetValue(ref _isConnected, value);
             }
         }
         /// <summary>
@@ -38,56 +34,44 @@ namespace ClipboardSync.Common.ViewModels
         public ObservableCollection<string> PinnedList { get; set; }
         public string IPEndPointsString
         {
-            get 
-            { 
-                return _ipEndPointsString; 
-            }
+            get => _ipEndPointsString;
             set 
             {
-                _ipEndPointsString = value;
-                // Call OnPropertyChanged whenever the property is updated
-                OnPropertyChanged();
+                SetValue(ref _ipEndPointsString, value);
             }
         }
         
         public int HistoryListCapacity 
         {
-            get
-            {
-                return _historyListCapacity;
-                //return Preferences.Get(nameof(HistoryListCapacity), 30);
-            }
+            get =>  _historyListCapacity;
             set
             {
-                _historyListCapacity = value;
-                OnPropertyChanged();
+                SetValue(ref _historyListCapacity, value);
             }
         }
         
         public int ServerCacheCapacity 
         {
-            get { return _serverCacheCapacity; }
+            get => _serverCacheCapacity;
             set 
-            { 
-                _serverCacheCapacity = value; 
-                OnPropertyChanged();
+            {
+                SetValue(ref _serverCacheCapacity, value);
             }
         }
         
         
         public string ConnectionStatusInstruction
         {
-            get { return _connectionStatusInstruction; }
+            get => _connectionStatusInstruction;
             set
             {
-                _connectionStatusInstruction = value;
-                OnPropertyChanged();
+                SetValue(ref _connectionStatusInstruction, value);
             }
         }
 
         public ISettingsService SettingsService
         {
-            get { return settingsService; }
+            get => settingsService;
         }
 
         // Because Xamarin.Forms.Command can't use at WPF

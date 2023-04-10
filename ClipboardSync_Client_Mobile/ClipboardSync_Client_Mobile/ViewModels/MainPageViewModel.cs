@@ -33,13 +33,12 @@ namespace ClipboardSync_Client_Mobile.ViewModels
                 var before = selectedLanguage;
                 if (selectedLanguage != value)
                 {
-                    selectedLanguage = value;
+                    SetValue(ref selectedLanguage, value);
                     settings.Set(localizationSettingName, selectedLanguage.LanguageID);
                     if (before != null)
                     { 
                         DependencyService.Get<IToast>().LongAlert(Resources.LanguageDescription);
                     }
-                    OnPropertyChanged();
                 }
             }
         }
@@ -53,8 +52,7 @@ namespace ClipboardSync_Client_Mobile.ViewModels
             get { return _playgroundText; }
             set
             {
-                _playgroundText = value;
-                OnPropertyChanged();
+                SetValue(ref _playgroundText, value);
             }
         }
 
