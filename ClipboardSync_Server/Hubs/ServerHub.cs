@@ -1,18 +1,19 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using ClipboardSync_Server.Services;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClipboardSync_Server
+namespace ClipboardSync_Server.Hubs
 {
     public class ServerHub : Hub
     {
-        private readonly ILogger<Worker> _logger = null;
-        private readonly MessageCache _messageCache = null;
+        private readonly ILogger _logger = null;
+        private readonly MessageCacheService _messageCache = null;
 
-        public ServerHub(ILogger<Worker> logger, MessageCache messageCache)
+        public ServerHub(ILogger<ServerHub> logger, MessageCacheService messageCache)
         {
             _logger = logger;
             //_logger.LogInformation($"{DateTimeOffset.Now} MyHub.Constructor()");
@@ -40,7 +41,7 @@ namespace ClipboardSync_Server
         {
             bool temp = _messageCache.Push(message);
             if (temp)
-            {                
+            {
                 _logger.LogInformation($"{DateTime.Now.ToString("hh:mm:ss.fff")}  message: {message}");
                 await Clients.Others.SendAsync("ReceiveMessage", message);
             }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using ClipboardSync_Server.Hubs;
+using ClipboardSync_Server.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +16,7 @@ namespace ClipboardSync_Server
         // https://learn.microsoft.com/zh-cn/aspnet/core/signalr/background-services?view=aspnetcore-5.0
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<MessageCache>();
+            services.AddSingleton<MessageCacheService>();
             services.AddSignalR();
             services.AddHostedService<Worker>(); 
         }

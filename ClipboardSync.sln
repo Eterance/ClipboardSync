@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardSync_Client_Mobile
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClipboardSync_Client_Mobile", "ClipboardSync_Client_Mobile\ClipboardSync_Client_Mobile\ClipboardSync_Client_Mobile.csproj", "{39BAD2DD-BC41-48C9-A7EA-BBFC528B2D9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardSync.Common", "ClipboardSync.Common\ClipboardSync.Common.csproj", "{14B3131B-9325-49F8-A915-46F617D22B0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClipboardSync.Common", "ClipboardSync.Common\ClipboardSync.Common.csproj", "{14B3131B-9325-49F8-A915-46F617D22B0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,3 +1,4 @@
+using ClipboardSync_Server.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ClipboardSync_Server
