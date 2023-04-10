@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Schema;
 
 namespace ClipboardSync_Client_Windows.Services
 {
@@ -34,7 +35,7 @@ namespace ClipboardSync_Client_Windows.Services
             stringSettings = DeserializeString(stringSettingsFileName);
         }
 
-        int ISettingsService.Get(string key, int defaultValue)
+        public int Get(string key, int defaultValue)
         {
             bool success = intSettings.TryGetValue(key, out int value);
             if (success)
@@ -47,7 +48,7 @@ namespace ClipboardSync_Client_Windows.Services
             }
         }
 
-        string ISettingsService.Get(string key, string defaultValue)
+        public string Get(string key, string defaultValue)
         {
             bool success = stringSettings.TryGetValue(key, out string? value);
             if (success)
@@ -60,18 +61,18 @@ namespace ClipboardSync_Client_Windows.Services
             }
         }
 
-        bool ISettingsService.IsContainsKey(string key)
+        public bool IsContainsKey(string key)
         {
             return stringSettings.ContainsKey(key) || intSettings.ContainsKey(key);
         }
 
-        void ISettingsService.Set(string key, int value)
+        public void Set(string key, int value)
         {
             intSettings[key] = value;
             Serialize(intSettings, intSettingsFileName);
         }
 
-        void ISettingsService.Set(string key, string value)
+        public void Set(string key, string value)
         {
             stringSettings[key] = value;
             Serialize(stringSettings, stringSettingsFileName);

@@ -19,27 +19,27 @@ namespace ClipboardSync_Client_Mobile.Services
             }
         }
 
-        int ISettingsService.Get(string key, int defaultValue)
+        public int Get(string key, int defaultValue)
         {
             return Preferences.Get(key, defaultValue);
         }
 
-        string ISettingsService.Get(string key, string defaultValue)
+        public string Get(string key, string defaultValue)
         {
             return Preferences.Get(key, defaultValue);
         }
 
-        bool ISettingsService.IsContainsKey(string key)
+        public bool IsContainsKey(string key)
         {
             return Preferences.ContainsKey(key);
         }
 
-        void ISettingsService.Set(string key, int value)
+        public void Set(string key, int value)
         {
             Preferences.Set(key, value);
         }
 
-        void ISettingsService.Set(string key, string value)
+        public void Set(string key, string value)
         {
             Preferences.Set(key, value);
         }

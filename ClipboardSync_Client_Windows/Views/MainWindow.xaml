@@ -355,7 +355,7 @@
                 </Label>
                 <ComboBox ItemsSource="{Binding LanguageList}"
                           SelectedItem="{Binding SelectedLanguage}"
-                          Margin="0,8,0,0"
+                          Margin="0,8,0,20"
                           Height="40"
                           VerticalContentAlignment="Center">
                     <ComboBox.ItemTemplate>

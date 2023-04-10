@@ -13,6 +13,10 @@ namespace ClipboardSync_Client_Mobile
 {
     public partial class App : Application
     {
+
+        internal static XamarinSettingsService XamarinSettingsService { get; set; } = new();
+
+
         static ClipboardManagementViewModel clipboardManagementViewModel;
         
         public static ClipboardManagementViewModel ClipboardManagementViewModel
@@ -21,7 +25,7 @@ namespace ClipboardSync_Client_Mobile
             {
                 if (clipboardManagementViewModel == null)
                 {
-                    clipboardManagementViewModel = new ClipboardManagementViewModel(new XamarinSettingsService());
+                    clipboardManagementViewModel = new ClipboardManagementViewModel(XamarinSettingsService);
                     clipboardManagementViewModel.ToastMessage += (sender, e) =>
                     {
                         MainThread.BeginInvokeOnMainThread(() =>
@@ -38,8 +42,8 @@ namespace ClipboardSync_Client_Mobile
         public App()
         {
             InitializeComponent();
-            Localization.Resources.Culture = new CultureInfo(Preferences.Get("Localization", "en"));
-            ClipboardSync.Common.Localization.Resources.Culture = new CultureInfo(Preferences.Get("Localization", "en"));
+            Localization.Resources.Culture = new CultureInfo(XamarinSettingsService.Get("Localization", "en"));
+            ClipboardSync.Common.Localization.Resources.Culture = new CultureInfo(XamarinSettingsService.Get("Localization", "en"));
             MainPage = new AppShell();
         }
         

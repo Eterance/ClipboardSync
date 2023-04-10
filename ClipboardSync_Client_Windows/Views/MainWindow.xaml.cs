@@ -42,8 +42,7 @@ namespace ClipboardSync_Client_Windows.Views
             InitializeComponent();
             mainWindow = this;
             ClipBroadChangedEvent += ClipBroadChanged;
-            var wss = new WindowsSettingsService();
-            clipboardViewModel = new ClipboardManagementViewModel(wss);
+            clipboardViewModel = new ClipboardManagementViewModel(App.WindowsSettingsService);
             clipboardViewModel.UIDispatcherInvoker = (act) =>
             {
                 // https://stackoverflow.com/questions/18331723/this-type-of-collectionview-does-not-support-changes-to-its-sourcecollection-fro
@@ -61,7 +60,7 @@ namespace ClipboardSync_Client_Windows.Views
             };
             clipboardViewModel.SuppressSendTextToastMessage = true;
             clipboardViewModel.Initialize();
-            mainViewModel = new MainWindowViewModel(clipboardViewModel, wss);
+            mainViewModel = new MainWindowViewModel(clipboardViewModel, App.WindowsSettingsService);
             DataContext = mainViewModel;
         }
 
