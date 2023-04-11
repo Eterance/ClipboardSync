@@ -6,6 +6,9 @@ using System.Xml.Serialization;
 
 namespace ClipboardSync.Common.Services
 {
+    /// <summary>
+    /// Save/Load PinnedList at local machine.
+    /// </summary>
     public class LocalPinnedListFileService: IPinnedListFileService
     {
         readonly static string _xmlName = "pinnedList.xml";
@@ -25,9 +28,9 @@ namespace ClipboardSync.Common.Services
         /// Serialize the list to xml file. Using UTF-8.
         /// </summary>
         /// <param name="list"></param>
-        public void Save<T>(List<T> list)
+        public void Save(List<string> list)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+            XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.UTF8))
             {
                 serializer.Serialize(writer, list);
@@ -38,16 +41,16 @@ namespace ClipboardSync.Common.Services
         /// Deserialize the list from xml file. Using UTF-8.
         /// </summary>
         /// <returns></returns>
-        public List<T> Load<T>()
+        public List<string> Load()
         {
             if (File.Exists(fileName) == false)
             {
                 Save(new List<string>());
             }
-            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+            XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
             using (StreamReader reader = new StreamReader(fileName, Encoding.UTF8))
             {
-                return (List<T>)serializer.Deserialize(reader);
+                return (List<string>)serializer.Deserialize(reader);
             }
         }
     }

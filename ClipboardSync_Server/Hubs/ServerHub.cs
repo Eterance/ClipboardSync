@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace ClipboardSync_Server.Hubs
 {
@@ -12,6 +13,7 @@ namespace ClipboardSync_Server.Hubs
     {
         private readonly ILogger _logger = null;
         private readonly MessageCacheService _messageCache = null;
+        private readonly string folderName = "ClipboardSync_server";
 
         public ServerHub(ILogger<ServerHub> logger, MessageCacheService messageCache)
         {
@@ -54,14 +56,38 @@ namespace ClipboardSync_Server.Hubs
             await Clients.Caller.SendAsync("GetServerCacheCapacity", _messageCache.Capacity);
         }
 
-        public async Task SetServerCacheCapacity(int capacity)
+        public void SaveStringList(List<string> list, string fileName)
         {
-            if (capacity != _messageCache.Capacity)
+            string directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), folderName);
+            if (!Directory.Exists(directoryPath))
             {
-                int old_capacity = _messageCache.Capacity;
-                _messageCache.Capacity = capacity;
-                _logger.LogInformation($"{DateTimeOffset.Now} Server cache capacity set from {old_capacity} to {capacity}.");
-                await Clients.All.SendAsync("GetServerCacheCapacity", capacity);
+                Directory.CreateDirectory(directoryPath);
+            }
+            string fullFileName = Path.Combine(directoryPath, fileName);
+            XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
+            using (StreamWriter writer = new StreamWriter(fullFileName, false, Encoding.UTF8))
+            {
+                serializer.Serialize(writer, list);
+            }
+        }
+
+        public List<string> LoadStringList(string fileName)
+        {
+            string directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), folderName);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            string fullFileName = Path.Combine(directoryPath, fileName);
+            if (File.Exists(fullFileName) == false)
+            {
+                SaveStringList(new List<string>(), fileName);
+            }
+            XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
+            using (StreamReader reader = new StreamReader(fullFileName, Encoding.UTF8))
+            {
+                List<string>? list = serializer.Deserialize(reader) as List<string>;
+                return list ?? new();
             }
         }
     }

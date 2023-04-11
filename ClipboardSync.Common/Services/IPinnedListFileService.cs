@@ -13,12 +13,12 @@ namespace ClipboardSync.Common.Services
         /// Serialize the list to xml file. Using UTF-8.
         /// </summary>
         /// <param name="list"></param>
-        public void Save<T>(List<T> list);
+        public void Save(List<string> list);
 
         /// <summary>
         /// Deserialize the list from xml file. Using UTF-8.
         /// </summary>
         /// <returns></returns>
-        public List<T> Load<T>();
+        public List<string> Load();
     }
 }

@@ -13,6 +13,7 @@ namespace ClipboardSync.Common.Services
         public EventHandler<string> ConnectStatusUpdate { get; set; }
         public EventHandler<List<string>> MessagesSync { get; set; }
         public EventHandler<int> ServerCacheCapacityUpdated { get; set; }
+        public EventHandler<List<string>> GotServerPinnedList { get; set; }
         public EventHandler<Exception> UnexpectedError { get; set; }
         /// <summary>
         /// CHS: 丢失与服务器的连接。
@@ -102,6 +103,7 @@ namespace ClipboardSync.Common.Services
             hubConnection?.Remove("ReceiveMessage");
             hubConnection?.Remove("GetServerCacheCapacity");
             hubConnection?.Remove("SyncMessages");
+            hubConnection?.Remove("LoadStringList");
             if (hubConnection != null)
             {
                 hubConnection.Closed -= ConnectionClosed;
@@ -125,7 +127,44 @@ namespace ClipboardSync.Common.Services
             }
         }
 
+        public async Task SaveStringList(List<string> list, string fileName)
+        {
+            try
+            {
+                await _connection.InvokeAsync("SaveStringList", list, fileName);
+            }
+            catch (Exception ex)
+            {
+                UnexpectedError?.Invoke(this, ex);
+            }
+        }
+
+        public List<string> LoadStringList(string fileName)
+        {
+            try
+            {
+                Task<List<string>> reslut =  _connection.InvokeAsync<List<string>>("LoadStringList", fileName);
+                return reslut.Result;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public async Task SetServerCacheCapacity(int capacity)
+        {
+            try
+            {
+                await _connection.InvokeAsync("SetServerCacheCapacity", capacity);
+            }
+            catch (Exception ex)
+            {
+                UnexpectedError?.Invoke(this, ex);
+            }
+        }
+
+        public async Task SetServerCacheCapacity<T>(int capacity)
         {
             try
             {

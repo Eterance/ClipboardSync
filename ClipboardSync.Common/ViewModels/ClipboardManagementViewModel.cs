@@ -146,7 +146,7 @@ namespace ClipboardSync.Common.ViewModels
             HistoryListCapacity = this.settingsService.Get(_historyListCapacityKey, 30);
             // System.InvalidOperationException: 'Cannot change ObservableCollection during a CollectionChanged event.'
             //HistoryList.CollectionChanged += (sender, e) => CheckHistoryListCapacity();
-            PinnedList = new(this.settingsService.PinnedListFile.Load<string>());
+            PinnedList = new(this.settingsService.PinnedListFile.Load());
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
 
             
@@ -210,6 +210,13 @@ namespace ClipboardSync.Common.ViewModels
             }
         }
 
+        public void Initialize(string serverUrl)
+        {
+            ConnectionStatusInstruction = Resources.NotConnected;
+            HistoryListCapacity = settingsService.Get(_historyListCapacityKey, 30);
+            _ = ConnectAsync(serverUrl);
+        }
+
         private async void SetIPEndPointsAsync()
         {
             IPEndPointsString = IPEndPointsString.Trim();
@@ -234,7 +241,7 @@ namespace ClipboardSync.Common.ViewModels
             await _signalRCoreService.ConnectAsync(urls, conncetingTokenSource.Token);
         }
 
-        public async Task ConnectWithUrlAsync(string url)
+        public async Task ConnectAsync(string url)
         {
             if (conncetingTokenSource != null)
             {
