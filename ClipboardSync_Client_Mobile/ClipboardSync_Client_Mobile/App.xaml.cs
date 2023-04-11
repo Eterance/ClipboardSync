@@ -25,14 +25,16 @@ namespace ClipboardSync_Client_Mobile
             {
                 if (clipboardManagementViewModel == null)
                 {
-                    clipboardManagementViewModel = new ClipboardManagementViewModel(XamarinSettingsService);
-                    clipboardManagementViewModel.ToastMessage += (sender, e) =>
-                    {
-                        MainThread.BeginInvokeOnMainThread(() =>
-                        {
-                            DependencyService.Get<IToast>().ShortAlert(e);
-                        });
-                    };
+                    clipboardManagementViewModel = new ClipboardManagementViewModel(
+                        settingsService: XamarinSettingsService,
+                        toast: (e) =>
+                            {
+                                MainThread.BeginInvokeOnMainThread(() =>
+                                {
+                                    DependencyService.Get<IToast>().ShortAlert(e);
+                                });
+                            }
+                        );
                     clipboardManagementViewModel.Initialize();
                 }
                 return clipboardManagementViewModel;

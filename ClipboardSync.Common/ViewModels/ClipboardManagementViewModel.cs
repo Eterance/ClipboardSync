@@ -27,7 +27,7 @@ namespace ClipboardSync.Common.ViewModels
         public Action<Action> UIDispatcherInvoker { get; set; }
         public EventHandler<string> NeedClipboardSetText { get; set; }
         public EventHandler<Exception> UnexpectedError { get; set; }
-        public EventHandler<string> ToastMessage { get; set; }
+        public Action<string> Toast { get; set; }
         public bool SuppressSendTextToastMessage { get; set; } = false;
 
         public ObservableCollection<string> HistoryList { get; set; }
@@ -99,12 +99,17 @@ namespace ClipboardSync.Common.ViewModels
         private CancellationTokenSource conncetingTokenSource;
         private ISettingsService settingsService;
 
-        public ClipboardManagementViewModel(ISettingsService settings, SignalRCoreService service = null)
+        public ClipboardManagementViewModel(
+            ISettingsService settingsService = null,
+            SignalRCoreService service = null,
+            Action<Action> uiDispatcherInvoker = null,
+            Action<string> toast = null
+            )
         {
-            settingsService = settings;
-
-            //Singleton = this;
+            this.settingsService = settingsService ?? this.settingsService;
             _signalRCoreService = service ?? new SignalRCoreService();
+            UIDispatcherInvoker = uiDispatcherInvoker ?? UIDispatcherInvoker;
+            Toast = toast ?? Toast;
             //_signalRCoreService.ConnectSuccessed += (sender, e) => ConnectionStatusInstruction = $"已连接到 {e}";
             //_signalRCoreService.ConnectFailed += (sender, e) => ConnectionStatusInstruction = $"error: {e}";
             _signalRCoreService.ConnectStatusUpdate += (sender, e) => ConnectionStatusInstruction = e;
@@ -115,15 +120,14 @@ namespace ClipboardSync.Common.ViewModels
                 ServerCacheCapacity = e;
                 if (e <= 0)
                 {
-                    ToastMessage?.Invoke(
-                        this,
+                    Toast($"{Resources.ServerCacheCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
+                    Toast?.Invoke(
                         $"{Resources.ServerCacheCapacityChanged2}{Resources.Unlimited}{Resources.Period}"
                         );
                 }
                 else 
                 {
-                    ToastMessage?.Invoke(
-                        this, 
+                    Toast?.Invoke(
                         $"{Resources.ServerCacheCapacityChanged2}{_serverCacheCapacity}{Resources.Period}"
                         );
                 }
@@ -139,10 +143,10 @@ namespace ClipboardSync.Common.ViewModels
 
 
             HistoryList = new();
-            HistoryListCapacity = settingsService.Get(_historyListCapacityKey, 30);
+            HistoryListCapacity = this.settingsService.Get(_historyListCapacityKey, 30);
             // System.InvalidOperationException: 'Cannot change ObservableCollection during a CollectionChanged event.'
             //HistoryList.CollectionChanged += (sender, e) => CheckHistoryListCapacity();
-            PinnedList = new(settingsService.PinnedListFile.Load<string>());
+            PinnedList = new(this.settingsService.PinnedListFile.Load<string>());
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
 
             
@@ -166,11 +170,11 @@ namespace ClipboardSync.Common.ViewModels
             });
             if (HistoryListCapacity <= 0)
             {
-                ToastMessage?.Invoke(this, $"{Resources.ClipboardHistoryCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
+                Toast?.Invoke($"{Resources.ClipboardHistoryCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
             }
             else
             {
-                ToastMessage?.Invoke(this, $"{Resources.ClipboardHistoryCapacityChanged2}{HistoryListCapacity}{Resources.Period}");
+                Toast?.Invoke($"{Resources.ClipboardHistoryCapacityChanged2}{HistoryListCapacity}{Resources.Period}");
             }
         }
 
@@ -317,7 +321,7 @@ namespace ClipboardSync.Common.ViewModels
                 _ = _signalRCoreService.SendMessage(text);
                 if (!SuppressSendTextToastMessage)
                 { 
-                    ToastMessage?.Invoke(this, Resources.Sent);
+                    Toast?.Invoke(Resources.Sent);
                 }
                 AddNewHistory(text);
             }

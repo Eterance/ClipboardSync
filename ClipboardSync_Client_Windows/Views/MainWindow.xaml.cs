@@ -33,8 +33,8 @@ namespace ClipboardSync_Client_Windows.Views
         ClipboardManagementViewModel clipboardViewModel;
         MainWindowViewModel mainViewModel;
         public static MainWindow? mainWindow;
-        Grid _InOperatingGrid_History;
-        Grid _InOperatingGrid_Pinned;
+        Grid? _InOperatingGrid_History;
+        Grid? _InOperatingGrid_Pinned;
         string _lastClipBroadMessage = "";
 
         public MainWindow()
@@ -42,22 +42,24 @@ namespace ClipboardSync_Client_Windows.Views
             InitializeComponent();
             mainWindow = this;
             ClipBroadChangedEvent += ClipBroadChanged;
-            clipboardViewModel = new ClipboardManagementViewModel(App.WindowsSettingsService);
-            clipboardViewModel.UIDispatcherInvoker = (act) =>
-            {
-                // https://stackoverflow.com/questions/18331723/this-type-of-collectionview-does-not-support-changes-to-its-sourcecollection-fro
-                App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
-                {
-                    act();
-                });
-            };
-            clipboardViewModel.ToastMessage += (sender, e) => 
-            {
-                // https://learn.microsoft.com/zh-cn/windows/apps/design/shell/tiles-and-notifications/send-local-toast?tabs=desktop-msix
-                new ToastContentBuilder()
-                    .AddText(e)
-                    .Show();
-            };
+            clipboardViewModel = new ClipboardManagementViewModel(
+                settingsService: App.WindowsSettingsService,
+                uiDispatcherInvoker: (act) =>
+                    {
+                        // https://stackoverflow.com/questions/18331723/this-type-of-collectionview-does-not-support-changes-to-its-sourcecollection-fro
+                        App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+                        {
+                            act();
+                        });
+                    },
+                toast: (e) =>
+                    {
+                        // https://learn.microsoft.com/zh-cn/windows/apps/design/shell/tiles-and-notifications/send-local-toast?tabs=desktop-msix
+                        new ToastContentBuilder()
+                            .AddText(e)
+                            .Show();
+                    }
+                );
             clipboardViewModel.SuppressSendTextToastMessage = true;
             clipboardViewModel.Initialize();
             mainViewModel = new MainWindowViewModel(clipboardViewModel, App.WindowsSettingsService);
