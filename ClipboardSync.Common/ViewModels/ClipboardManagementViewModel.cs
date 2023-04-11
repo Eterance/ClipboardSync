@@ -12,12 +12,21 @@ namespace ClipboardSync.Common.ViewModels
 {
     public class ClipboardManagementViewModel : ViewModelBase
     {
-        public bool IsConnected 
+        public bool IsConnected
         {
             get => _isConnected;
             private set
             {
                 SetValue(ref _isConnected, value);
+            }
+        }
+        public bool IsInitialized
+
+        {
+            get => _isInitialized;
+            private set
+            {
+                SetValue(ref _isInitialized, value);
             }
         }
         /// <summary>
@@ -30,36 +39,43 @@ namespace ClipboardSync.Common.ViewModels
         public Action<string> Toast { get; set; }
         public bool SuppressSendTextToastMessage { get; set; } = false;
 
-        public ObservableCollection<string> HistoryList { get; set; }
+        public ObservableCollection<string> HistoryList
+        {
+            get => _historyList;
+            private set
+            {
+                SetValue(ref _historyList, value);
+            }
+        }
         public ObservableCollection<string> PinnedList { get; set; }
         public string IPEndPointsString
         {
             get => _ipEndPointsString;
-            set 
+            set
             {
                 SetValue(ref _ipEndPointsString, value);
             }
         }
-        
-        public int HistoryListCapacity 
+
+        public int HistoryListCapacity
         {
-            get =>  _historyListCapacity;
+            get => _historyListCapacity;
             set
             {
                 SetValue(ref _historyListCapacity, value);
             }
         }
-        
-        public int ServerCacheCapacity 
+
+        public int ServerCacheCapacity
         {
             get => _serverCacheCapacity;
-            set 
+            set
             {
                 SetValue(ref _serverCacheCapacity, value);
             }
         }
-        
-        
+
+
         public string ConnectionStatusInstruction
         {
             get => _connectionStatusInstruction;
@@ -87,17 +103,19 @@ namespace ClipboardSync.Common.ViewModels
         private Queue<string> tempList { get; set; }
 
         private bool _isConnected = false;
+        private bool _isInitialized = false;
         private string _ipEndPointsString;
         private int _serverCacheCapacity;
         //private int _historyListCapacity = Preferences.Get(_historyListCapacityKey, 30);
         private int _historyListCapacity = 30;
         private string _connectionStatusInstruction;
         private static readonly string _ipEndPointsKey = "IPEndPoints";
-        private static readonly string _historyListCapacityKey = "HistoryListCapacity";        
+        private static readonly string _historyListCapacityKey = "HistoryListCapacity";
         private SignalRCoreService _signalRCoreService;
-        
+
         private CancellationTokenSource conncetingTokenSource;
         private ISettingsService settingsService;
+        private ObservableCollection<string> _historyList;
 
         public ClipboardManagementViewModel(
             ISettingsService settingsService,
@@ -125,13 +143,13 @@ namespace ClipboardSync.Common.ViewModels
                         $"{Resources.ServerCacheCapacityChanged2}{Resources.Unlimited}{Resources.Period}"
                         );
                 }
-                else 
+                else
                 {
                     Toast?.Invoke(
                         $"{Resources.ServerCacheCapacityChanged2}{_serverCacheCapacity}{Resources.Period}"
                         );
                 }
-                
+
             };
             _signalRCoreService.UnexpectedError += (sender, e) => UnexpectedError?.Invoke(sender, e);
             _signalRCoreService.Connected += (sender, e) => IsConnected = true;
@@ -141,15 +159,9 @@ namespace ClipboardSync.Common.ViewModels
                 await ConnectAsync();
             };
 
-
             HistoryList = new();
             HistoryListCapacity = this.settingsService.Get(_historyListCapacityKey, 30);
-            // System.InvalidOperationException: 'Cannot change ObservableCollection during a CollectionChanged event.'
-            //HistoryList.CollectionChanged += (sender, e) => CheckHistoryListCapacity();
-            PinnedList = new(this.settingsService.PinnedListFile.Load());
-            PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
 
-            
             SaveAndConnectCommand = new DelegateCommand(SetIPEndPointsAsync);
             ApplyServerCacheCapacityCommand = new DelegateCommand(ApplyServerCacheCapacity);
             ApplyHistoryListCapacityCommand = new DelegateCommand(ApplyHistoryListCapacity);
@@ -193,8 +205,11 @@ namespace ClipboardSync.Common.ViewModels
 
         public void Initialize()
         {
+            if (_isInitialized) return;
+            PinnedList = new(this.settingsService.PinnedListFile.Load());
+            PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
             ConnectionStatusInstruction = Resources.NotConnected;
-            
+
             HistoryListCapacity = settingsService.Get(_historyListCapacityKey, 30);
 
             bool hasIpKey = settingsService.IsContainsKey(_ipEndPointsKey);
@@ -203,18 +218,27 @@ namespace ClipboardSync.Common.ViewModels
                 IPEndPointsString = settingsService.Get(_ipEndPointsKey, "");
                 _ = ConnectAsync();
             }
-            else 
+            else
             {
                 IPEndPointsString = "";
                 ConnectionStatusInstruction = Resources.NoServerAddr;
             }
+            // System.InvalidOperationException: 'Cannot change ObservableCollection during a CollectionChanged event.'
+            //HistoryList.CollectionChanged += (sender, e) => CheckHistoryListCapacity();
+            _isInitialized = true;
         }
 
         public void Initialize(string serverUrl)
         {
+            if (_isInitialized) return;
+            PinnedList = new(this.settingsService.PinnedListFile.Load());
+            PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
             ConnectionStatusInstruction = Resources.NotConnected;
-            HistoryListCapacity = settingsService.Get(_historyListCapacityKey, 30);
-            _ = ConnectAsync(serverUrl);
+            var connectTask = ConnectAsync(serverUrl);
+            // System.InvalidOperationException: 'Cannot change ObservableCollection during a CollectionChanged event.'
+            //HistoryList.CollectionChanged += (sender, e) => CheckHistoryListCapacity();
+            //connectTask.Wait();
+            _isInitialized = true;
         }
 
         private async void SetIPEndPointsAsync()
@@ -251,7 +275,7 @@ namespace ClipboardSync.Common.ViewModels
             conncetingTokenSource = new();
             await _signalRCoreService.ConnectAsync(new List<string> { url }, conncetingTokenSource.Token);
         }
-        
+
 
         private List<string> SeperateIPEndPoints(string ipEndPointsString)
         {
@@ -290,29 +314,38 @@ namespace ClipboardSync.Common.ViewModels
         /// <returns>是否成功添加新消息。如果消息已经存在，返回 false。</returns>
         private bool AddNewHistory(string message)
         {
-            // 两张表里都没有，加进剪贴板
-            if (HistoryList.Contains(message) != true && PinnedList.Contains(message) != true)
-            {
-                UseUIDispatcherInvoke((Action)delegate // <--- HERE
+            try 
+            { 
+                // 两张表里都没有，加进剪贴板
+                if (HistoryList.Contains(message) != true && (PinnedList.Contains(message) != true))
                 {
-                    HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
-                });                
-                //HistoryList.Insert(0, message);
-                //CheckHistoryListCapacity();
-                NeedClipboardSetText?.Invoke(this, message);
-                return true;
+                    UseUIDispatcherInvoke((Action)delegate // <--- HERE
+                    {
+                        HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                    });
+                    OnPropertyChanged();
+                    //HistoryList.Insert(0, message);
+                    //CheckHistoryListCapacity();
+                    NeedClipboardSetText?.Invoke(this, message);
+                    return true;
+                }
+                // 剪贴板有，并且不在第一位，移到前面
+                else if (HistoryList.Contains(message) == true && PinnedList.Contains(message) != true && HistoryList[0] != message)
+                {
+                    UseUIDispatcherInvoke((Action)delegate // <--- HERE
+                    {
+                        HistoryList.Remove(message);
+                        HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                    });
+                    OnPropertyChanged();
+                    //HistoryList.Insert(0, message);
+                    //CheckHistoryListCapacity();
+                    NeedClipboardSetText?.Invoke(this, message);
+                    return false;
+                }
             }
-            // 剪贴板有，并且不在第一位，移到前面
-            else if (HistoryList.Contains(message) == true && PinnedList.Contains(message) != true && HistoryList[0] != message)
+            catch (Exception ex) 
             {
-                UseUIDispatcherInvoke((Action)delegate // <--- HERE
-                {
-                    HistoryList.Remove(message);
-                    HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
-                });
-                //HistoryList.Insert(0, message);
-                //CheckHistoryListCapacity();
-                NeedClipboardSetText?.Invoke(this, message);
                 return false;
             }
             return false;
@@ -342,7 +375,7 @@ namespace ClipboardSync.Common.ViewModels
             {
                 _ = _signalRCoreService.SendMessage(text);
                 if (!SuppressSendTextToastMessage)
-                { 
+                {
                     Toast?.Invoke(Resources.Sent);
                 }
                 AddNewHistory(text);

@@ -33,7 +33,9 @@ namespace ClipboardSync.Common.Services
 
         protected HubConnection _connection;
 
-        public virtual async Task ConnectAsync(List<string> urls, CancellationToken token = default)
+        public bool IsConnected { get; private set; } = false;
+
+        public virtual async Task ConnectAsync(List<string> uris, CancellationToken token = default)
         {
             // Let the old one die
             Unsubscribe(_connection);
@@ -42,7 +44,7 @@ namespace ClipboardSync.Common.Services
             
             List<string> tried = new();
             string failedPrefix = "";
-            foreach (string url in urls)
+            foreach (string url in uris)
             {
                 _connection = new HubConnectionBuilder()
                     .WithUrl(url)
@@ -66,6 +68,7 @@ namespace ClipboardSync.Common.Services
                     await Task.Delay(new Random().Next(0, 5) * 1000);
                     continue;
                 }
+                IsConnected = true;
                 Connected?.Invoke(this, url);
                 ConnectStatusUpdate?.Invoke(this, $"{Resources.Connected2} {url}{Resources.Period}");
                 return;
@@ -74,6 +77,7 @@ namespace ClipboardSync.Common.Services
             // 因为可能后面的连接成功后前面的连接尝试才被中止，这时触发连接失败是很奇怪的。
             if (!token.IsCancellationRequested)
             {
+                IsConnected = false;
                 ConnectStatusUpdate?.Invoke(this, Resources.AllServersAreUnavailable);
                 ConnectFailed?.Invoke(this, tried);
             }
@@ -103,7 +107,6 @@ namespace ClipboardSync.Common.Services
             hubConnection?.Remove("ReceiveMessage");
             hubConnection?.Remove("GetServerCacheCapacity");
             hubConnection?.Remove("SyncMessages");
-            hubConnection?.Remove("LoadStringList");
             if (hubConnection != null)
             {
                 hubConnection.Closed -= ConnectionClosed;
@@ -124,31 +127,6 @@ namespace ClipboardSync.Common.Services
             catch (Exception ex)
             {
                 UnexpectedError?.Invoke(this, ex);
-            }
-        }
-
-        public async Task SaveStringList(List<string> list, string fileName)
-        {
-            try
-            {
-                await _connection.InvokeAsync("SaveStringList", list, fileName);
-            }
-            catch (Exception ex)
-            {
-                UnexpectedError?.Invoke(this, ex);
-            }
-        }
-
-        public List<string> LoadStringList(string fileName)
-        {
-            try
-            {
-                Task<List<string>> reslut =  _connection.InvokeAsync<List<string>>("LoadStringList", fileName);
-                return reslut.Result;
-            }
-            catch (Exception ex)
-            {
-                return null;
             }
         }
 

@@ -1,0 +1,8 @@
+﻿/* 显示 4 行文本，超出的截断并接省略号 */
+.line-clamp-4 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; 
+    -webkit-box-orient: vertical;
+}

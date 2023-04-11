@@ -13,20 +13,28 @@ namespace ClipboardSync.Common.Services
     {
         readonly static string _xmlName = "pinnedList.xml";
         private string fileName;
-        private SignalRCoreService _signalRService;
+        private SignalRRemoteFilesService _signalRService;
 
-        public RemotePinnedListFileService(SignalRCoreService signalrServices)
+        public RemotePinnedListFileService(SignalRRemoteFilesService signalrFileServices)
         {
-            _signalRService = signalrServices;
+            _signalRService = signalrFileServices;
         }
 
         public void Save(List<string> list)
         {
+            if (!_signalRService.IsConnected)
+            {
+                throw new Exception();
+            }
             _ = _signalRService.SaveStringList(list, _xmlName);
         }
 
         public List<string> Load()
         {
+            if (!_signalRService.IsConnected)
+            {
+                throw new Exception();
+            }
             return _signalRService.LoadStringList(_xmlName);
         }
     }

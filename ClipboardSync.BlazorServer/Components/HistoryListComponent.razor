@@ -1,0 +1,30 @@
+﻿@using ClipboardSync.Common.ViewModels;
+@using System.Collections.ObjectModel;
+
+@if (SubViewModel == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="card-deck">
+        @foreach (string history_item in SubViewModel.HistoryList)
+        {
+            <div class="card mb-3 text-white bg-dark" style="min-width: 20rem; max-width: 200rem;">
+                <div class="card-body">
+                    <p class="card-text line-clamp-4">@history_item</p>
+                    <button class="btn btn-primary" @onclick="@(() => {})">Copy</button>
+                    <button class="btn btn-primary" @onclick="@(() => SubViewModel.Pin(history_item))">Pin</button>
+                    <button class="btn btn-primary" @onclick="@(() => {})">Detail</button>
+                    <button class="btn btn-primary" @onclick="@(() => SubViewModel.HistoryList.Remove(history_item))">Delete</button>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [CascadingParameter(Name = "SubViewModel")]
+    ClipboardManagementViewModel SubViewModel { get; set; }
+
+}
