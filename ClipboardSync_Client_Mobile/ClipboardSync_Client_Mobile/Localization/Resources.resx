@@ -210,4 +210,7 @@ Restart the application to apply the language change.</value>
   <data name="ClearAllHistoryList" xml:space="preserve">
     <value>删除所有</value>
   </data>
+  <data name="Clear" xml:space="preserve">
+    <value>清空</value>
+  </data>
 </root>

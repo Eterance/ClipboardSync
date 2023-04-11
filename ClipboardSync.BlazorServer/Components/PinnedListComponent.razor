@@ -4,26 +4,26 @@
 @using ClipboardSync.BlazorServer.Components
 @inject ClipboardService ClipboardService
 
-@if (SubViewModel?.HistoryList == null)
+@if (SubViewModel?.PinnedList == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
     <div class="card-deck">
-        @foreach (string history_text in SubViewModel.HistoryList)
+        @foreach (string Pinned_text in SubViewModel.PinnedList)
         {
             <div class="card mb-3 text-white bg-dark" style="min-width: 20rem; max-width: 200rem;">
                 <div class="card-body">
-                    <p class="card-text line-clamp-4">@history_text</p>
+                    <p class="card-text line-clamp-4">@Pinned_text</p>
                     <div class="d-flex justify-content-between">
-                        <CascadingValue Value=@history_text Name="Text">
+                        <CascadingValue Value=@Pinned_text Name="Text">
                             <CopyToClipboardButton />
                         </CascadingValue>
                         <div class="d-flex justify-content-end gap-2">
-                            <button class="btn btn-primary" @onclick="@(() => SubViewModel.Pin(history_text))">Pin</button>
+                            <button class="btn btn-primary" @onclick="@(() => SubViewModel.Unpin(Pinned_text))">Unpin</button>
                             <button class="btn btn-primary" @onclick="@(() => {})">Detail</button>
-                            <button class="btn btn-primary" @onclick="@(() => SubViewModel.HistoryList.Remove(history_text))">Delete</button>
+                            <button class="btn btn-primary" @onclick="@(() => SubViewModel.PinnedList.Remove(Pinned_text))">Delete</button>
                         </div>
                     </div>
                 </div>

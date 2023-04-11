@@ -57,9 +57,4 @@ namespace ClipboardSync_Client_Windows
             BeginAnimation(ScrollViewerBehavior.VerticalOffsetProperty, Animation);
         }
     }
-
-
-
-
-    
 }

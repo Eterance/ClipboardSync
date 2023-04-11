@@ -17,21 +17,31 @@
                        FontSize="Large"
                    />
                 <!-- Clipboard Send -->
-                <Grid ColumnDefinitions="2*,*"                      
-                      Margin="0,40,0,0">
-                    <Editor x:Name="SendEditor"
-                            Placeholder="{x:Static localization:Resources.InputSthHere}"
-                            Text="{Binding PlaygroundText}"/>
-                    <Button Grid.Column="1"
-                            IsEnabled="{Binding SubViewModel.IsConnected}"
-                            Text="{x:Static localization:Resources.Send}"
-                            Command="{Binding SendPlaygroundTextCommand}" />
-                </Grid>
-                <Button Margin="0,20,0,0"
+                <Button Margin="0,40,0,0"
                         HeightRequest = "120"
                         IsEnabled="{Binding SubViewModel.IsConnected}"
                         Text="{x:Static localization:Resources.SendClipboardText}"
                         Command="{Binding SendClipboardTextAsyncCommand}"/>
+                <!-- Playground Text Send -->
+                <Editor x:Name="SendEditor"
+                        Margin="0,20,0,0"
+                        AutoSize="TextChanges"
+                        Placeholder="{x:Static localization:Resources.InputSthHere}"
+                        Text="{Binding PlaygroundText}"/>
+                <Grid ColumnDefinitions="1*,2*" 
+                      Margin="0,0,0,0">
+                    <Button Grid.Column="0"
+                            Background="red"
+                            Margin="0,0,10,0"
+                            IsEnabled="{Binding SubViewModel.IsConnected}"
+                            Text="{x:Static localization:Resources.Clear}"
+                            Command="{Binding ClearPlaygroundTextCommand}" />
+                    <Button Grid.Column="1"
+                            Margin="10,0,0,0"
+                            IsEnabled="{Binding SubViewModel.IsConnected}"
+                            Text="{x:Static localization:Resources.Send}"
+                            Command="{Binding SendPlaygroundTextCommand}" />
+                </Grid>
                 <!-- Server Address -->
                 <Label Margin="0,40,0,0"
                        Text="{x:Static localization:Resources.ServerAddr}" 

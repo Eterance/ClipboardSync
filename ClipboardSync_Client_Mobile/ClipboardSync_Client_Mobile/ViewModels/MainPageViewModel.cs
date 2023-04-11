@@ -43,6 +43,7 @@ namespace ClipboardSync_Client_Mobile.ViewModels
             }
         }
         public ICommand SendPlaygroundTextCommand { get; set; }
+        public ICommand ClearPlaygroundTextCommand { get; set; }
         public ICommand SendClipboardTextAsyncCommand { get; set; }
 
         public ObservableCollection<LocalizationModel> LanguageList { get; set; }
@@ -68,6 +69,7 @@ namespace ClipboardSync_Client_Mobile.ViewModels
 
             SendPlaygroundTextCommand = new Command(SendPlaygroundText);
             SendClipboardTextAsyncCommand = new Command(SendClipboardTextAsync);
+            ClearPlaygroundTextCommand = new Command(() => PlaygroundText="");
             settings = _settings;
 
             if (LanguageList == null)

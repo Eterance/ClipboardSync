@@ -23,6 +23,7 @@ namespace ClipboardSync.BlazorServer
 
             builder.Services.AddScoped<SignalRRemoteFilesService>();
             builder.Services.AddScoped<SignalRCoreService>();
+            builder.Services.AddScoped<ClipboardService>();
             builder.Services.AddScoped<IPinnedListFileService, RemotePinnedListFileService>();
             builder.Services.AddScoped<ISettingsService, BlazorServerClientSettingsService>();
             builder.Services.AddScoped<ClipboardManagementViewModel>();

@@ -70,6 +70,15 @@ namespace ClipboardSync_Client_Mobile.Localization {
         }
         
         /// <summary>
+        ///   查找类似 清空 的本地化字符串。
+        /// </summary>
+        public static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 删除所有 的本地化字符串。
         /// </summary>
         public static string ClearAllHistoryList {

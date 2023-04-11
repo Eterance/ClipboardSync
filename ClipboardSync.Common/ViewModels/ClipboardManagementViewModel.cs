@@ -371,9 +371,10 @@ namespace ClipboardSync.Common.ViewModels
 
         public void SendText(string text)
         {
+            if (text == null || text.Trim() == "") return;
+            _ = _signalRCoreService.SendMessage(text);
             if (HistoryList.Contains(text) != true && PinnedList.Contains(text) != true)
             {
-                _ = _signalRCoreService.SendMessage(text);
                 if (!SuppressSendTextToastMessage)
                 {
                     Toast?.Invoke(Resources.Sent);
@@ -394,6 +395,7 @@ namespace ClipboardSync.Common.ViewModels
                 {
                     HistoryList.Remove(message);
                     PinnedList.Insert(0, message);
+                    OnPropertyChanged();
                 });
             }
         }
@@ -410,6 +412,7 @@ namespace ClipboardSync.Common.ViewModels
                 {
                     PinnedList.Remove(message);
                     HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                    OnPropertyChanged();
                 });
                 //HistoryList.Insert(0, message);
                 //CheckHistoryListCapacity();

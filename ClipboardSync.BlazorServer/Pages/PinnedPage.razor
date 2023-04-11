@@ -1,0 +1,51 @@
+﻿@page "/pinned"
+@using ClipboardSync.BlazorServer.Components
+@using ClipboardSync.Common.ViewModels;
+@using ClipboardSync.Common.Services
+@using System.ComponentModel;
+@inject NavigationManager Navigation
+@inject ClipboardManagementViewModel SubViewModel
+@inject SignalRRemoteFilesService remoteFilesService
+
+
+<h1>Pinned</h1>
+
+<CascadingValue Value=@SubViewModel Name="SubViewModel">
+    <PinnedListComponent />
+</CascadingValue>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!remoteFilesService.IsConnected)
+        {
+            await remoteFilesService.ConnectAsync(Navigation.ToAbsoluteUri("/FilesHub"));
+        }
+        if (SubViewModel.IsInitialized == false)
+        {
+            SubViewModel.Initialize((Navigation.ToAbsoluteUri("/ServerHub")).ToString());
+        }
+        SubViewModel.PropertyChanged += async (sender, e) =>
+        {
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        };
+        await base.OnInitializedAsync();
+    }
+
+    async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)
+    {
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        SubViewModel.PropertyChanged -= OnPropertyChangedHandler;
+    }
+}
