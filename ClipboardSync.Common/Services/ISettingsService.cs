@@ -9,6 +9,6 @@ namespace ClipboardSync.Common.Services
         public void Set(string key, string value);
 
         public bool IsContainsKey(string key);
-        public PinnedListFileService PinnedListFile { get; set; }
+        public IPinnedListFileService PinnedListFile { get; set; }
     }
 }

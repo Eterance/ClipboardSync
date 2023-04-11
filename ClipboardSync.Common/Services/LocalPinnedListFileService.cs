@@ -6,12 +6,12 @@ using System.Xml.Serialization;
 
 namespace ClipboardSync.Common.Services
 {
-    public class PinnedListFileService
+    public class LocalPinnedListFileService: IPinnedListFileService
     {
         readonly static string _xmlName = "pinnedList.xml";
         private string fileName;
 
-        public PinnedListFileService(string folderName)
+        public LocalPinnedListFileService(string folderName)
         {
             string directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), folderName);
             if (!Directory.Exists(directoryPath))

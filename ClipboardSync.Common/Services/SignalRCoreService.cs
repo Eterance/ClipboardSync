@@ -32,7 +32,7 @@ namespace ClipboardSync.Common.Services
 
         protected HubConnection _connection;
 
-        public virtual async Task ConnectAsync(List<string> ipEndPoints, CancellationToken token = default)
+        public virtual async Task ConnectAsync(List<string> urls, CancellationToken token = default)
         {
             // Let the old one die
             Unsubscribe(_connection);
@@ -41,14 +41,14 @@ namespace ClipboardSync.Common.Services
             
             List<string> tried = new();
             string failedPrefix = "";
-            foreach (string ipEndPoint in ipEndPoints)
+            foreach (string url in urls)
             {
                 _connection = new HubConnectionBuilder()
-                    .WithUrl($"http://{ipEndPoint}/ServerHub")
+                    .WithUrl(url)
                     .WithAutomaticReconnect()
                     .Build();
                 Subscribe(_connection);
-                ConnectStatusUpdate?.Invoke(this, $"{failedPrefix}{Resources.Try2Connect2} {ipEndPoint}{Resources.Period}");
+                ConnectStatusUpdate?.Invoke(this, $"{failedPrefix}{Resources.Try2Connect2} {url}{Resources.Period}");
                 try
                 {                    
                     await _connection.StartAsync(token);
@@ -60,13 +60,13 @@ namespace ClipboardSync.Common.Services
                 }
                 catch (Exception ex)
                 {
-                    failedPrefix = $"{Resources.Failed2Connect2} {ipEndPoint}{Resources.Comma}";
-                    tried.Add(ipEndPoint);
+                    failedPrefix = $"{Resources.Failed2Connect2} {url}{Resources.Comma}";
+                    tried.Add(url);
                     await Task.Delay(new Random().Next(0, 5) * 1000);
                     continue;
                 }
-                Connected?.Invoke(this, ipEndPoint);
-                ConnectStatusUpdate?.Invoke(this, $"{Resources.Connected2} {ipEndPoint}{Resources.Period}");
+                Connected?.Invoke(this, url);
+                ConnectStatusUpdate?.Invoke(this, $"{Resources.Connected2} {url}{Resources.Period}");
                 return;
             }
             // 如果连接是被 CancellationToken 取消的，不触发连接失败事件。

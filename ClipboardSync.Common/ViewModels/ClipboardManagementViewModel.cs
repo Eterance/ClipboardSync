@@ -219,7 +219,6 @@ namespace ClipboardSync.Common.ViewModels
 
         public async Task ConnectAsync()
         {
-            // 
             if (conncetingTokenSource != null)
             {
                 conncetingTokenSource.Cancel();
@@ -227,7 +226,23 @@ namespace ClipboardSync.Common.ViewModels
             IsConnected = false;
             string ipEndPointsString = settingsService.Get(_ipEndPointsKey, "");
             conncetingTokenSource = new();
-            await _signalRCoreService.ConnectAsync(SeperateIPEndPoints(ipEndPointsString), conncetingTokenSource.Token);
+            List<string> urls = new List<string>();
+            foreach (string ipEndpoint in SeperateIPEndPoints(ipEndPointsString))
+            {
+                urls.Add($"http://{ipEndpoint}/ServerHub");
+            }
+            await _signalRCoreService.ConnectAsync(urls, conncetingTokenSource.Token);
+        }
+
+        public async Task ConnectWithUrlAsync(string url)
+        {
+            if (conncetingTokenSource != null)
+            {
+                conncetingTokenSource.Cancel();
+            }
+            IsConnected = false;
+            conncetingTokenSource = new();
+            await _signalRCoreService.ConnectAsync(new List<string> { url }, conncetingTokenSource.Token);
         }
         
 

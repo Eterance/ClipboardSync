@@ -5,18 +5,11 @@ namespace ClipboardSync_Client_Mobile.Services
 {
     internal class XamarinSettingsService : ISettingsService
     {
-        public PinnedListFileService PinnedListFile { get; set; }
+        public IPinnedListFileService PinnedListFile { get; set; }
 
-        public XamarinSettingsService(PinnedListFileService pinnedListFileService=null) 
+        public XamarinSettingsService(IPinnedListFileService pinnedListFileService) 
         {
-            if (pinnedListFileService == null)
-            {
-                PinnedListFile = new("ClipboardSync_Mobile");
-            }
-            else 
-            {
-                PinnedListFile = pinnedListFileService;
-            }
+            PinnedListFile = pinnedListFileService;
         }
 
         public int Get(string key, int defaultValue)

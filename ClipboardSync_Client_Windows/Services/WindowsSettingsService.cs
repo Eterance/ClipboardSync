@@ -18,21 +18,16 @@ namespace ClipboardSync_Client_Windows.Services
         private Dictionary<string, int> intSettings;
         private string intSettingsFileName = "intSettings.ini";
         private string stringSettingsFileName = "stringSettings.ini";
+        private string _directoryPath = "";
 
-        public PinnedListFileService PinnedListFile { get; set; }
+        public IPinnedListFileService PinnedListFile { get; set; }
 
-        public WindowsSettingsService(PinnedListFileService? pinnedListFileService = null)
+        public WindowsSettingsService(IPinnedListFileService pinnedListFileService, string directoryPath)
         {
-            if (pinnedListFileService == null)
-            {
-                PinnedListFile = new("ClipboardSync_Desktop");
-            }
-            else
-            {
-                PinnedListFile = pinnedListFileService;
-            }
-            intSettings = DeserializeInt(intSettingsFileName);
-            stringSettings = DeserializeString(stringSettingsFileName);
+            PinnedListFile = pinnedListFileService;
+            intSettings = DeserializeInt(Path.Combine(_directoryPath, intSettingsFileName));
+            stringSettings = DeserializeString(Path.Combine(_directoryPath, stringSettingsFileName));
+            _directoryPath = directoryPath;
         }
 
         public int Get(string key, int defaultValue)
@@ -69,13 +64,13 @@ namespace ClipboardSync_Client_Windows.Services
         public void Set(string key, int value)
         {
             intSettings[key] = value;
-            Serialize(intSettings, intSettingsFileName);
+            Serialize(intSettings, Path.Combine(_directoryPath, intSettingsFileName));
         }
 
         public void Set(string key, string value)
         {
             stringSettings[key] = value;
-            Serialize(stringSettings, stringSettingsFileName);
+            Serialize(stringSettings, Path.Combine(_directoryPath, stringSettingsFileName));
         }
 
         private void Serialize<T>(Dictionary<string, T> dict, string dictFileName)
