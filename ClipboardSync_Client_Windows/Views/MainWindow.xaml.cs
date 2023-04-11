@@ -60,6 +60,15 @@ namespace ClipboardSync_Client_Windows.Views
                             .Show();
                     }
                 );
+            clipboardViewModel.NeedClipboardSetText += (sender, e) =>
+            {
+                // If no Dispatcher.Invoke:
+                // System.Threading.ThreadStateException:“必须先将当前线程设置为单个线程单元(STA)模式方可进行 OLE 调用。”
+                // System.Threading.ThreadStateException: "Current thread must be set to single thread apartment (STA) mode before OLE calls can be made. "
+                Dispatcher.Invoke(() =>
+                    Clipboard.SetText(e)
+                );                
+            };
             clipboardViewModel.SuppressSendTextToastMessage = true;
             clipboardViewModel.Initialize();
             mainViewModel = new MainWindowViewModel(clipboardViewModel, App.WindowsSettingsService);

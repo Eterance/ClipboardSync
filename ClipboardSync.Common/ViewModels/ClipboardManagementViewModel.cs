@@ -100,13 +100,13 @@ namespace ClipboardSync.Common.ViewModels
         private ISettingsService settingsService;
 
         public ClipboardManagementViewModel(
-            ISettingsService settingsService = null,
+            ISettingsService settingsService,
             SignalRCoreService service = null,
             Action<Action> uiDispatcherInvoker = null,
             Action<string> toast = null
             )
         {
-            this.settingsService = settingsService ?? this.settingsService;
+            this.settingsService = settingsService;
             _signalRCoreService = service ?? new SignalRCoreService();
             UIDispatcherInvoker = uiDispatcherInvoker ?? UIDispatcherInvoker;
             Toast = toast ?? Toast;

@@ -30,9 +30,9 @@ namespace ClipboardSync.Common.Services
         /// </summary>
         public EventHandler<List<string>> ConnectFailed { get; set; }
 
-        private HubConnection _connection;
+        protected HubConnection _connection;
 
-        public async Task ConnectAsync(List<string> ipEndPoints, CancellationToken token = default)
+        public virtual async Task ConnectAsync(List<string> ipEndPoints, CancellationToken token = default)
         {
             // Let the old one die
             Unsubscribe(_connection);
@@ -78,7 +78,7 @@ namespace ClipboardSync.Common.Services
             }
         }
 
-        private void Subscribe(HubConnection hubConnection)
+        protected void Subscribe(HubConnection hubConnection)
         {
             hubConnection.Closed += ConnectionClosed;
             hubConnection.On<string>("ReceiveMessage", (message) =>
@@ -97,7 +97,7 @@ namespace ClipboardSync.Common.Services
             });
         }
 
-        private void Unsubscribe(HubConnection hubConnection)
+        protected void Unsubscribe(HubConnection hubConnection)
         {
             hubConnection?.Remove("ReceiveMessage");
             hubConnection?.Remove("GetServerCacheCapacity");
@@ -108,7 +108,7 @@ namespace ClipboardSync.Common.Services
             }
         }
 
-        private async Task ConnectionClosed(Exception ex)
+        protected async Task ConnectionClosed(Exception ex)
         {
             LostConnection?.Invoke(this, ex);
         }
