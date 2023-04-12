@@ -1,11 +1,13 @@
 ﻿@using ClipboardSync.BlazorServer.Services;
 @inject ClipboardService ClipboardService
+@inject IJSRuntime JSRuntime
 
 <button class="@buttonData.ButtonClass" disabled="@buttonData.IsDisabled"
         @onclick="CopyToClipboard">
     <i class="@buttonData.FontAwesomeClass"></i> @buttonData.ButtonText
 </button>
 <br />
+
 
 @code {
     // https://www.daveabrock.com/2021/02/18/copy-to-clipboard-markdown-editor/
@@ -30,19 +32,25 @@
     ButtonData buttonData = new(false, _copyToClipboardText,
                       _infoButtonClass, _fontAwesomeCopyClass);
 
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
     public async Task CopyToClipboard()
     {
         var originalData = buttonData;
         try
         {
-            await ClipboardService.WriteTextAsync(Text);
+            //await ClipboardService.WriteTextAsync(Text);
+            await JSRuntime.InvokeVoidAsync("clipboardCopy.copyText", Text);
 
             buttonData = new ButtonData(true, _copiedToClipboardText,
                                     _successButtonClass, _fontAwesomeCopiedClass);
             await TriggerButtonState();
             buttonData = originalData;
         }
-        catch
+        catch(Exception ex)
         {
             buttonData = new ButtonData(true, _errorText,
                                     _errorButtonClass, _fontAwesomeErrorClass);

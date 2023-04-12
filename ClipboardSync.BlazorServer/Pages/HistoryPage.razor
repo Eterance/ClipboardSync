@@ -3,19 +3,83 @@
 @using ClipboardSync.Common.ViewModels;
 @using ClipboardSync.Common.Services
 @using System.ComponentModel;
+@using ClipboardSync.BlazorServer.Services;
 @inject NavigationManager Navigation
 @inject ClipboardManagementViewModel SubViewModel
 @inject SignalRRemoteFilesService remoteFilesService
+@inject ClipboardService ClipboardService
+@inject IJSRuntime JSRuntime
 @implements IDisposable
 
 
 <h1>Clipboard</h1>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <CustomButton @ref="customButton" OnClick="@(() => ReadAndSend(customButton))" ButtonStyle="btn btn-info" ButtonText="发送剪贴板" />
+			<!--
+            <div class="wrapper">
+				<h2>Auto Size Textarea</h2>
+				<textarea spellcheck="false" @ref="textarea1" placeholder="Type something here..." required></textarea>
+			</div>
+			-->
+			
+            <textarea class="form-control" placeholder="输入文本，然后发送！" style="resize:vertical; overflow:hidden; height:10rem; max-height:40rem;" @bind="@text"></textarea>
+            <div class="mt-2">
+                <button class="btn btn-danger" @onclick="@(() => {text = "";})">清空</button>
+                <CustomButton @ref="customButton2" OnClick="@(() => Send(customButton2))" ButtonText="发送文本框" />
+            </div>
+        </div>
+    </div>
+</div>
 
 <CascadingValue Value=@SubViewModel Name="SubViewModel">
     <HistoryListComponent/>
 </CascadingValue>
 
 @code {
+    string text = "";
+    CustomButton? customButton;
+    CustomButton? customButton2;
+    //ElementReference textarea1;
+
+    public async void ReadAndSend(CustomButton cb)
+    {
+        try
+        {
+            string text2 = await JSRuntime.InvokeAsync<string>("clipboardRead.readText");
+            if (text2 != null && text2.Trim() != "")
+            {
+                SubViewModel.SendText(text2);
+                cb?.SuccessAndBack();
+            }
+        }
+        catch (Exception ex)
+        {
+            cb?.FailAndBack();
+        }
+        StateHasChanged();
+    }
+
+    public void Send(CustomButton cb)
+    {
+        try
+        {
+            if (text != null && text.Trim() != "")
+            {
+                SubViewModel.SendText(text);
+                cb?.SuccessAndBack();
+            }
+        }
+        catch (Exception ex)
+        {
+            cb?.FailAndBack();
+        }
+        StateHasChanged();
+    }
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -27,14 +91,23 @@
         {
             SubViewModel.Initialize((Navigation.ToAbsoluteUri("/ServerHub")).ToString());
         }
-        SubViewModel.PropertyChanged += async (sender, e) =>
-        {
-            await InvokeAsync(() =>
-            {
-                StateHasChanged();
-            });
-        };
+        SubViewModel.PropertyChanged += OnPropertyChangedHandler;
         await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            /*try
+            {
+                await JSRuntime.InvokeVoidAsync("window.addEventListenercopy", textarea1);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }*/
+        }
     }
 
     async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)

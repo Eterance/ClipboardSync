@@ -10,7 +10,8 @@
              Title="{x:Static localization:Resources.Home}">
     <ContentPage.Content>
         <ScrollView Margin="20, 0, 4, 4">
-            <StackLayout Margin="0, 0, 16, 0">
+            <StackLayout x:Name="MainStackLayout"
+                         Margin="0, 0, 16, 0">
                 <Label x:Name="ConnectionStatusLabel"
                        Text="{Binding SubViewModel.ConnectionStatusInstruction}"
                        HorizontalTextAlignment="Center"
@@ -33,7 +34,6 @@
                     <Button Grid.Column="0"
                             Background="red"
                             Margin="0,0,10,0"
-                            IsEnabled="{Binding SubViewModel.IsConnected}"
                             Text="{x:Static localization:Resources.Clear}"
                             Command="{Binding ClearPlaygroundTextCommand}" />
                     <Button Grid.Column="1"
@@ -49,7 +49,7 @@
                 <Label Text="{x:Static localization:Resources.ServerAddrDescription}" 
                        FontSize="Subtitle"/>
                 <Editor x:Name="IpEndPointsEditor"
-                        HeightRequest="80"
+                        AutoSize="TextChanges"
                         Placeholder="{x:Static localization:Resources.ServerAddrPlaceholder}"
                         Text="{Binding SubViewModel.IPEndPointsString}"/>
                 <Button Text="{x:Static localization:Resources.SaveAndReconnect}" 

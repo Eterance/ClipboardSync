@@ -1,0 +1,103 @@
+﻿@using ClipboardSync.BlazorServer.Services;
+@inject ClipboardService ClipboardService
+
+<button class="@buttonData.ButtonClass" disabled="@buttonData.IsDisabled"
+        @onclick="Click">
+    <i class="@buttonData.FontAwesomeClass"></i> @buttonData.ButtonText
+</button>
+<br />
+
+@code {
+    // https://www.daveabrock.com/2021/02/18/copy-to-clipboard-markdown-editor/
+    private const string _successButtonClass = "btn btn-success";
+    //private const string _infoButtonClass = "btn btn-info";
+    private const string _defaultButtonClass = "btn btn-primary";
+    private const string _errorButtonClass = "btn btn-danger";
+
+    private const string _fontAwesomeCopyClass = "fa fa-clipboard";
+    private const string _fontAwesomeCopiedClass = "fa fa-check";
+    private const string _fontAwesomeErrorClass = "fa fa-exclamation-circle";
+
+
+    [Parameter] 
+    public Action? OnClick { get; set; }
+    [Parameter]
+    public string ButtonText { get; set; } = "Button";
+    [Parameter] 
+    public string SucceededButtonText { get; set; } = "Succeeded!";
+    [Parameter] 
+    public string FailedButtonText { get; set; } = "Fail.";
+    [Parameter] 
+    public string ButtonStyle { get; set; } = "btn btn-primary";
+    [Parameter] 
+    public string SucceededButtonStyle { get; set; } = "btn btn-success";
+    [Parameter] 
+    public string FailButtonStyle { get; set; } = "btn btn-danger";
+    [Parameter]
+    public int WaitMilliseconds { get; set; } = 1000;
+    [Parameter]
+    public bool AutoTurn { get; set; } = false;
+
+    record ButtonData(bool IsDisabled, string ButtonText,
+        string ButtonClass, string FontAwesomeClass);
+
+    ButtonData buttonData = new(
+    true,
+    "Initializing...",
+    _defaultButtonClass,
+    _fontAwesomeCopyClass);
+
+    protected override async Task OnInitializedAsync()
+    {
+        buttonData = new(false, ButtonText, ButtonStyle, _fontAwesomeCopyClass);
+        await base.OnInitializedAsync();
+    }
+
+    public async Task Click()
+    {
+        var originalData = buttonData;
+        try
+        {
+            OnClick?.Invoke();
+            if (AutoTurn)
+            {                
+                buttonData = new ButtonData(true, SucceededButtonText, SucceededButtonStyle, _fontAwesomeCopiedClass);
+                await TriggerButtonState();
+                buttonData = originalData;
+            }
+        }
+        catch
+        {
+            if (AutoTurn)
+            {
+                buttonData = new ButtonData(true, FailedButtonText, FailButtonStyle, _fontAwesomeErrorClass);
+                await TriggerButtonState();
+                buttonData = originalData;
+            }
+        }
+    }
+
+    public async Task SuccessAndBack()
+    {
+        var originalData = buttonData;
+        buttonData = new ButtonData(true, SucceededButtonText, SucceededButtonStyle, _fontAwesomeCopiedClass);
+        await TriggerButtonState();
+        buttonData = originalData;
+        StateHasChanged();
+    }
+
+    public async Task FailAndBack()
+    {
+        var originalData = buttonData;
+        buttonData = new ButtonData(true, FailedButtonText, FailButtonStyle, _fontAwesomeErrorClass);
+        await TriggerButtonState();
+        buttonData = originalData;
+        StateHasChanged();
+    }
+
+    private async Task TriggerButtonState()
+    {
+        StateHasChanged();
+        await Task.Delay(TimeSpan.FromMilliseconds(WaitMilliseconds));
+    }
+}

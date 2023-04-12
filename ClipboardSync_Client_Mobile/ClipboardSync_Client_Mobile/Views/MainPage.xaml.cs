@@ -15,7 +15,7 @@ namespace ClipboardSync_Client_Mobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
     {
-        
+        double editorHeight = 0;
         public MainPage()
         {
             InitializeComponent();
@@ -27,6 +27,19 @@ namespace ClipboardSync_Client_Mobile.Views
         {
             base.OnAppearing();
         }
-        
+
+        private void SendEditor_SizeChanged(object sender, EventArgs e)
+        {
+            Editor editor = sender as Editor;
+            if (editorHeight != editor.Height)
+            { 
+                editorHeight = editor.Height;
+                double stackLayoutHeight = editorHeight + MainStackLayout.Height; // 计算StackLayout的高度
+
+                // 将计算出的StackLayout高度设置为页面布局的高度
+                MainStackLayout.HeightRequest = stackLayoutHeight;
+            }
+        }
+
     }
 }

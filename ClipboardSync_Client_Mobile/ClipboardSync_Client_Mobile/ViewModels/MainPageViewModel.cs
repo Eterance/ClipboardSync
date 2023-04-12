@@ -85,7 +85,7 @@ namespace ClipboardSync_Client_Mobile.ViewModels
         private async void SendClipboardTextAsync()
         {
             string text = await Clipboard.GetTextAsync();
-            if (text != null) 
+            if (text != null && text.Trim() != "") 
             { 
                 SubViewModel.SendText(text); 
             }
