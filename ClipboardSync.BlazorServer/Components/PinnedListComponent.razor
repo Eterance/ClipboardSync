@@ -11,29 +11,32 @@
 else
 {
     <div class="card-deck">
-        @foreach (string Pinned_text in SubViewModel.PinnedList)
+        @lock (SubViewModel.PinnedList)
         {
-            <div class="card mb-3 text-white bg-dark" style="min-width: 20rem; max-width: 200rem;">
-                <div class="card-body">
-                    <p class="card-text line-clamp-4">@Pinned_text</p>
-                    <div class="d-flex justify-content-between">
-                        <CascadingValue Value=@Pinned_text Name="Text">
-                            <CopyToClipboardButton />
-                        </CascadingValue>
-                        <div class="d-flex justify-content-end gap-2">
-                            <button class="btn btn-primary" @onclick="@(() => SubViewModel.Unpin(Pinned_text))">Unpin</button>
-                            <button class="btn btn-primary" @onclick="@(() => {})">Detail</button>
-                            <button class="btn btn-primary" @onclick="@(() => SubViewModel.PinnedList.Remove(Pinned_text))">Delete</button>
+            @foreach (string Pinned_text in SubViewModel.PinnedList)
+            {
+                <div class="card mb-3 text-white bg-dark" style="min-width: 20rem; max-width: 200rem;">
+                    <div class="card-body">
+                        <p class="card-text line-clamp-4">@Pinned_text</p>
+                        <div class="d-flex justify-content-between">
+                            <CascadingValue Value=@Pinned_text Name="Text">
+                                <CopyToClipboardButton />
+                            </CascadingValue>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-primary" @onclick="@(() => SubViewModel.Unpin(Pinned_text))">Unpin</button>
+                                <button class="btn btn-primary" @onclick="@(() => {})">Detail</button>
+                                <button class="btn btn-primary" @onclick="@(() => SubViewModel.PinnedList.Remove(Pinned_text))">Delete</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        }        
     </div>
 
 }
 
 @code {
     [CascadingParameter(Name = "SubViewModel")]
-    ClipboardManagementViewModel SubViewModel { get; set; }
+    ClipboardManagementViewModel? SubViewModel { get; set; }
 }

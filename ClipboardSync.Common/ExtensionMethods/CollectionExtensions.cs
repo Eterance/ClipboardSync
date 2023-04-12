@@ -33,6 +33,17 @@ namespace ClipboardSync.Common.ExtensionMethods
             collection.Insert(index, item);
         }
 
+        public static void InsertWithCapacityLimit<T>(
+            this IList<T> collection,
+            int index,
+            T item,
+            int capacity,
+            DeleteDirection direction = DeleteDirection.Tail)
+        {
+            collection.ApplyCapacityLimit(capacity - 1, direction);
+            collection.Insert(index, item);
+        }
+
         /// <summary>
         /// 对集合应用容量限制，删除超出容量限制的元素。
         /// </summary>
@@ -41,6 +52,21 @@ namespace ClipboardSync.Common.ExtensionMethods
         /// <param name="capacity">容量</param>
         /// <param name="direction">从集合的哪个方向删除元素</param>
         public static void ApplyCapacityLimit<T>(this Collection<T> collection, int capacity, DeleteDirection direction = DeleteDirection.Tail)
+        {
+            while (collection.Count > capacity)
+            {
+                if (direction == DeleteDirection.Tail)
+                {
+                    collection.RemoveAt(collection.Count - 1);
+                }
+                else
+                {
+                    collection.RemoveAt(0);
+                }
+            }
+        }
+
+        public static void ApplyCapacityLimit<T>(this IList<T> collection, int capacity, DeleteDirection direction = DeleteDirection.Tail)
         {
             while (collection.Count > capacity)
             {

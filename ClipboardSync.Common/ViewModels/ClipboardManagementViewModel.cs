@@ -28,18 +28,18 @@ namespace ClipboardSync.Common.ViewModels
             {
                 SetValue(ref _isInitialized, value);
             }
-        }
+        } 
         /// <summary>
         /// On WPF, ObservableCollection cannot modify out of the dispatch thread
         /// If UIDispatcherInvoker assigned, meaning all ObservableCollection modification will using this DispatcherInvoke
         /// </summary>
-        public Action<Action> UIDispatcherInvoker { get; set; }
-        public EventHandler<string> NeedClipboardSetText { get; set; }
-        public EventHandler<Exception> UnexpectedError { get; set; }
-        public Action<string> Toast { get; set; }
+        public Action<Action>? UIDispatcherInvoker { get; set; }
+        public EventHandler<string>? NeedClipboardSetText { get; set; }
+        public EventHandler<Exception>? UnexpectedError { get; set; }
+        public Action<string>? Toast { get; set; }
         public bool SuppressSendTextToastMessage { get; set; } = false;
 
-        public ObservableCollection<string> HistoryList
+        public ObservableCollection<string>? HistoryList
         {
             get => _historyList;
             private set
@@ -47,7 +47,11 @@ namespace ClipboardSync.Common.ViewModels
                 SetValue(ref _historyList, value);
             }
         }
-        public ObservableCollection<string> PinnedList { get; set; }
+        public ObservableCollection<string>? PinnedList 
+        { 
+            get => _pinnedList; 
+            set => SetValue(ref _pinnedList, value); 
+        }
         public string IPEndPointsString
         {
             get => _ipEndPointsString;
@@ -97,31 +101,28 @@ namespace ClipboardSync.Common.ViewModels
         public DelegateCommand ApplyServerCacheCapacityCommand { get; private set; }
         public DelegateCommand ApplyHistoryListCapacityCommand { get; private set; }
         public DelegateCommand ClearHistoryListCommand { get; private set; }
-        /// <summary>
-        /// 负责暂时缓存需要发送的信息。
-        /// </summary>
-        private Queue<string> tempList { get; set; }
 
         private bool _isConnected = false;
         private bool _isInitialized = false;
-        private string _ipEndPointsString;
+        private string _ipEndPointsString = "";
         private int _serverCacheCapacity;
         //private int _historyListCapacity = Preferences.Get(_historyListCapacityKey, 30);
         private int _historyListCapacity = 30;
-        private string _connectionStatusInstruction;
+        private string _connectionStatusInstruction = "";
         private static readonly string _ipEndPointsKey = "IPEndPoints";
         private static readonly string _historyListCapacityKey = "HistoryListCapacity";
         private SignalRCoreService _signalRCoreService;
 
-        private CancellationTokenSource conncetingTokenSource;
+        private CancellationTokenSource? conncetingTokenSource;
         private ISettingsService settingsService;
-        private ObservableCollection<string> _historyList;
+        private ObservableCollection<string>? _historyList;
+        private ObservableCollection<string>? _pinnedList;
 
         public ClipboardManagementViewModel(
             ISettingsService settingsService,
-            SignalRCoreService service = null,
-            Action<Action> uiDispatcherInvoker = null,
-            Action<string> toast = null
+            SignalRCoreService? service = null,
+            Action<Action>? uiDispatcherInvoker = null,
+            Action<string>? toast = null
             )
         {
             this.settingsService = settingsService;
@@ -138,7 +139,7 @@ namespace ClipboardSync.Common.ViewModels
                 ServerCacheCapacity = e;
                 if (e <= 0)
                 {
-                    Toast($"{Resources.ServerCacheCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
+                    Toast?.Invoke($"{Resources.ServerCacheCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
                     Toast?.Invoke(
                         $"{Resources.ServerCacheCapacityChanged2}{Resources.Unlimited}{Resources.Period}"
                         );
@@ -314,8 +315,8 @@ namespace ClipboardSync.Common.ViewModels
         /// <returns>是否成功添加新消息。如果消息已经存在，返回 false。</returns>
         private bool AddNewHistory(string message)
         {
-            try 
-            { 
+            try
+            {
                 // 两张表里都没有，加进剪贴板
                 if (HistoryList.Contains(message) != true && (PinnedList.Contains(message) != true))
                 {
@@ -344,7 +345,7 @@ namespace ClipboardSync.Common.ViewModels
                     return false;
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return false;
             }
