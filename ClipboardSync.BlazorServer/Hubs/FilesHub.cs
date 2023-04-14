@@ -12,7 +12,7 @@ namespace ClipboardSync.BlazorServer.Hubs
     public class FilesHub : Hub
     {
         private readonly ILogger _logger = null;
-        private readonly string folderName = "ClipboardSync_server";
+        private readonly string folderName = "ClipboardSync_Server";
 
         public FilesHub(ILogger<ServerHub> logger)
         {

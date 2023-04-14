@@ -1,11 +1,13 @@
 using ClipboardSync.BlazorServer.Data;
 using ClipboardSync.BlazorServer.Hubs;
 using ClipboardSync.BlazorServer.Services;
+using ClipboardSync.BlazorServer.Services.Jwt;
 using ClipboardSync.Common.Services;
 using ClipboardSync.Common.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Configuration;
 
 namespace ClipboardSync.BlazorServer
 {
@@ -20,20 +22,25 @@ namespace ClipboardSync.BlazorServer
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddSingleton<MessageCacheService>();
+			builder.Services.AddSingleton<CredentialsService>();
 
-            builder.Services.AddScoped<SignalRRemoteFilesService>();
+			builder.Services.AddScoped<SignalRRemoteFilesService>();
             builder.Services.AddScoped<SignalRCoreService>();
             builder.Services.AddScoped<ClipboardService>();
             builder.Services.AddScoped<IPinnedListFileService, RemotePinnedListFileService>();
             builder.Services.AddScoped<ISettingsService, BlazorServerClientSettingsService>();
             builder.Services.AddScoped<ClipboardManagementViewModel>();
+            builder.AddJwtBearer();
 
-            builder.Services.AddResponseCompression(opts =>
+
+		    builder.Services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
-            builder.WebHost.UseUrls("http://*:50001");
+
+
+			builder.WebHost.UseUrls("http://*:50001");
 
             var app = builder.Build();
 
@@ -45,12 +52,15 @@ namespace ClipboardSync.BlazorServer
                 app.UseHsts();
             }
 
-
-            app.UseStaticFiles();
+			app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.MapBlazorHub();
+			app.UseAuthentication();
+			app.UseAuthorization();
+
+            app.MapControllers();
+			app.MapBlazorHub();
             app.MapHub<FilesHub>($"/FilesHub");
             app.MapHub<ServerHub>($"/ServerHub");
             app.MapHub<ChatHub>($"/ChatHub");
