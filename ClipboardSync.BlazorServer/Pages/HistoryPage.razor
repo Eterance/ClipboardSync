@@ -1,13 +1,14 @@
 ﻿@page "/clipboard"
 @using ClipboardSync.BlazorServer.Components
-@using ClipboardSync.Common.ViewModels;
+@using ClipboardSync.Common.ViewModels
 @using ClipboardSync.Common.Services
+@using ClipboardSync.Common.Models
 @using System.ComponentModel;
-@using ClipboardSync.BlazorServer.Services;
+@using ClipboardSync.BlazorServer.Services
 @inject NavigationManager Navigation
 @inject ClipboardManagementViewModel SubViewModel
-@inject SignalRRemoteFilesService remoteFilesService
 @inject ClipboardService ClipboardService
+@inject UriModel UriModel
 @inject IJSRuntime JSRuntime
 @implements IDisposable
 
@@ -83,9 +84,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (!remoteFilesService.IsConnected)
+        if (UriModel.RootUri == null)
         {
-            await remoteFilesService.ConnectAsync(Navigation.ToAbsoluteUri("/FilesHub"));
+            UriModel.RootUri = Navigation.ToAbsoluteUri("").ToString();
         }
         if (SubViewModel.IsInitialized == false)
         {

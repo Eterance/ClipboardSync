@@ -204,10 +204,10 @@ namespace ClipboardSync.Common.ViewModels
             settingsService.PinnedListFile.Save(new List<string>(PinnedList));
         }
 
-        public void Initialize()
+        public async void Initialize()
         {
             if (_isInitialized) return;
-            PinnedList = new(this.settingsService.PinnedListFile.Load());
+            PinnedList = new(await this.settingsService.PinnedListFile.Load());
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
             ConnectionStatusInstruction = Resources.NotConnected;
 
@@ -229,10 +229,10 @@ namespace ClipboardSync.Common.ViewModels
             _isInitialized = true;
         }
 
-        public void Initialize(string serverUrl)
+        public async void Initialize(string serverUrl)
         {
             if (_isInitialized) return;
-            PinnedList = new(this.settingsService.PinnedListFile.Load());
+            PinnedList = new(await this.settingsService.PinnedListFile.Load());
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
             ConnectionStatusInstruction = Resources.NotConnected;
             var connectTask = ConnectAsync(serverUrl);

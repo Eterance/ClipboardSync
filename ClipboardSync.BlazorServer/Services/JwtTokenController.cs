@@ -120,7 +120,7 @@ namespace ClipboardSync.BlazorServer.Services
 			}
 			else
 			{
-				return BadRequest("User name, password or both are empty");
+				return BadRequest("Invalid renewal request");
 			}
 
 		}

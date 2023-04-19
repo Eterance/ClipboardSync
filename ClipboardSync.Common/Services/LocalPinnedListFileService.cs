@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace ClipboardSync.Common.Services
@@ -41,7 +42,7 @@ namespace ClipboardSync.Common.Services
         /// Deserialize the list from xml file. Using UTF-8.
         /// </summary>
         /// <returns></returns>
-        public List<string> Load()
+        public async Task<List<string>> Load()
         {
             if (File.Exists(fileName) == false)
             {

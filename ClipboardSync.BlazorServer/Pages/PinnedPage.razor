@@ -1,11 +1,12 @@
 ﻿@page "/pinned"
 @using ClipboardSync.BlazorServer.Components
-@using ClipboardSync.Common.ViewModels;
+@using ClipboardSync.Common.ViewModels
 @using ClipboardSync.Common.Services
+@using ClipboardSync.Common.Models
 @using System.ComponentModel;
 @inject NavigationManager Navigation
 @inject ClipboardManagementViewModel SubViewModel
-@inject SignalRRemoteFilesService remoteFilesService
+@inject UriModel UriModel
 
 
 <h1>Pinned</h1>
@@ -18,9 +19,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (!remoteFilesService.IsConnected)
+        if (UriModel.RootUri == null)
         {
-            await remoteFilesService.ConnectAsync(Navigation.ToAbsoluteUri("/FilesHub"));
+            UriModel.RootUri = Navigation.ToAbsoluteUri("").ToString();
         }
         if (SubViewModel.IsInitialized == false)
         {

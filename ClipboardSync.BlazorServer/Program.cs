@@ -2,6 +2,7 @@ using ClipboardSync.BlazorServer.Data;
 using ClipboardSync.BlazorServer.Hubs;
 using ClipboardSync.BlazorServer.Services;
 using ClipboardSync.BlazorServer.Services.Jwt;
+using ClipboardSync.Common.Models;
 using ClipboardSync.Common.Services;
 using ClipboardSync.Common.ViewModels;
 using Microsoft.AspNetCore.Components;
@@ -24,7 +25,7 @@ namespace ClipboardSync.BlazorServer
             builder.Services.AddSingleton<MessageCacheService>();
 			builder.Services.AddSingleton<CredentialsService>();
 
-			builder.Services.AddScoped<SignalRRemoteFilesService>();
+            builder.Services.AddScoped<UriModel>();
             builder.Services.AddScoped<SignalRCoreService>();
             builder.Services.AddScoped<ClipboardService>();
             builder.Services.AddScoped<IPinnedListFileService, RemotePinnedListFileService>();

@@ -1,7 +1,11 @@
-﻿using System;
+﻿using ClipboardSync.Common.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace ClipboardSync.Common.Services
@@ -12,30 +16,46 @@ namespace ClipboardSync.Common.Services
     public class RemotePinnedListFileService : IPinnedListFileService
     {
         readonly static string _xmlName = "pinnedList.xml";
-        private string fileName;
-        private SignalRRemoteFilesService _signalRService;
+        //private SignalRRemoteFilesService _signalRService;
+        private HttpClient _httpClient = new HttpClient();
+        public UriModel UriModel { get; set; }
+        JsonSerializerOptions _serializerOptions;
 
-        public RemotePinnedListFileService(SignalRRemoteFilesService signalrFileServices)
+        public RemotePinnedListFileService(UriModel uriModel)
         {
-            _signalRService = signalrFileServices;
+            // https://github.com/xamarin/xamarin-forms-samples/blob/main/WebServices/TodoREST/TodoREST/Data/RestService.cs
+            _serializerOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+            UriModel = uriModel;
         }
 
-        public void Save(List<string> list)
+
+        public async void Save(List<string> list)
         {
-            if (!_signalRService.IsConnected)
+            Uri uri = new Uri($"{UriModel.RootUri}api/files/stringlist?filename={_xmlName}");
+            string json = JsonSerializer.Serialize(list, _serializerOptions);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PutAsync(uri, content);
+        }
+
+        public async Task<List<string>> Load()
+        {
+            List<string> Items = new List<string>();
+            Uri uri = new Uri($"{UriModel.RootUri}api/files/stringlist?filename={_xmlName}");
+            HttpResponseMessage response = await _httpClient.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Items = JsonSerializer.Deserialize<List<string>>(content) ?? Items;
+                return Items;
+            }
+            else 
             {
                 throw new Exception();
             }
-            _ = _signalRService.SaveStringList(list, _xmlName);
-        }
-
-        public List<string> Load()
-        {
-            if (!_signalRService.IsConnected)
-            {
-                throw new Exception();
-            }
-            return _signalRService.LoadStringList(_xmlName);
         }
     }
 }
