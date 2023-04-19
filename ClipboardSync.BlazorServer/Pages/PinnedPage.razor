@@ -7,6 +7,7 @@
 @inject NavigationManager Navigation
 @inject ClipboardManagementViewModel SubViewModel
 @inject UriModel UriModel
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 
 <h1>Pinned</h1>
@@ -19,6 +20,14 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // https://github.com/Blazored/SessionStorage
+        var AccessToken = await sessionStorage.GetItemAsync<string>("AccessToken");
+        var RefreshToken = await sessionStorage.GetItemAsync<string>("RefreshToken");
         if (UriModel.RootUri == null)
         {
             UriModel.RootUri = Navigation.ToAbsoluteUri("").ToString();
@@ -27,14 +36,8 @@
         {
             SubViewModel.Initialize((Navigation.ToAbsoluteUri("/ServerHub")).ToString());
         }
-        SubViewModel.PropertyChanged += async (sender, e) =>
-        {
-            await InvokeAsync(() =>
-            {
-                StateHasChanged();
-            });
-        };
-        await base.OnInitializedAsync();
+        SubViewModel.PropertyChanged += OnPropertyChangedHandler;
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)

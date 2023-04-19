@@ -40,7 +40,7 @@ namespace ClipboardSync.BlazorServer.Services
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Grt file {filename} fail.");
+                return StatusCode(500, $"Get file {filename} fail.");
             }
         }
     

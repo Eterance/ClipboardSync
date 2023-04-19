@@ -10,6 +10,7 @@
 @inject ClipboardService ClipboardService
 @inject UriModel UriModel
 @inject IJSRuntime JSRuntime
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @implements IDisposable
 
 
@@ -84,6 +85,22 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+                /*try
+                {
+                await JSRuntime.InvokeVoidAsync("window.addEventListenercopy", textarea1);
+            }
+            catch (Exception e)
+                {
+                Console.WriteLine(e.ToString());
+            }*/
+        }
         if (UriModel.RootUri == null)
         {
             UriModel.RootUri = Navigation.ToAbsoluteUri("").ToString();
@@ -93,22 +110,7 @@
             SubViewModel.Initialize((Navigation.ToAbsoluteUri("/ServerHub")).ToString());
         }
         SubViewModel.PropertyChanged += OnPropertyChangedHandler;
-        await base.OnInitializedAsync();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            /*try
-            {
-                await JSRuntime.InvokeVoidAsync("window.addEventListenercopy", textarea1);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }*/
-        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     async void OnPropertyChangedHandler(object sender, PropertyChangedEventArgs e)

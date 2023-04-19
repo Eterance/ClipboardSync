@@ -1,3 +1,4 @@
+using Blazored.SessionStorage;
 using ClipboardSync.BlazorServer.Data;
 using ClipboardSync.BlazorServer.Hubs;
 using ClipboardSync.BlazorServer.Services;
@@ -21,6 +22,7 @@ namespace ClipboardSync.BlazorServer
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
+            builder.Services.AddBlazoredSessionStorage();
             builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddSingleton<MessageCacheService>();
 			builder.Services.AddSingleton<CredentialsService>();

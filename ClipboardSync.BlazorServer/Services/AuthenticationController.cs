@@ -11,52 +11,23 @@ using System.Text;
 
 namespace ClipboardSync.BlazorServer.Services
 {
-	[Route("api/token")]
+	[Route("api/auth")]
 	[ApiController]
-	public class JwtTokenController : ControllerBase
+	public class AuthenticationController : ControllerBase
 	{
 		private IConfiguration _configuration;
 		private CredentialsService _credentialsService;
 
-		public JwtTokenController(IConfiguration config, CredentialsService credentialsService)
+		public AuthenticationController(IConfiguration config, CredentialsService credentialsService)
 		{
 			_configuration = config;
 			_credentialsService = credentialsService;
 		}
 
-		// GET: api/<JwtTokenController>
-		[HttpGet]
-		public IEnumerable<string> Get()
-		{
-			return new string[] { "value1", "value2" };
-		}
-
-		// GET api/<JwtTokenController>/5
-		[HttpGet("{id}")]
-		public string Get(int id)
-		{
-			return "value";
-		}
-
-		// GET api/<JwtTokenController>/7
-		[Route("api/token/7")]
-		[HttpGet("{id}")]
-		public string Get2(int id)
-		{
-			return id.ToString();
-		}
-
-		// POST api/<JwtTokenController>/7
-		[Route("api/token/7")]
-		[HttpPost]
-		public async Task<IActionResult> Post2(string sss)
-		{
-			return Ok($"hello, {sss}!");
-		}
 
 		// POST api/<JwtTokenController>
 		// https://www.c-sharpcorner.com/article/how-to-implement-jwt-authentication-in-web-api-using-net-6-0-asp-net-core/
-		[HttpPost]
+		[HttpPost("token/get")]
 		public async Task<IActionResult> GetAccessToken(UserInfo _userInfo)
 		{
 			if (_userInfo != null && _userInfo.UserName != null && _userInfo.Password != null)
@@ -93,7 +64,7 @@ namespace ClipboardSync.BlazorServer.Services
 
 		// POST api/<JwtTokenController>
 		// https://www.c-sharpcorner.com/article/how-to-implement-jwt-authentication-in-web-api-using-net-6-0-asp-net-core/
-		[HttpPost("renew")]
+		[HttpPost("token/renew")]
 		public async Task<IActionResult> RenewAccessToken(RenewTokenRequestModel renewTokenRequestModel)
 		{
 			if (renewTokenRequestModel != null
