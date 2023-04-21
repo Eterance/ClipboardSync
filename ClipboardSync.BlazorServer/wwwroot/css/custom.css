@@ -22,3 +22,127 @@
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
 }
+
+.gradient-bg {
+    background: linear-gradient(to bottom, blue, purple);
+}
+
+.blue-purple-gradient-button {
+    display: inline-block;
+    padding: 20px 80px;
+    font-size: 2rem;
+    border-radius: 20px;
+    background: linear-gradient(to right, #0250c5, #d43f8d);
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+    .blue-purple-gradient-button:hover {
+        background: linear-gradient(to right, #d43f8d, #0250c5);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+    }
+
+    .blue-purple-gradient-button:disabled {
+        background: #ccc;
+        color: #666;
+        cursor: not-allowed;
+    }
+
+.red-yellow-gradient-button {
+    display: inline-block;
+    padding: 20px 80px;
+    font-size: 2rem;
+    border-radius: 20px;
+    background: linear-gradient(to right, #FEE140, #FA709A);
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+    .red-yellow-gradient-button:hover {
+        background: linear-gradient(to right, #FA709A, #FEE140);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+    }
+
+    .red-yellow-gradient-button:disabled {
+        background: #ccc;
+        color: #666;
+        cursor: not-allowed;
+    }
+
+.rushb-button {
+    display: inline-block;
+    padding: 10px 40px;
+    font-size: 1rem;
+    border-radius: 20px;
+    background: linear-gradient(to right, #37ECBA, #FA709A);
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+    .rushb-button:hover {
+        background: linear-gradient(to right, #FA709A, #37ECBA);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+    }
+
+    .rushb-button:disabled {
+        background: #ccc;
+        color: #666;
+        cursor: not-allowed;
+    }
+
+.text-box {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+}
+
+    .text-box textarea {
+        width: 100%;
+        height: 200px;
+        padding: 10px;
+        font-size: 16px;
+        line-height: 1.5;
+        border: none;
+        background-color: #f6f6f6;
+        border-radius: 4px;
+        resize: none;
+    }
+
+        .text-box textarea:focus {
+            outline: none;
+            background-color: #fff;
+            box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+        }
+
+.container {
+    margin-top: 50px;
+    max-width: 500px;
+}
+
+.nav-link {
+    cursor: pointer;
+}
+
+.tab-pane {
+    padding: 20px;
+}

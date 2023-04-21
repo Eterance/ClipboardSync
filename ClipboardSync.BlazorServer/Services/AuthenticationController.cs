@@ -45,12 +45,18 @@ namespace ClipboardSync.BlazorServer.Services
 						_userInfo.UserName.ToString(),
 						_configuration["JwtConfiguration:RefreshSecret"],
 						_configuration["JwtConfiguration:RefreshExpiration"]);
-					return Ok(new JwtTokensPairModel()
+                    return Ok(new JwtTokensPairModel()
 					{
 						AccessToken = accessToken,
 						RefreshToken = refreshToken,
 					});
-				}
+                    /*var aaa = new List<JwtTokenModel>
+                    {
+                        accessToken,
+                        refreshToken
+                    };
+                    return Ok(aaa);*/
+                }
 				else
 				{
 					return BadRequest("Invalid user name or password");
@@ -132,7 +138,7 @@ namespace ClipboardSync.BlazorServer.Services
 				Token = new JwtSecurityTokenHandler().WriteToken(jwtAccessToken),
 				Expiration = expire,
 			};
-				
-		}
+
+        }
 	}
 }

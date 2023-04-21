@@ -1,0 +1,84 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.Components.Forms
+@using ClipboardSync.BlazorServer.Models;
+@using ClipboardSync.Common.Models;
+@using System.Text.Json
+@inject NavigationManager Navigation
+@inject IConfiguration Config
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+
+<body>
+    <h1>登录</h1>
+    <br>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <!--<label for="username">用户名</label>-->
+        <input id="username" class="text-box" type="text" @bind="@userinfo.UserName" placeholder="请输入用户名" disabled="@_disable" />
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+        <!--<label for="password">密码</label>-->
+        <input id="password" class="text-box" type="password" @bind="@userinfo.Password" placeholder="请输入密码" disabled="@_disable" />
+    </div>
+    @if (ErrorMessage != null)
+    {
+        <br>
+        <h5 class="text-center">@ErrorMessage</h5>
+    }
+    <br>
+    <div class="d-flex justify-content-center">
+        <button class="btn blue-purple-gradient-button" @onclick="@_Login" disabled="@_disable">登录</button>
+    </div>
+</body>
+
+
+@code {
+    private string? ErrorMessage { get; set; }
+    private UserInfo userinfo { get; set; } = new UserInfo()
+    {
+        UserName = "",
+        Password = "",
+    };
+    private bool _disable { get; set; } = false;
+    private HttpClient _httpClient = new HttpClient();
+    JsonSerializerOptions _serializerOptions = new JsonSerializerOptions
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented = true
+    };
+
+    private async Task _Login()
+    {
+        ErrorMessage = null;
+        // https://github.com/Blazored/SessionStorage
+        _disable = true;
+        var _clear = sessionStorage.ClearAsync();
+        Uri uri = new Uri($"{(Navigation.ToAbsoluteUri("")).ToString()}api/auth/token/get");
+        string json = JsonSerializer.Serialize(userinfo, _serializerOptions);
+        StringContent content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+        HttpResponseMessage response = await _httpClient.PostAsync(uri, content);
+        await _clear;
+        if (response.IsSuccessStatusCode)
+        {
+            string response_content = await response.Content.ReadAsStringAsync();
+            try
+            {
+                JwtTokensPairModel tokensPair = JsonSerializer.Deserialize<JwtTokensPairModel>(response_content, _serializerOptions) ?? new();
+                await sessionStorage.SetItemAsync<JwtTokensPairModel>("JwtTokenModels", tokensPair);
+                Navigation.NavigateTo("/clipboard");
+            }
+            catch (Exception ex)
+            {
+                _disable = false;
+                ErrorMessage = "登录时发生未知错误。";
+            }
+
+        }
+        else
+        {
+            _disable = false;
+            ErrorMessage = "用户名或密码错误。";
+        }
+    }
+}

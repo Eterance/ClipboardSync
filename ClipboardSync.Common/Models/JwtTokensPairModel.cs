@@ -9,5 +9,5 @@ namespace ClipboardSync.Common.Models
 		public JwtTokenModel? AccessToken { get; set; }
 
 		public JwtTokenModel? RefreshToken { get; set; }
-	}
+    }
 }

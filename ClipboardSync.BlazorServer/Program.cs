@@ -30,7 +30,7 @@ namespace ClipboardSync.BlazorServer
             builder.Services.AddScoped<UriModel>();
             builder.Services.AddScoped<SignalRCoreService>();
             builder.Services.AddScoped<ClipboardService>();
-            builder.Services.AddScoped<IPinnedListFileService, RemotePinnedListFileService>();
+            builder.Services.AddScoped<RemotePinnedListFileService>();
             builder.Services.AddScoped<ISettingsService, BlazorServerClientSettingsService>();
             builder.Services.AddScoped<ClipboardManagementViewModel>();
             builder.AddJwtBearer();

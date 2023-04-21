@@ -17,11 +17,11 @@ namespace ClipboardSync.Common.Services
     {
         readonly static string _xmlName = "pinnedList.xml";
         //private SignalRRemoteFilesService _signalRService;
-        private HttpClient _httpClient = new HttpClient();
+        private HttpClient _httpClient;
         public UriModel UriModel { get; set; }
         JsonSerializerOptions _serializerOptions;
 
-        public RemotePinnedListFileService(UriModel uriModel)
+        public RemotePinnedListFileService(UriModel uriModel, HttpClient httpClient)
         {
             // https://github.com/xamarin/xamarin-forms-samples/blob/main/WebServices/TodoREST/TodoREST/Data/RestService.cs
             _serializerOptions = new JsonSerializerOptions
@@ -30,6 +30,7 @@ namespace ClipboardSync.Common.Services
                 WriteIndented = true
             };
             UriModel = uriModel;
+            _httpClient = httpClient;
         }
 
 
@@ -49,7 +50,7 @@ namespace ClipboardSync.Common.Services
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                Items = JsonSerializer.Deserialize<List<string>>(content) ?? Items;
+                Items = JsonSerializer.Deserialize<List<string>>(content, _serializerOptions) ?? Items;
                 return Items;
             }
             else 
