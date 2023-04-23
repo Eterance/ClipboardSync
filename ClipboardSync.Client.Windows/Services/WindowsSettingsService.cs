@@ -1,4 +1,5 @@
-﻿using ClipboardSync.Common.Helpers;
+﻿using ClipboardSync.Common.Collections;
+using ClipboardSync.Common.Helpers;
 using ClipboardSync.Common.Models;
 using ClipboardSync.Common.Services;
 using System.Collections.Generic;
@@ -12,9 +13,10 @@ namespace ClipboardSync.Client.Windows.Services
     {
         private Dictionary<string, string> stringSettings;
         private Dictionary<string, int> intSettings;
+        private SerializableDictionary<string, JwtTokensPairModel> tokenPairsDict;
         private string intSettingsFileName = "intSettings.ini";
         private string stringSettingsFileName = "stringSettings.ini";
-        private string tokenModelFileName = "tokenModel.xml";
+        private string tokenPairsFileName = "tokenPairs.xml";
         private string _directoryPath = "";
 
         public IPinnedListFileHelper PinnedListFileHelper { get; set; }
@@ -26,6 +28,7 @@ namespace ClipboardSync.Client.Windows.Services
             PinnedListFileHelper = pinnedListFileService;
             intSettings = DeserializeInt(Path.Combine(_directoryPath, intSettingsFileName));
             stringSettings = DeserializeString(Path.Combine(_directoryPath, stringSettingsFileName));
+            tokenPairsDict = XmlDeserialize<SerializableDictionary<string, JwtTokensPairModel>>(Path.Combine(_directoryPath, tokenPairsFileName))??new();
             _directoryPath = directoryPath;
         }
 
@@ -133,18 +136,18 @@ namespace ClipboardSync.Client.Windows.Services
             return dict;
         }
 
-        private T? XmlDeserialize<T>(string dictFileName, T? defaultValue)
+        private T? XmlDeserialize<T>(string dictFileName)
         {
             if (File.Exists(dictFileName) == false)
             {
-                return defaultValue;
+                return default(T);
             }
             XmlSerializer mySerializer = new XmlSerializer(typeof(T));
             using var fs = new FileStream(dictFileName, FileMode.Open);
             T result = (T)mySerializer.Deserialize(fs);
             if (result == null)
             {
-                result = defaultValue;
+                result = default;
             }
             return result;
         }
@@ -159,14 +162,24 @@ namespace ClipboardSync.Client.Windows.Services
             myWriter.Close();
         }
 
-        public async Task<JwtTokensPairModel?> GetTokenAsync()
+        public async Task<JwtTokensPairModel?> GetTokenAsync(string key)
         {
-            return XmlDeserialize<JwtTokensPairModel>(Path.Combine(_directoryPath, tokenModelFileName), null);
+
+            bool success = tokenPairsDict.TryGetValue(key, out JwtTokensPairModel? value);
+            if (success)
+            {
+                return value;
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public async Task SetTokenAsync(JwtTokensPairModel value)
+        public async Task SetTokenAsync(string key, JwtTokensPairModel value)
         {
-            XmlSerialize(value, Path.Combine(_directoryPath, tokenModelFileName));
+            tokenPairsDict[key] = value;
+            XmlSerialize(tokenPairsDict, Path.Combine(_directoryPath, tokenPairsFileName));
         }
     }
 }

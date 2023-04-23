@@ -64,7 +64,7 @@
             try
             {
                 JwtTokensPairModel tokensPair = JsonSerializer.Deserialize<JwtTokensPairModel>(response_content, _serializerOptions) ?? new();
-                await SettingsService.SetTokenAsync(tokensPair);
+                await SettingsService.SetTokenAsync("JwtTokenModels", tokensPair);
                 Navigation.NavigateTo("/clipboard");
             }
             catch (Exception ex)

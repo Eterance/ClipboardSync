@@ -16,9 +16,9 @@ namespace ClipboardSync.Common.Services
         /// NOTE: If using cookie in implement, due to pre-rendering in Blazor Server,
         /// you can't perform any JS interop until the OnAfterRender lifecycle method.
         /// </summary>
-        /// <param name="key"></param>
-        public Task<JwtTokensPairModel?> GetTokenAsync();
-        public Task SetTokenAsync(JwtTokensPairModel value);
+        /// <param name="key">server name</param>
+        public Task<JwtTokensPairModel?> GetTokenAsync(string key);
+        public Task SetTokenAsync(string key, JwtTokensPairModel value);
 
         public bool IsContainsKey(string key);
         public IPinnedListFileHelper PinnedListFileHelper { get; set; }
