@@ -5,13 +5,13 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClipboardSync_Server", "ClipboardSync_Server\ClipboardSync_Server.csproj", "{C2FE1E3E-74E7-4D8D-9683-985FDC9DF218}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClipboardSync_Client_Windows", "ClipboardSync_Client_Windows\ClipboardSync_Client_Windows.csproj", "{D3FD2597-4ADB-40D4-8CC9-F7C659EED5FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClipboardSync.Client.Windows", "ClipboardSync.Client.Windows\ClipboardSync.Client.Windows.csproj", "{D3FD2597-4ADB-40D4-8CC9-F7C659EED5FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardSync_Client_Mobile.Android", "ClipboardSync_Client_Mobile\ClipboardSync_Client_Mobile.Android\ClipboardSync_Client_Mobile.Android.csproj", "{AD7B4815-1F38-42E2-B889-B76902402F18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardSync.Client.Mobile.Android", "ClipboardSync.Client.Mobile\ClipboardSync.Client.Mobile.Android\ClipboardSync.Client.Mobile.Android.csproj", "{AD7B4815-1F38-42E2-B889-B76902402F18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardSync_Client_Mobile.iOS", "ClipboardSync_Client_Mobile\ClipboardSync_Client_Mobile.iOS\ClipboardSync_Client_Mobile.iOS.csproj", "{49B44E44-1791-4BA2-A0D8-833C333DCFF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardSync.Client.Mobile.iOS", "ClipboardSync.Client.Mobile\ClipboardSync.Client.Mobile.iOS\ClipboardSync.Client.Mobile.iOS.csproj", "{49B44E44-1791-4BA2-A0D8-833C333DCFF1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClipboardSync_Client_Mobile", "ClipboardSync_Client_Mobile\ClipboardSync_Client_Mobile\ClipboardSync_Client_Mobile.csproj", "{39BAD2DD-BC41-48C9-A7EA-BBFC528B2D9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClipboardSync.Client.Mobile", "ClipboardSync.Client.Mobile\ClipboardSync.Client.Mobile\ClipboardSync.Client.Mobile.csproj", "{39BAD2DD-BC41-48C9-A7EA-BBFC528B2D9E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClipboardSync.Common", "ClipboardSync.Common\ClipboardSync.Common.csproj", "{14B3131B-9325-49F8-A915-46F617D22B0D}"
 EndProject

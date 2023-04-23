@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:ClipboardSync.Client.Mobile.Views"
+       xmlns:localization="clr-namespace:ClipboardSync.Client.Mobile.Localization"       
+       xmlns:views="clr-namespace:ClipboardSync.Client.Mobile.Views"
+       Title="ClipboardSync_Client_Mobile"
+       x:Class="ClipboardSync.Client.Mobile.AppShell">
+
+    <!--
+        The overall app visual hierarchy is defined here, along with navigation.
+    
+        https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/
+    -->
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.ForegroundColor" Value="White" />
+                <Setter Property="Shell.TitleColor" Value="White" />
+                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+            </Style>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <TabBar>
+        <ShellContent Title="{x:Static localization:Resources.Home}" 
+                      Icon="icon_home.png" Route="AboutPage" 
+                      ContentTemplate="{DataTemplate views:MainPage}" />
+        <ShellContent Title="{x:Static localization:Resources.Clipboard}" 
+                      Icon="icon_clipboard.png" 
+                      ContentTemplate="{DataTemplate views:HistoryPage}" />
+        <ShellContent Title="{x:Static localization:Resources.Pinned}" 
+                      Icon="icon_pinned.png" 
+                      ContentTemplate="{DataTemplate views:PinnedPage}" />
+
+    </TabBar>
+
+</Shell>
