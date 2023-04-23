@@ -1,7 +1,7 @@
 ﻿
 using ClipboardSync.Common.Helpers;
 using ClipboardSync.Common.Models;
-using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace ClipboardSync.Common.Services
 {
@@ -9,19 +9,18 @@ namespace ClipboardSync.Common.Services
     {
         public int Get(string key, int defaultValue);
         public string Get(string key, string defaultValue);
-        /// <summary>
-        /// Get Jwt Token.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns>True: Token Exist</returns>
-        public bool Get(string key, out JwtTokenModel defaultValue);
         public void Set(string key, int value);
         public void Set(string key, string value);
-        public void Set(string key, JwtTokenModel value);
+        /// <summary>
+        /// Get Jwt Token.
+        /// NOTE: If using cookie in implement, due to pre-rendering in Blazor Server,
+        /// you can't perform any JS interop until the OnAfterRender lifecycle method.
+        /// </summary>
+        /// <param name="key"></param>
+        public Task<JwtTokensPairModel?> GetTokenAsync();
+        public Task SetTokenAsync(JwtTokensPairModel value);
 
         public bool IsContainsKey(string key);
-        public IPinnedListFileHelper PinnedListFile { get; set; }
-        public IJwtTokenReadWriteHelper TokenRwHelper { get; set; }
+        public IPinnedListFileHelper PinnedListFileHelper { get; set; }
     }
 }

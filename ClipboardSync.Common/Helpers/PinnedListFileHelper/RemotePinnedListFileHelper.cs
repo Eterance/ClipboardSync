@@ -13,7 +13,7 @@ namespace ClipboardSync.Common.Helpers
     /// <summary>
     /// Save/Load PinnedList at Server side via SignalR.
     /// </summary>
-    public class RemotePinnedListFileService : IPinnedListFileHelper
+    public class RemotePinnedListFileHelper : IPinnedListFileHelper
     {
         readonly static string _xmlName = "pinnedList.xml";
         //private SignalRRemoteFilesService _signalRService;
@@ -21,7 +21,7 @@ namespace ClipboardSync.Common.Helpers
         public UriModel UriModel { get; set; }
         JsonSerializerOptions _serializerOptions;
 
-        public RemotePinnedListFileService(UriModel uriModel, HttpClient httpClient)
+        public RemotePinnedListFileHelper(UriModel uriModel)
         {
             // https://github.com/xamarin/xamarin-forms-samples/blob/main/WebServices/TodoREST/TodoREST/Data/RestService.cs
             _serializerOptions = new JsonSerializerOptions
@@ -30,10 +30,8 @@ namespace ClipboardSync.Common.Helpers
                 WriteIndented = true
             };
             UriModel = uriModel;
-            _httpClient = httpClient;
+            _httpClient = new();
         }
-
-
         public async void Save(List<string> list)
         {
             Uri uri = new Uri($"{UriModel.RootUri}api/files/stringlist?filename={_xmlName}");

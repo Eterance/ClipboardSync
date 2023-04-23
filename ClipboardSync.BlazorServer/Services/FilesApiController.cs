@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace ClipboardSync.BlazorServer.Services
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/files")]
     [ApiController]
     public class FilesApiController : ControllerBase

@@ -10,12 +10,12 @@ namespace ClipboardSync.Common.Helpers
     /// <summary>
     /// Save/Load PinnedList at local machine.
     /// </summary>
-    public class LocalPinnedListFileService: IPinnedListFileHelper
+    public class LocalPinnedListFileHelper: IPinnedListFileHelper
     {
         readonly static string _xmlName = "pinnedList.xml";
         private string fileName;
 
-        public LocalPinnedListFileService(string folderName)
+        public LocalPinnedListFileHelper(string folderName)
         {
             string directoryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), folderName);
             if (!Directory.Exists(directoryPath))

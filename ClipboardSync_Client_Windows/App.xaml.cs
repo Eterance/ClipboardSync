@@ -1,4 +1,5 @@
-﻿using ClipboardSync.Common.Services;
+﻿using ClipboardSync.Common.Helpers;
+using ClipboardSync.Common.Services;
 using ClipboardSync_Client_Windows.Services;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace ClipboardSync_Client_Windows
     {
         internal static readonly string folderName = "ClipboardSync_Desktop";
         internal static WindowsSettingsService WindowsSettingsService { get; set; } = new(
-            new LocalPinnedListFileService(folderName),
+            new LocalPinnedListFileHelper(folderName),
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), folderName)
             );
 

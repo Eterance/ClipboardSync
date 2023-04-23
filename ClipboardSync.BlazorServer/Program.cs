@@ -31,7 +31,7 @@ namespace ClipboardSync.BlazorServer
             builder.Services.AddScoped<UriModel>();
             builder.Services.AddScoped<SignalRCoreService>();
             builder.Services.AddScoped<ClipboardService>();
-            builder.Services.AddScoped<RemotePinnedListFileService>();
+            builder.Services.AddScoped<IPinnedListFileHelper, RemotePinnedListFileHelper>();
             builder.Services.AddScoped<ISettingsService, BlazorServerClientSettingsService>();
             builder.Services.AddScoped<ClipboardManagementViewModel>();
             builder.AddJwtBearer();
@@ -66,7 +66,6 @@ namespace ClipboardSync.BlazorServer
             app.MapControllers();
 			app.MapBlazorHub();
             app.MapHub<ServerHub>($"/ServerHub");
-            app.MapHub<ChatHub>($"/ChatHub");
             app.MapFallbackToPage("/_Host");
 
             app.Run();

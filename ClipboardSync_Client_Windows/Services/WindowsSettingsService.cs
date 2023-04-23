@@ -1,15 +1,10 @@
 ﻿using ClipboardSync.Common.Helpers;
+using ClipboardSync.Common.Models;
 using ClipboardSync.Common.Services;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Resources.Extensions;
-using System.Runtime.Serialization;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace ClipboardSync_Client_Windows.Services
 {
@@ -19,13 +14,16 @@ namespace ClipboardSync_Client_Windows.Services
         private Dictionary<string, int> intSettings;
         private string intSettingsFileName = "intSettings.ini";
         private string stringSettingsFileName = "stringSettings.ini";
+        private string tokenModelFileName = "tokenModel.xml";
         private string _directoryPath = "";
 
-        public IPinnedListFileHelper PinnedListFile { get; set; }
+        public IPinnedListFileHelper PinnedListFileHelper { get; set; }
 
-        public WindowsSettingsService(IPinnedListFileHelper pinnedListFileService, string directoryPath)
+        public WindowsSettingsService(
+            IPinnedListFileHelper pinnedListFileService, 
+            string directoryPath)
         {
-            PinnedListFile = pinnedListFileService;
+            PinnedListFileHelper = pinnedListFileService;
             intSettings = DeserializeInt(Path.Combine(_directoryPath, intSettingsFileName));
             stringSettings = DeserializeString(Path.Combine(_directoryPath, stringSettingsFileName));
             _directoryPath = directoryPath;
@@ -133,6 +131,42 @@ namespace ClipboardSync_Client_Windows.Services
                 }
             }
             return dict;
+        }
+
+        private T? XmlDeserialize<T>(string dictFileName, T? defaultValue)
+        {
+            if (File.Exists(dictFileName) == false)
+            {
+                return defaultValue;
+            }
+            XmlSerializer mySerializer = new XmlSerializer(typeof(T));
+            using var fs = new FileStream(dictFileName, FileMode.Open);
+            T result = (T)mySerializer.Deserialize(fs);
+            if (result == null)
+            {
+                result = defaultValue;
+            }
+            return result;
+        }
+
+        private void XmlSerialize<T>(T value, string dictFileName)
+        {
+            // Insert code to set properties and fields of the object.  
+            XmlSerializer mySerializer = new XmlSerializer(typeof(T));
+            // To write to a file, create a StreamWriter object.  
+            StreamWriter myWriter = new StreamWriter(dictFileName);
+            mySerializer.Serialize(myWriter, value);
+            myWriter.Close();
+        }
+
+        public async Task<JwtTokensPairModel?> GetTokenAsync()
+        {
+            return XmlDeserialize<JwtTokensPairModel>(Path.Combine(_directoryPath, tokenModelFileName), null);
+        }
+
+        public async Task SetTokenAsync(JwtTokensPairModel value)
+        {
+            XmlSerialize(value, Path.Combine(_directoryPath, tokenModelFileName));
         }
     }
 }

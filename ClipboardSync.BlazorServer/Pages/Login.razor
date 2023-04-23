@@ -2,10 +2,11 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using ClipboardSync.BlazorServer.Models;
 @using ClipboardSync.Common.Models;
+@using ClipboardSync.Common.Services
 @using System.Text.Json
 @inject NavigationManager Navigation
 @inject IConfiguration Config
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject ISettingsService SettingsService
 
 <body>
     <h1>登录</h1>
@@ -53,19 +54,17 @@
         ErrorMessage = null;
         // https://github.com/Blazored/SessionStorage
         _disable = true;
-        var _clear = sessionStorage.ClearAsync();
         Uri uri = new Uri($"{(Navigation.ToAbsoluteUri("")).ToString()}api/auth/token/get");
         string json = JsonSerializer.Serialize(userinfo, _serializerOptions);
         StringContent content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
         HttpResponseMessage response = await _httpClient.PostAsync(uri, content);
-        await _clear;
         if (response.IsSuccessStatusCode)
         {
             string response_content = await response.Content.ReadAsStringAsync();
             try
             {
                 JwtTokensPairModel tokensPair = JsonSerializer.Deserialize<JwtTokensPairModel>(response_content, _serializerOptions) ?? new();
-                await sessionStorage.SetItemAsync<JwtTokensPairModel>("JwtTokenModels", tokensPair);
+                await SettingsService.SetTokenAsync(tokensPair);
                 Navigation.NavigateTo("/clipboard");
             }
             catch (Exception ex)

@@ -1,15 +1,7 @@
-﻿using ClipboardSync.Common.Helpers;
+﻿using Blazored.SessionStorage;
+using ClipboardSync.Common.Helpers;
+using ClipboardSync.Common.Models;
 using ClipboardSync.Common.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 
 namespace ClipboardSync.BlazorServer.Services
 {
@@ -18,12 +10,14 @@ namespace ClipboardSync.BlazorServer.Services
 
         private Dictionary<string, string> stringSettings;
         private Dictionary<string, int> intSettings;
+        private ISessionStorageService sessionStorage;
 
-        public IPinnedListFileHelper PinnedListFile { get; set; }
+        public IPinnedListFileHelper PinnedListFileHelper { get; set; }
 
-        public BlazorServerClientSettingsService(IPinnedListFileHelper pinnedListFileService)
+        public BlazorServerClientSettingsService(IPinnedListFileHelper pinnedListFileService, ISessionStorageService storage)
         {
-            PinnedListFile = pinnedListFileService;
+            PinnedListFileHelper = pinnedListFileService;
+            sessionStorage = storage;
             intSettings = new ();
             stringSettings = new ();
         }
@@ -130,6 +124,23 @@ namespace ClipboardSync.BlazorServer.Services
                 }
             }
             return dict;
+        }
+
+        /// <summary>
+        /// Get Token 
+        /// NOTE: Due to pre-rendering in Blazor Server you can't perform any JS interop until the OnAfterRender lifecycle method.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task<JwtTokensPairModel?> GetTokenAsync()
+        {
+            // https://github.com/Blazored/SessionStorage
+            return await sessionStorage.GetItemAsync<JwtTokensPairModel>("JwtTokenModels");
+        }
+
+        public async Task SetTokenAsync(JwtTokensPairModel value)
+        {
+            await sessionStorage.SetItemAsync("JwtTokenModels", value);
         }
     }
 }

@@ -9,13 +9,14 @@ using Xamarin.Forms.Xaml;
 using System.Globalization;
 using ClipboardSync.Common.ViewModels;
 using ClipboardSync.Common.Services;
+using ClipboardSync.Common.Helpers;
 
 namespace ClipboardSync_Client_Mobile
 {
     public partial class App : Application
     {
 
-        internal static XamarinSettingsService XamarinSettingsService { get; set; } = new(new LocalPinnedListFileService("ClipboardSync_Mobile"));
+        internal static XamarinSettingsService XamarinSettingsService { get; set; } = new(new LocalPinnedListFileHelper("ClipboardSync_Mobile"));
 
 
         static ClipboardManagementViewModel clipboardManagementViewModel;
