@@ -1,4 +1,5 @@
-﻿using ClipboardSync.Common.Services;
+﻿using ClipboardSync.Common.Helpers;
+using ClipboardSync.Common.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,9 +19,9 @@ namespace ClipboardSync.BlazorServer.Services
         private Dictionary<string, string> stringSettings;
         private Dictionary<string, int> intSettings;
 
-        public IPinnedListFileService PinnedListFile { get; set; }
+        public IPinnedListFileHelper PinnedListFile { get; set; }
 
-        public BlazorServerClientSettingsService(IPinnedListFileService pinnedListFileService)
+        public BlazorServerClientSettingsService(IPinnedListFileHelper pinnedListFileService)
         {
             PinnedListFile = pinnedListFileService;
             intSettings = new ();

@@ -1,13 +1,14 @@
-﻿using ClipboardSync.Common.Services;
+﻿using ClipboardSync.Common.Helpers;
+using ClipboardSync.Common.Services;
 using Xamarin.Essentials;
 
 namespace ClipboardSync_Client_Mobile.Services
 {
     internal class XamarinSettingsService : ISettingsService
     {
-        public IPinnedListFileService PinnedListFile { get; set; }
+        public IPinnedListFileHelper PinnedListFile { get; set; }
 
-        public XamarinSettingsService(IPinnedListFileService pinnedListFileService) 
+        public XamarinSettingsService(IPinnedListFileHelper pinnedListFileService) 
         {
             PinnedListFile = pinnedListFileService;
         }

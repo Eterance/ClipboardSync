@@ -8,12 +8,12 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace ClipboardSync.Common.Services
+namespace ClipboardSync.Common.Helpers
 {
     /// <summary>
     /// Save/Load PinnedList at Server side via SignalR.
     /// </summary>
-    public class RemotePinnedListFileService : IPinnedListFileService
+    public class RemotePinnedListFileService : IPinnedListFileHelper
     {
         readonly static string _xmlName = "pinnedList.xml";
         //private SignalRRemoteFilesService _signalRService;

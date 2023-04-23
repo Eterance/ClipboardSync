@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace ClipboardSync.Common.Services
+namespace ClipboardSync.Common.Helpers
 {
-    public interface IPinnedListFileService
+    public interface IPinnedListFileHelper
     {
 
         /// <summary>

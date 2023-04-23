@@ -5,6 +5,7 @@ using ClipboardSync.BlazorServer.Services;
 using ClipboardSync.BlazorServer.Services.Jwt;
 using ClipboardSync.Common.Models;
 using ClipboardSync.Common.Services;
+using ClipboardSync.Common.Helpers;
 using ClipboardSync.Common.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -64,7 +65,6 @@ namespace ClipboardSync.BlazorServer
 
             app.MapControllers();
 			app.MapBlazorHub();
-            app.MapHub<FilesHub>($"/FilesHub");
             app.MapHub<ServerHub>($"/ServerHub");
             app.MapHub<ChatHub>($"/ChatHub");
             app.MapFallbackToPage("/_Host");

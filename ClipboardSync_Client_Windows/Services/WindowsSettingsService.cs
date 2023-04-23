@@ -1,4 +1,5 @@
-﻿using ClipboardSync.Common.Services;
+﻿using ClipboardSync.Common.Helpers;
+using ClipboardSync.Common.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,9 +21,9 @@ namespace ClipboardSync_Client_Windows.Services
         private string stringSettingsFileName = "stringSettings.ini";
         private string _directoryPath = "";
 
-        public IPinnedListFileService PinnedListFile { get; set; }
+        public IPinnedListFileHelper PinnedListFile { get; set; }
 
-        public WindowsSettingsService(IPinnedListFileService pinnedListFileService, string directoryPath)
+        public WindowsSettingsService(IPinnedListFileHelper pinnedListFileService, string directoryPath)
         {
             PinnedListFile = pinnedListFileService;
             intSettings = DeserializeInt(Path.Combine(_directoryPath, intSettingsFileName));

@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace ClipboardSync.Common.Services
+namespace ClipboardSync.Common.Helpers
 {
     /// <summary>
     /// Save/Load PinnedList at local machine.
     /// </summary>
-    public class LocalPinnedListFileService: IPinnedListFileService
+    public class LocalPinnedListFileService: IPinnedListFileHelper
     {
         readonly static string _xmlName = "pinnedList.xml";
         private string fileName;
