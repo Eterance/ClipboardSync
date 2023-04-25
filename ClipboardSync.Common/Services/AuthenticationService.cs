@@ -1,5 +1,6 @@
 ﻿using ClipboardSync.Common.Helpers;
 using ClipboardSync.Common.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -14,6 +15,8 @@ namespace ClipboardSync.Common.Services
         public string? ServerUrl { get; set; }
         private ISettingsService _settingService;
         private HttpClient _httpClient = new HttpClient();
+        private ILogger<AuthenticationService>? _logger;
+
         JsonSerializerOptions _serializerOptions = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -25,7 +28,18 @@ namespace ClipboardSync.Common.Services
             _settingService = jwtTokenReadWriteHelper;
         }
 
+        public AuthenticationService(ISettingsService jwtTokenReadWriteHelper, ILogger<AuthenticationService> logger)
+        {
+            _settingService = jwtTokenReadWriteHelper;
+            _logger = logger;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>(bool) false: Network error; (bool) false: username or password error; string?: 
+        /// refreshed AccessToken, will be null if not all true</returns>
+        /// <exception cref="NullReferenceException"></exception>
         public async Task<Tuple<bool, bool, string?>> GetAccessTokenAsync()
         {
             if (ServerUrl == null)
@@ -36,9 +50,9 @@ namespace ClipboardSync.Common.Services
             if (tokens != null)
             {
                 // Renew if AccessToken expired
-                if (tokens.AccessToken.Expiration > DateTime.UtcNow)
+                if (tokens.AccessToken.Expiration < DateTime.UtcNow)
                 {
-                    var sss = await RefreshAccessTokenAsync(tokens.AccessToken);
+                    var sss = await RefreshAccessTokenAsync(tokens.RefreshToken);
                     if (sss.Item1 == false)// network error
                     {
                         return Tuple.Create(false, true, default(string));
@@ -51,7 +65,7 @@ namespace ClipboardSync.Common.Services
                 }
                 else
                 { // Renew in background if AccessToken will expire within 10 sec
-                    if (tokens.AccessToken.Expiration?.AddSeconds(10) > DateTime.UtcNow)
+                    if (tokens.AccessToken.Expiration?.AddSeconds(10) < DateTime.UtcNow)
                     {
                         _ = RefreshAccessTokenAsync(tokens.AccessToken);
                     }
@@ -134,7 +148,7 @@ namespace ClipboardSync.Common.Services
             {
                 RefreshToken = RefreshToken,
                 // Whether expire in 1 hour, if so refresh RefreshToken
-                IsRenewRefreshToken = RefreshToken.Expiration?.AddSeconds(3600) > DateTime.UtcNow,
+                IsRenewRefreshToken = RefreshToken.Expiration?.AddSeconds(3600) < DateTime.UtcNow,
             };
             string json = JsonSerializer.Serialize(renew, _serializerOptions);
             StringContent content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");

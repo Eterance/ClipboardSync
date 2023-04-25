@@ -1,4 +1,5 @@
-﻿using Blazored.SessionStorage;
+﻿using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using ClipboardSync.Common.Helpers;
 using ClipboardSync.Common.Models;
 using ClipboardSync.Common.Services;
@@ -10,14 +11,14 @@ namespace ClipboardSync.BlazorServer.Services
 
         private Dictionary<string, string> stringSettings;
         private Dictionary<string, int> intSettings;
-        private ISessionStorageService sessionStorage;
+        private ILocalStorageService localStorage;
 
         public IPinnedListFileHelper PinnedListFileHelper { get; set; }
 
-        public BlazorServerClientSettingsService(IPinnedListFileHelper pinnedListFileService, ISessionStorageService storage)
+        public BlazorServerClientSettingsService(IPinnedListFileHelper pinnedListFileService, ILocalStorageService storage)
         {
             PinnedListFileHelper = pinnedListFileService;
-            sessionStorage = storage;
+            localStorage = storage;
             intSettings = new ();
             stringSettings = new ();
         }
@@ -135,12 +136,12 @@ namespace ClipboardSync.BlazorServer.Services
         public async Task<JwtTokensPairModel?> GetJwtTokensPairAsync(string key)
         {
             // https://github.com/Blazored/SessionStorage
-            return await sessionStorage.GetItemAsync<JwtTokensPairModel>(key);
+            return await localStorage.GetItemAsync<JwtTokensPairModel>(key);
         }
 
         public async Task SetJwtTokensPairAsync(string key, JwtTokensPairModel value)
         {
-            await sessionStorage.SetItemAsync(key, value);
+            await localStorage.SetItemAsync(key, value);
         }
     }
 }

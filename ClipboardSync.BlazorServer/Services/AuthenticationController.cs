@@ -19,13 +19,16 @@ namespace ClipboardSync.BlazorServer.Services
 		private IConfiguration _configuration;
 		private CredentialsService _credentialsService;
 		private List<string> _validRefreshTokens;
+		private ILogger<AuthenticationController> _logger;
+		private bool isDebug = false;
 
 
-        public AuthenticationController(IConfiguration config, CredentialsService credentialsService, List<string> validRefreshTokens)
+        public AuthenticationController(IConfiguration config, CredentialsService credentialsService, List<string> validRefreshTokens, ILogger<AuthenticationController> logger)
 		{
 			_configuration = config;
 			_credentialsService = credentialsService;
 			_validRefreshTokens = validRefreshTokens;
+			_logger = logger;
 		}
 
 		[HttpGet("ping")]
@@ -53,6 +56,12 @@ namespace ClipboardSync.BlazorServer.Services
 						_configuration["JwtConfiguration:RefreshSecret"],
 						_configuration["JwtConfiguration:RefreshExpiration"]);
                     _validRefreshTokens.Add(refreshToken.Token);
+                    _logger.LogInformation($"UTC {DateTime.UtcNow} Token Pairs Generate Premitted.");
+					if (isDebug)
+                    {
+                        _logger.LogInformation($"UTC {DateTime.UtcNow} AccessToken: \"{accessToken.Token}\" Expiration: {accessToken.Expiration}");
+                        _logger.LogInformation($"UTC {DateTime.UtcNow} RefreshToken: \"{refreshToken.Token}\" Expiration: {refreshToken.Expiration}");
+                    }
                     return Ok(new JwtTokensPairModel()
 					{
 						AccessToken = accessToken,
@@ -60,13 +69,19 @@ namespace ClipboardSync.BlazorServer.Services
 					});
                 }
 				else
-				{
-					return BadRequest("Invalid user name or password");
+                {
+                    if (isDebug)
+                    {
+                        _logger.LogInformation($"UTC {DateTime.UtcNow} username: {_userInfo.UserName} PW: {_userInfo.Password}");
+                    }
+                    _logger.LogInformation($"UTC {DateTime.UtcNow} Token Pairs Generate Denied. Reason: Invalid user name or password");
+                    return BadRequest("Invalid user name or password");
 				}
 			}
 			else
-			{
-				return BadRequest("User name, password or both are empty");
+            {
+                _logger.LogInformation($"UTC {DateTime.UtcNow} Token Pairs Generate Denied. Reason: User name, password or both are empty");
+                return BadRequest("User name, password or both are empty");
 			}
 		}
 
@@ -97,20 +112,32 @@ namespace ClipboardSync.BlazorServer.Services
                         _validRefreshTokens.Add(refreshToken.Token);
                         _validRefreshTokens.Remove(renewTokenRequestModel.RefreshToken.Token);
                     }
+                    _logger.LogInformation($"UTC {DateTime.UtcNow} Token Pairs Renew Permitted. IsRenewRefreshToken:{renewTokenRequestModel.IsRenewRefreshToken}");
+					if (isDebug)
+                    {
+                        _logger.LogInformation($"UTC {DateTime.UtcNow} AccessToken: \"{accessToken.Token}\" Expiration: {accessToken.Expiration}");
+                        _logger.LogInformation($"UTC {DateTime.UtcNow} RefreshToken: \"{refreshToken.Token}\" Expiration: {refreshToken.Expiration}");
+                    }
                     return Ok(new JwtTokensPairModel()
 					{
 						AccessToken = accessToken,
 						RefreshToken = refreshToken,
 					});
 				}
-				else 
-				{
+				else
+                {
+                    if (isDebug)
+                    {
+                        _logger.LogInformation($"UTC {DateTime.UtcNow} RefreshToken: \"{renewTokenRequestModel.RefreshToken.Token}\" Expiration: {renewTokenRequestModel.RefreshToken.Expiration}");
+                    }
+                    _logger.LogInformation($"UTC {DateTime.UtcNow} Token Pairs Renew Denied. Reason: Invalid Refresh Token");
                     return BadRequest("Invalid Refresh Token");
                 }
 			}
 			else
-			{
-				return BadRequest("Invalid Renewal Request");
+            {
+                _logger.LogInformation($"UTC {DateTime.UtcNow} Token Pairs Renew Denied. Reason: Invalid Renewal Request");
+                return BadRequest("Invalid Renewal Request");
 			}
 		}
 
@@ -119,6 +146,7 @@ namespace ClipboardSync.BlazorServer.Services
         public void Delete(string RefreshToken)
         {
 			_validRefreshTokens.Remove(RefreshToken);
+            _logger.LogInformation($"UTC {DateTime.UtcNow} RefreshToken Removed.");
         }
 
         // PUT api/<JwtTokenController>/5

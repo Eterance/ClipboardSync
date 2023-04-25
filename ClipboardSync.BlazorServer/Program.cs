@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
+using Blazored.LocalStorage;
 
 namespace ClipboardSync.BlazorServer
 {
@@ -23,7 +24,8 @@ namespace ClipboardSync.BlazorServer
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-            builder.Services.AddBlazoredSessionStorage();
+            //builder.Services.AddBlazoredSessionStorage();
+            builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddSingleton<MessageCacheService>();
 			builder.Services.AddSingleton<CredentialsService>();

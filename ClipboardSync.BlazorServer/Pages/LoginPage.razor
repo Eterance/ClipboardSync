@@ -54,7 +54,6 @@
         ErrorMessage = null;
         // https://github.com/Blazored/SessionStorage
         _disable = true;
-        Uri uri = new Uri($"{(Navigation.ToAbsoluteUri("")).ToString()}api/auth/token/get");
         AuthService.ServerUrl = (Navigation.ToAbsoluteUri("")).ToString();
         var loginResult = await AuthService.LoginAsync(userinfo);
         if (loginResult.Item1 == false) // ntwork error

@@ -1,0 +1,63 @@
+﻿@page "/testauth"
+@using Microsoft.AspNetCore.Components.Forms
+@using ClipboardSync.BlazorServer.Models;
+@using ClipboardSync.Common.Models;
+@using ClipboardSync.Common.Services
+@using System.Text.Json
+@using System.Net.Http.Headers;
+@inject NavigationManager Navigation
+@inject IConfiguration Config
+@inject AuthenticationService AuthService
+
+<body>
+    @if (_isAuth == false)
+    {
+        <h1>@ErrorMessage</h1>
+    }
+    else
+    {
+        <h1>你有权访问该页面。</h1>
+    }
+</body>
+
+
+@code {
+    private bool _isAuth { get; set; } = false;
+    private string? ErrorMessage { get; set; } = "你无权访问该页面。请重新登陆。1";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            AuthService.ServerUrl = (Navigation.ToAbsoluteUri("")).ToString();
+            var aaa = await AuthService.GetAccessTokenAsync();
+            if (aaa.Item1 == false)
+            {
+                _isAuth = false;
+                ErrorMessage = "连接至服务器出错。";
+            }
+            else if (aaa.Item2 == false)
+            {
+                _isAuth = false;
+                ErrorMessage = "你无权访问该页面。请重新登陆。2";
+            }
+            else
+            {
+                HttpClient httpClient = new();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", aaa.Item3);
+                var response = await httpClient.GetAsync(new Uri($"{AuthService.ServerUrl}api/testauthorize"));
+                if (response.IsSuccessStatusCode)
+                {
+                    _isAuth = true;
+                }
+                else
+                {
+                    _isAuth = false;
+                    ErrorMessage = "你无权访问该页面。请重新登陆。3";
+                }
+            }
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}
