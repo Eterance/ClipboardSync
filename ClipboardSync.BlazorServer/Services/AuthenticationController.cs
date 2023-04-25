@@ -18,13 +18,12 @@ namespace ClipboardSync.BlazorServer.Services
 	{
 		private IConfiguration _configuration;
 		private CredentialsService _credentialsService;
-		// TODO: 完整的 refresh token管理器，可读写到本地
-		private List<string> _validRefreshTokens;
+		private RefreshTokensManageService _validRefreshTokens;
 		private ILogger<AuthenticationController> _logger;
 		private bool isDebug = true;
 
 
-        public AuthenticationController(IConfiguration config, CredentialsService credentialsService, List<string> validRefreshTokens, ILogger<AuthenticationController> logger)
+        public AuthenticationController(IConfiguration config, CredentialsService credentialsService, RefreshTokensManageService validRefreshTokens, ILogger<AuthenticationController> logger)
 		{
 			_configuration = config;
 			_credentialsService = credentialsService;
@@ -56,7 +55,7 @@ namespace ClipboardSync.BlazorServer.Services
 					var refreshToken = CreateJwtBearerToken(
 						_configuration["JwtConfiguration:RefreshSecret"],
 						_configuration["JwtConfiguration:RefreshExpiration"]);
-                    _validRefreshTokens.Add(refreshToken.Token);
+                    _validRefreshTokens.Add(refreshToken);
                     _logger.LogInformation($"UTC {DateTime.UtcNow} Token Pairs Generate Premitted.");
 					if (isDebug)
                     {
@@ -98,7 +97,7 @@ namespace ClipboardSync.BlazorServer.Services
 			{
                 // A valid RefreshToken and in the premitted list
                 if (ValidateToken(renewTokenRequestModel.RefreshToken.Token, _configuration["JwtConfiguration:RefreshSecret"]) 
-					&& _validRefreshTokens.Contains(renewTokenRequestModel.RefreshToken.Token))
+					&& _validRefreshTokens.Contains(renewTokenRequestModel.RefreshToken))
 				{
 					var accessToken = CreateJwtBearerToken(
 						_configuration["JwtConfiguration:AccessSecret"],
@@ -110,8 +109,8 @@ namespace ClipboardSync.BlazorServer.Services
 							_configuration["JwtConfiguration:RefreshSecret"],
 							_configuration["JwtConfiguration:RefreshExpiration"]);
                         // Replace premited RefreshToken
-                        _validRefreshTokens.Add(refreshToken.Token);
-                        _validRefreshTokens.Remove(renewTokenRequestModel.RefreshToken.Token);
+                        _validRefreshTokens.Add(refreshToken);
+                        _validRefreshTokens.Remove(renewTokenRequestModel.RefreshToken);
                     }
                     _logger.LogInformation($"UTC {DateTime.UtcNow} Token Pairs Renew Permitted. IsRenewRefreshToken:{renewTokenRequestModel.IsRenewRefreshToken}");
 					if (isDebug)

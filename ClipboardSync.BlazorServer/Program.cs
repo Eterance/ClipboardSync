@@ -29,7 +29,8 @@ namespace ClipboardSync.BlazorServer
             builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddSingleton<MessageCacheService>();
 			builder.Services.AddSingleton<CredentialsService>();
-            builder.Services.AddSingleton<List<string>>();
+            //builder.Services.AddSingleton<List<string>>();
+            builder.Services.AddSingleton<RefreshTokensManageService>();
 
             builder.Services.AddScoped<UriModel>();
             builder.Services.AddScoped<SignalRCoreService>();
