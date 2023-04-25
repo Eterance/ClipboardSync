@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace ClipboardSync.BlazorServer.Hubs
+namespace ClipboardSync.BlazorServer.Services
 {
     public class ServerHub : Hub
     {

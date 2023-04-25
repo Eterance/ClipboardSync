@@ -1,7 +1,7 @@
 ﻿@using ClipboardSync.BlazorServer.Services;
-@using ClipboardSync.Common.ViewModels;
+@using ClipboardSync.Common.Services;
 @using System.Collections.ObjectModel;
-@inject ClipboardService ClipboardService
+@inject BlazorServerClipboardService ClipboardService
 
 @if (SubViewModel?.HistoryList == null)
 {
@@ -38,5 +38,5 @@ else
 
 @code {
     [CascadingParameter(Name = "SubViewModel")]
-    ClipboardManagementViewModel SubViewModel { get; set; }
+    ClipboardManageService SubViewModel { get; set; }
 }

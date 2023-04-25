@@ -7,7 +7,6 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Globalization;
-using ClipboardSync.Common.ViewModels;
 using ClipboardSync.Common.Services;
 using ClipboardSync.Common.Helpers;
 
@@ -19,15 +18,15 @@ namespace ClipboardSync.Client.Mobile
         internal static XamarinSettingsService XamarinSettingsService { get; set; } = new(new LocalPinnedListFileHelper("ClipboardSync_Mobile"));
 
 
-        static ClipboardManagementViewModel clipboardManagementViewModel;
+        static ClipboardManageService clipboardManagementViewModel;
         
-        public static ClipboardManagementViewModel ClipboardManagementViewModel
+        public static ClipboardManageService ClipboardManageService
         {
             get
             {
                 if (clipboardManagementViewModel == null)
                 {
-                    clipboardManagementViewModel = new ClipboardManagementViewModel(
+                    clipboardManagementViewModel = new ClipboardManageService(
                         settingsService: XamarinSettingsService,
                         toast: (e) =>
                             {
@@ -62,9 +61,9 @@ namespace ClipboardSync.Client.Mobile
 
         protected override async void OnResume()
         {
-            if (ClipboardManagementViewModel.IsConnected == false)
+            if (ClipboardManageService.IsConnected == false)
             {
-                await ClipboardManagementViewModel.ConnectAsync();
+                await ClipboardManageService.ConnectAsync();
             }
         }
         

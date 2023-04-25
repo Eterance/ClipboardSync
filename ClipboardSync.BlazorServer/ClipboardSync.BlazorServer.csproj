@@ -27,4 +27,8 @@
     <ProjectReference Include="..\ClipboardSync.Common\ClipboardSync.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
 </Project>

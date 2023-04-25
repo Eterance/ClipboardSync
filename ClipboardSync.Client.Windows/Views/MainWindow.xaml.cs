@@ -1,5 +1,4 @@
-﻿using ClipboardSync.Common.ViewModels;
-using ClipboardSync.Client.Windows.Services;
+﻿using ClipboardSync.Client.Windows.Services;
 using ClipboardSync.Client.Windows.ViewModels;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
@@ -22,6 +21,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ClipboardSync.Common.Services;
 
 namespace ClipboardSync.Client.Windows.Views
 {
@@ -30,7 +30,7 @@ namespace ClipboardSync.Client.Windows.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        ClipboardManagementViewModel clipboardViewModel;
+        ClipboardManageService clipboardViewModel;
         MainWindowViewModel mainViewModel;
         public static MainWindow? mainWindow;
         Grid? _InOperatingGrid_History;
@@ -42,7 +42,7 @@ namespace ClipboardSync.Client.Windows.Views
             InitializeComponent();
             mainWindow = this;
             ClipBroadChangedEvent += ClipBroadChanged;
-            clipboardViewModel = new ClipboardManagementViewModel(
+            clipboardViewModel = new ClipboardManageService(
                 settingsService: App.WindowsSettingsService,
                 uiDispatcherInvoker: (act) =>
                     {

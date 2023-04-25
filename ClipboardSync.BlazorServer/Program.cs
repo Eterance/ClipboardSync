@@ -1,12 +1,10 @@
 using Blazored.SessionStorage;
 using ClipboardSync.BlazorServer.Data;
-using ClipboardSync.BlazorServer.Hubs;
 using ClipboardSync.BlazorServer.Services;
 using ClipboardSync.BlazorServer.Services.Jwt;
 using ClipboardSync.Common.Models;
 using ClipboardSync.Common.Services;
 using ClipboardSync.Common.Helpers;
-using ClipboardSync.Common.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -33,12 +31,12 @@ namespace ClipboardSync.BlazorServer
             builder.Services.AddSingleton<RefreshTokensManageService>();
 
             builder.Services.AddScoped<UriModel>();
-            builder.Services.AddScoped<SignalRCoreService>();
-            builder.Services.AddScoped<ClipboardService>();
+            builder.Services.AddScoped<ClipboardSignalRService>();
+            builder.Services.AddScoped<BlazorServerClipboardService>();
             builder.Services.AddScoped<IPinnedListFileHelper, RemotePinnedListFileHelper>();
             builder.Services.AddScoped<ISettingsService, BlazorServerClientSettingsService>();
             builder.Services.AddScoped<AuthenticationService>();
-            builder.Services.AddScoped<ClipboardManagementViewModel>();
+            builder.Services.AddScoped<ClipboardManageService>();
             builder.AddJwtBearer();
 
 

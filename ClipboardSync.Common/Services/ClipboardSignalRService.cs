@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClipboardSync.Common.Services
 {
-    public class SignalRCoreService
+    public class ClipboardSignalRService
     {
         public EventHandler<string> MessageReceived { get; set; }
         public EventHandler<string> ConnectStatusUpdate { get; set; }

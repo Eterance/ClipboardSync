@@ -6,11 +6,11 @@ namespace ClipboardSync.BlazorServer.Services
     /// Access clipboard in browser using JS Rumtime.
     /// https://www.meziantou.net/copying-text-to-clipboard-in-a-blazor-application.htm
     /// </summary>
-    public sealed class ClipboardService
+    public sealed class BlazorServerClipboardService
     {
         private readonly IJSRuntime _jsRuntime;
 
-        public ClipboardService(IJSRuntime jsRuntime)
+        public BlazorServerClipboardService(IJSRuntime jsRuntime)
         {
             _jsRuntime = jsRuntime;
         }

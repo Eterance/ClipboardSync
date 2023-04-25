@@ -1,5 +1,4 @@
 ﻿using ClipboardSync.Common.ExtensionMethods;
-using ClipboardSync.Common.Services;
 using ClipboardSync.Common.Localization;
 using Prism.Commands;
 using System;
@@ -7,10 +6,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
+using ClipboardSync.Common.ViewModels;
 
-namespace ClipboardSync.Common.ViewModels
+namespace ClipboardSync.Common.Services
 {
-    public class ClipboardManagementViewModel : ViewModelBase
+    public class ClipboardManageService : ViewModelBase
     {
         public bool IsConnected
         {
@@ -28,7 +28,7 @@ namespace ClipboardSync.Common.ViewModels
             {
                 SetValue(ref _isInitialized, value);
             }
-        } 
+        }
         /// <summary>
         /// On WPF, ObservableCollection cannot modify out of the dispatch thread
         /// If UIDispatcherInvoker assigned, meaning all ObservableCollection modification will using this DispatcherInvoke
@@ -47,10 +47,10 @@ namespace ClipboardSync.Common.ViewModels
                 SetValue(ref _historyList, value);
             }
         }
-        public ObservableCollection<string>? PinnedList 
-        { 
-            get => _pinnedList; 
-            set => SetValue(ref _pinnedList, value); 
+        public ObservableCollection<string>? PinnedList
+        {
+            get => _pinnedList;
+            set => SetValue(ref _pinnedList, value);
         }
         public string IPEndPointsString
         {
@@ -111,22 +111,22 @@ namespace ClipboardSync.Common.ViewModels
         private string _connectionStatusInstruction = "";
         private static readonly string _ipEndPointsKey = "IPEndPoints";
         private static readonly string _historyListCapacityKey = "HistoryListCapacity";
-        private SignalRCoreService _signalRCoreService;
+        private ClipboardSignalRService _signalRCoreService;
 
         private CancellationTokenSource? conncetingTokenSource;
         private ISettingsService settingsService;
         private ObservableCollection<string>? _historyList;
         private ObservableCollection<string>? _pinnedList;
 
-        public ClipboardManagementViewModel(
+        public ClipboardManageService(
             ISettingsService settingsService,
-            SignalRCoreService? service = null,
+            ClipboardSignalRService? service = null,
             Action<Action>? uiDispatcherInvoker = null,
             Action<string>? toast = null
             )
         {
             this.settingsService = settingsService;
-            _signalRCoreService = service ?? new SignalRCoreService();
+            _signalRCoreService = service ?? new ClipboardSignalRService();
             UIDispatcherInvoker = uiDispatcherInvoker ?? UIDispatcherInvoker;
             Toast = toast ?? Toast;
             //_signalRCoreService.ConnectSuccessed += (sender, e) => ConnectionStatusInstruction = $"已连接到 {e}";
@@ -177,7 +177,7 @@ namespace ClipboardSync.Common.ViewModels
         private void ApplyHistoryListCapacity()
         {
             settingsService.Set(_historyListCapacityKey, HistoryListCapacity);
-            UseUIDispatcherInvoke((Action)delegate // <--- HERE
+            UseUIDispatcherInvoke(delegate // <--- HERE
             {
                 HistoryList.ApplyCapacityLimit(HistoryListCapacity);
             });
@@ -193,7 +193,7 @@ namespace ClipboardSync.Common.ViewModels
 
         private void ClearHistoryList()
         {
-            UseUIDispatcherInvoke((Action)delegate // <--- HERE
+            UseUIDispatcherInvoke(delegate // <--- HERE
             {
                 HistoryList.Clear();
             });
@@ -207,7 +207,7 @@ namespace ClipboardSync.Common.ViewModels
         public async void Initialize()
         {
             if (_isInitialized) return;
-            PinnedList = new(await this.settingsService.PinnedListFileHelper.Load());
+            PinnedList = new(await settingsService.PinnedListFileHelper.Load());
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
             ConnectionStatusInstruction = Resources.NotConnected;
 
@@ -232,7 +232,7 @@ namespace ClipboardSync.Common.ViewModels
         public async void Initialize(string serverUrl)
         {
             if (_isInitialized) return;
-            PinnedList = new(await this.settingsService.PinnedListFileHelper.Load());
+            PinnedList = new(await settingsService.PinnedListFileHelper.Load());
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
             ConnectionStatusInstruction = Resources.NotConnected;
             var connectTask = ConnectAsync(serverUrl);
@@ -318,9 +318,9 @@ namespace ClipboardSync.Common.ViewModels
             try
             {
                 // 两张表里都没有，加进剪贴板
-                if (HistoryList.Contains(message) != true && (PinnedList.Contains(message) != true))
+                if (HistoryList.Contains(message) != true && PinnedList.Contains(message) != true)
                 {
-                    UseUIDispatcherInvoke((Action)delegate // <--- HERE
+                    UseUIDispatcherInvoke(delegate // <--- HERE
                     {
                         HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
                     });
@@ -333,7 +333,7 @@ namespace ClipboardSync.Common.ViewModels
                 // 剪贴板有，并且不在第一位，移到前面
                 else if (HistoryList.Contains(message) == true && PinnedList.Contains(message) != true && HistoryList[0] != message)
                 {
-                    UseUIDispatcherInvoke((Action)delegate // <--- HERE
+                    UseUIDispatcherInvoke(delegate // <--- HERE
                     {
                         HistoryList.Remove(message);
                         HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
@@ -392,7 +392,7 @@ namespace ClipboardSync.Common.ViewModels
         {
             if (HistoryList.Contains(message))
             {
-                UseUIDispatcherInvoke((Action)delegate // <--- HERE
+                UseUIDispatcherInvoke(delegate // <--- HERE
                 {
                     HistoryList.Remove(message);
                     PinnedList.Insert(0, message);
@@ -409,7 +409,7 @@ namespace ClipboardSync.Common.ViewModels
         {
             if (PinnedList.Contains(message))
             {
-                UseUIDispatcherInvoke((Action)delegate // <--- HERE
+                UseUIDispatcherInvoke(delegate // <--- HERE
                 {
                     PinnedList.Remove(message);
                     HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
