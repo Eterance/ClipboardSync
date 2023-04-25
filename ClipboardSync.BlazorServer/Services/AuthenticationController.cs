@@ -18,9 +18,10 @@ namespace ClipboardSync.BlazorServer.Services
 	{
 		private IConfiguration _configuration;
 		private CredentialsService _credentialsService;
+		// TODO: 完整的 refresh token管理器，可读写到本地
 		private List<string> _validRefreshTokens;
 		private ILogger<AuthenticationController> _logger;
-		private bool isDebug = false;
+		private bool isDebug = true;
 
 
         public AuthenticationController(IConfiguration config, CredentialsService credentialsService, List<string> validRefreshTokens, ILogger<AuthenticationController> logger)

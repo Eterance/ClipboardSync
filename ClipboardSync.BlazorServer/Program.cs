@@ -70,6 +70,7 @@ namespace ClipboardSync.BlazorServer
             app.MapControllers();
 			app.MapBlazorHub();
             app.MapHub<ServerHub>($"/ServerHub");
+            app.MapHub<TestAuthHub>($"/TestAuthHub");
             app.MapFallbackToPage("/_Host");
 
             app.Run();
