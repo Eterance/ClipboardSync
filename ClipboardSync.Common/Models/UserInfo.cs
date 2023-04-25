@@ -1,4 +1,6 @@
-﻿namespace ClipboardSync.BlazorServer.Models
+﻿using System;
+
+namespace ClipboardSync.Common.Models
 {
 	[Serializable]
 	public class UserInfo

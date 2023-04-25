@@ -6,7 +6,7 @@
 @using System.Text.Json
 @inject NavigationManager Navigation
 @inject IConfiguration Config
-@inject ISettingsService SettingsService
+@inject AuthenticationService AuthService
 
 <body>
     <h1>登录</h1>
@@ -55,29 +55,25 @@
         // https://github.com/Blazored/SessionStorage
         _disable = true;
         Uri uri = new Uri($"{(Navigation.ToAbsoluteUri("")).ToString()}api/auth/token/get");
-        string json = JsonSerializer.Serialize(userinfo, _serializerOptions);
-        StringContent content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-        HttpResponseMessage response = await _httpClient.PostAsync(uri, content);
-        if (response.IsSuccessStatusCode)
-        {
-            string response_content = await response.Content.ReadAsStringAsync();
-            try
-            {
-                JwtTokensPairModel tokensPair = JsonSerializer.Deserialize<JwtTokensPairModel>(response_content, _serializerOptions) ?? new();
-                await SettingsService.SetTokenAsync("JwtTokenModels", tokensPair);
-                Navigation.NavigateTo("/clipboard");
-            }
-            catch (Exception ex)
-            {
-                _disable = false;
-                ErrorMessage = "登录时发生未知错误。";
-            }
-
-        }
-        else
+        AuthService.ServerUrl = (Navigation.ToAbsoluteUri("")).ToString();
+        var loginResult = await AuthService.LoginAsync(userinfo);
+        if (loginResult.Item1 == false) // ntwork error
         {
             _disable = false;
-            ErrorMessage = "用户名或密码错误。";
+            ErrorMessage = "无法连接到服务器。";
+        }
+        else
+        {            
+            if (loginResult.Item2 == false)
+            {
+                _disable = false;
+                ErrorMessage = "用户名或密码错误。";
+
+            }
+            else
+            {
+                Navigation.NavigateTo("/clipboard");
+            }
         }
     }
 }

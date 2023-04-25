@@ -162,7 +162,7 @@ namespace ClipboardSync.Client.Windows.Services
             myWriter.Close();
         }
 
-        public async Task<JwtTokensPairModel?> GetTokenAsync(string key)
+        public async Task<JwtTokensPairModel?> GetJwtTokensPairAsync(string key)
         {
 
             bool success = tokenPairsDict.TryGetValue(key, out JwtTokensPairModel? value);
@@ -176,7 +176,7 @@ namespace ClipboardSync.Client.Windows.Services
             }
         }
 
-        public async Task SetTokenAsync(string key, JwtTokensPairModel value)
+        public async Task SetJwtTokensPairAsync(string key, JwtTokensPairModel value)
         {
             tokenPairsDict[key] = value;
             XmlSerialize(tokenPairsDict, Path.Combine(_directoryPath, tokenPairsFileName));

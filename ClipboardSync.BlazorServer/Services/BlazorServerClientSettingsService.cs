@@ -132,13 +132,13 @@ namespace ClipboardSync.BlazorServer.Services
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public async Task<JwtTokensPairModel?> GetTokenAsync(string key)
+        public async Task<JwtTokensPairModel?> GetJwtTokensPairAsync(string key)
         {
             // https://github.com/Blazored/SessionStorage
             return await sessionStorage.GetItemAsync<JwtTokensPairModel>(key);
         }
 
-        public async Task SetTokenAsync(string key, JwtTokensPairModel value)
+        public async Task SetJwtTokensPairAsync(string key, JwtTokensPairModel value)
         {
             await sessionStorage.SetItemAsync(key, value);
         }

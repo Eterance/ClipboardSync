@@ -41,7 +41,7 @@ namespace ClipboardSync.BlazorServer.Services.Jwt
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenInfo.AccessSecret)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenInfo.AccessSecret)),
                     ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 },
                     ValidIssuer = tokenInfo.Issuer,
                     ValidAudience = tokenInfo.Audience,

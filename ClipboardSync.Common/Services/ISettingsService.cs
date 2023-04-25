@@ -17,8 +17,8 @@ namespace ClipboardSync.Common.Services
         /// you can't perform any JS interop until the OnAfterRender lifecycle method.
         /// </summary>
         /// <param name="key">server name</param>
-        public Task<JwtTokensPairModel?> GetTokenAsync(string key);
-        public Task SetTokenAsync(string key, JwtTokensPairModel value);
+        public Task<JwtTokensPairModel?> GetJwtTokensPairAsync(string key);
+        public Task SetJwtTokensPairAsync(string key, JwtTokensPairModel value);
 
         public bool IsContainsKey(string key);
         public IPinnedListFileHelper PinnedListFileHelper { get; set; }

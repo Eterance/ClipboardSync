@@ -41,7 +41,7 @@ namespace ClipboardSync.Client.Mobile.Services
             Preferences.Set(key, value);
         }
 
-        public async Task<JwtTokensPairModel?> GetTokenAsync(string key)
+        public async Task<JwtTokensPairModel?> GetJwtTokensPairAsync(string key)
         {
             if (!Preferences.ContainsKey($"{key}_AccessToken_Token"))
             {
@@ -59,7 +59,7 @@ namespace ClipboardSync.Client.Mobile.Services
             return value;
         }
 
-        public async Task SetTokenAsync(string key, JwtTokensPairModel value)
+        public async Task SetJwtTokensPairAsync(string key, JwtTokensPairModel value)
         {
             Preferences.Set($"{key}_AccessToken_Token", value.AccessToken.Token);
             Preferences.Set($"{key}_AccessToken_Expiration", value.AccessToken.Expiration ?? DateTime.Now);

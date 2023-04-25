@@ -1,4 +1,5 @@
 ﻿using ClipboardSync.BlazorServer.Models;
+using ClipboardSync.Common.Models;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
