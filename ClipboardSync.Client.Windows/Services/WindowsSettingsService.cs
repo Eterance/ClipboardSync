@@ -181,5 +181,11 @@ namespace ClipboardSync.Client.Windows.Services
             tokenPairsDict[key] = value;
             XmlSerialize(tokenPairsDict, Path.Combine(_directoryPath, tokenPairsFileName));
         }
+
+        public async Task DeleteJwtTokensPairAsync(string key)
+        {
+            tokenPairsDict.Remove(key);
+            XmlSerialize(tokenPairsDict, Path.Combine(_directoryPath, tokenPairsFileName));
+        }
     }
 }

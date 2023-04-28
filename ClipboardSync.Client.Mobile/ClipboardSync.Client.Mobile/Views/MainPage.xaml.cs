@@ -19,8 +19,19 @@ namespace ClipboardSync.Client.Mobile.Views
         public MainPage()
         {
             InitializeComponent();
-            MainPageViewModel viewModel = new(App.ClipboardManageService, App.ClipboardManageService.SettingsService);
+            MainPageViewModel viewModel = new(App.ClipboardVM, App.ClipboardVM.SettingsService);
             BindingContext = viewModel;
+            App.ClipboardVM.LoginMethod = async (url, completionToken) =>
+            {
+                // https://learn.microsoft.com/zh-cn/xamarin/xamarin-forms/app-fundamentals/navigation/modal
+                LoginPage loginPage = new(url, completionToken, App.AuthenticationService);
+                await Navigation.PushModalAsync(loginPage);
+            };
+            if (App.ClipboardVM?.IsConnected == false)
+            {
+                _ = App.ClipboardVM.TryConnectAllUrlAsync();
+            }
+            
         }
 
         protected override void OnAppearing()
@@ -40,6 +51,5 @@ namespace ClipboardSync.Client.Mobile.Views
                 MainStackLayout.HeightRequest = stackLayoutHeight;
             }
         }
-
     }
 }

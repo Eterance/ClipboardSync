@@ -24,6 +24,7 @@ namespace ClipboardSync.Client.Windows
             new LocalPinnedListFileHelper(folderName),
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), folderName)
             );
+        internal static AuthenticationService AuthenticationService { get; set; } = new(WindowsSettingsService);
 
         public App()
         {

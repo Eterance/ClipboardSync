@@ -19,6 +19,7 @@ namespace ClipboardSync.Common.Services
         /// <param name="key">server name</param>
         public Task<JwtTokensPairModel?> GetJwtTokensPairAsync(string key);
         public Task SetJwtTokensPairAsync(string key, JwtTokensPairModel value);
+        public Task DeleteJwtTokensPairAsync(string key);
 
         public bool IsContainsKey(string key);
         public IPinnedListFileHelper PinnedListFileHelper { get; set; }

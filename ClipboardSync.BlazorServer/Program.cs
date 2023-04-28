@@ -5,6 +5,7 @@ using ClipboardSync.BlazorServer.Services.Jwt;
 using ClipboardSync.Common.Models;
 using ClipboardSync.Common.Services;
 using ClipboardSync.Common.Helpers;
+using ClipboardSync.Common.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -36,7 +37,7 @@ namespace ClipboardSync.BlazorServer
             builder.Services.AddScoped<IPinnedListFileHelper, RemotePinnedListFileHelper>();
             builder.Services.AddScoped<ISettingsService, BlazorServerClientSettingsService>();
             builder.Services.AddScoped<AuthenticationService>();
-            builder.Services.AddScoped<ClipboardManageService>();
+            builder.Services.AddScoped<ClipboardViewModel>();
             builder.AddJwtBearer();
 
 

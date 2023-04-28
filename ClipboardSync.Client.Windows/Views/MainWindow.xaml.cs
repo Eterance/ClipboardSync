@@ -22,6 +22,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ClipboardSync.Common.Services;
+using ClipboardSync.Common.ViewModels;
 
 namespace ClipboardSync.Client.Windows.Views
 {
@@ -30,7 +31,7 @@ namespace ClipboardSync.Client.Windows.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        ClipboardManageService clipboardViewModel;
+        ClipboardViewModel clipboardVM;
         MainWindowViewModel mainViewModel;
         public static MainWindow? mainWindow;
         Grid? _InOperatingGrid_History;
@@ -42,8 +43,10 @@ namespace ClipboardSync.Client.Windows.Views
             InitializeComponent();
             mainWindow = this;
             ClipBroadChangedEvent += ClipBroadChanged;
-            clipboardViewModel = new ClipboardManageService(
+            clipboardVM = new ClipboardViewModel(
                 settingsService: App.WindowsSettingsService,
+                signalrService: new(),
+                authService: App.AuthenticationService,
                 uiDispatcherInvoker: (act) =>
                     {
                         // https://stackoverflow.com/questions/18331723/this-type-of-collectionview-does-not-support-changes-to-its-sourcecollection-fro
@@ -60,7 +63,7 @@ namespace ClipboardSync.Client.Windows.Views
                             .Show();
                     }
                 );
-            clipboardViewModel.NeedClipboardSetText += (sender, e) =>
+            clipboardVM.NeedClipboardSetText += (sender, e) =>
             {
                 // If no Dispatcher.Invoke:
                 // System.Threading.ThreadStateException:“必须先将当前线程设置为单个线程单元(STA)模式方可进行 OLE 调用。”
@@ -69,10 +72,24 @@ namespace ClipboardSync.Client.Windows.Views
                     Clipboard.SetText(e)
                 );                
             };
-            clipboardViewModel.SuppressSendTextToastMessage = true;
-            clipboardViewModel.Initialize();
-            mainViewModel = new MainWindowViewModel(clipboardViewModel, App.WindowsSettingsService);
+            clipboardVM.SuppressSendTextToastMessage = true;
+            clipboardVM.Initialize();
+            clipboardVM.LoginMethod = async (url, completionToken) =>
+            {
+                // https://learn.microsoft.com/zh-cn/xamarin/xamarin-forms/app-fundamentals/navigation/modal
+                LoginWindow loginWindow = new(url, completionToken, App.AuthenticationService);
+                loginWindow.Owner = this;
+                loginWindow.ShowDialog();
+            };
+
+
+            mainViewModel = new MainWindowViewModel(clipboardVM, App.WindowsSettingsService);
             DataContext = mainViewModel;
+
+            if (clipboardVM.IsConnected == false)
+            {
+                _ = clipboardVM.TryConnectAllUrlAsync();
+            }
         }
 
         private void ErrorOcurred(object? sender, string message)
@@ -178,7 +195,7 @@ namespace ClipboardSync.Client.Windows.Views
 
         private void Delete_History_Button_Click(object sender, RoutedEventArgs e)
         {
-            clipboardViewModel.HistoryList.Remove(GetControlCommandParameter<string>(sender as Button));
+            clipboardVM.HistoryList.Remove(GetControlCommandParameter<string>(sender as Button));
         }
         
         private void Detail_Button_Click(object sender, RoutedEventArgs e)
@@ -189,18 +206,18 @@ namespace ClipboardSync.Client.Windows.Views
 
         private void Unpin_Button_Click(object sender, RoutedEventArgs e)
         {
-            clipboardViewModel.Unpin(GetControlCommandParameter<string>(sender as Button));
+            clipboardVM.Unpin(GetControlCommandParameter<string>(sender as Button));
         }
         
         private void Delete_Pinned_Button_Click(object sender, RoutedEventArgs e)
         {
             //string history = ListBox_PinnedList.SelectedItem as string;
-            clipboardViewModel.Unpin(GetControlCommandParameter<string>(sender as Button));
+            clipboardVM.Unpin(GetControlCommandParameter<string>(sender as Button));
         }
 
         private void Pin_Button_Click(object sender, RoutedEventArgs e)
         {
-            clipboardViewModel.Pin(GetControlCommandParameter<string>(sender as Button));
+            clipboardVM.Pin(GetControlCommandParameter<string>(sender as Button));
         }
 
         // https://blog.csdn.net/gfg2007/article/details/108898788

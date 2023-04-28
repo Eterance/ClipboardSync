@@ -1,5 +1,6 @@
 ﻿using ClipboardSync.BlazorServer.Models;
 using ClipboardSync.Common.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
@@ -31,11 +32,18 @@ namespace ClipboardSync.BlazorServer.Services
 			_logger = logger;
 		}
 
-		[HttpGet("ping")]
+		[HttpGet("test/ping")]
 		public IActionResult Ping()
 		{
 			return Ok("OK");
 		}
+
+		[Authorize]
+        [HttpGet("test/auth")]
+        public IActionResult AuthTest()
+        {
+            return Ok("OK");
+        }
 
         // POST api/<JwtTokenController>
         // https://www.c-sharpcorner.com/article/how-to-implement-jwt-authentication-in-web-api-using-net-6-0-asp-net-core/

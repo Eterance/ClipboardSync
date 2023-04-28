@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,67 +21,52 @@ namespace ClipboardSync.Common.Services
         /// ENG: Lost connection to server.
         /// </summary>
         public EventHandler<Exception> LostConnection { get; set; }
-        /// <summary>
-        /// CHS: 成功连接 SignalR 服务器。事件参数（string）：成功连接上的服务器地址。
-        /// ENG: Successfully connected to SignalR server. Event parameter (string): The server address that successfully connected to.
-        /// </summary>
-        public EventHandler<string> Connected { get; set; }
-        /// <summary>
-        /// CHS: 尝试连接 SignalR 服务器，但是失败。事件参数（List<string>）: 尝试连接的服务器地址列表。
-        /// ENG: Try to connect to SignalR server, but failed. Event parameter (List<string>): The server address list that tried to connect to.
-        /// </summary>
-        public EventHandler<List<string>> ConnectFailed { get; set; }
 
         protected HubConnection _connection;
-
+        /// <summary>
+        /// CHS: 指示是否已连接到服务器。
+        /// ENG: Indicate whether connected to the hub.
+        /// </summary>
         public bool IsConnected { get; private set; } = false;
 
-        public virtual async Task ConnectAsync(List<string> uris, CancellationToken token = default)
+        /// <summary>
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="accessToken"></param>
+        /// <param name="token"></param>
+        /// <returns>Whether connect was successful or not.</returns>
+        public async Task<bool> ConnectAsync(string url, string accessToken, CancellationToken token = default)
         {
             // Let the old one die
             Unsubscribe(_connection);
             _ = _connection?.StopAsync();
             _ = _connection?.DisposeAsync();
-            
-            List<string> tried = new();
-            string failedPrefix = "";
-            foreach (string url in uris)
-            {
-                _connection = new HubConnectionBuilder()
-                    .WithUrl(url)
+
+            _connection = new HubConnectionBuilder()
+                    .WithUrl(url, options =>
+                    {
+                        options.AccessTokenProvider = () => Task.FromResult(accessToken);
+                    })
                     .WithAutomaticReconnect()
                     .Build();
-                Subscribe(_connection);
-                ConnectStatusUpdate?.Invoke(this, $"{failedPrefix}{Resources.Try2Connect2} {url}{Resources.Period}");
-                try
-                {                    
-                    await _connection.StartAsync(token);
-                    if (token.IsCancellationRequested == true)
-                    {
-                        ConnectStatusUpdate?.Invoke(this, Resources.ConnectAborted);
-                        break;
-                    }
-                }
-                catch (Exception ex)
+            Subscribe(_connection);
+            try
+            {
+                await _connection.StartAsync(token);
+                if (token.IsCancellationRequested == true)
                 {
-                    failedPrefix = $"{Resources.Failed2Connect2} {url}{Resources.Comma}";
-                    tried.Add(url);
-                    await Task.Delay(new Random().Next(0, 5) * 1000);
-                    continue;
+                    IsConnected = false;
                 }
-                IsConnected = true;
-                Connected?.Invoke(this, url);
-                ConnectStatusUpdate?.Invoke(this, $"{Resources.Connected2} {url}{Resources.Period}");
-                return;
+                else 
+                {
+                    IsConnected = true;
+                }
             }
-            // 如果连接是被 CancellationToken 取消的，不触发连接失败事件。
-            // 因为可能后面的连接成功后前面的连接尝试才被中止，这时触发连接失败是很奇怪的。
-            if (!token.IsCancellationRequested)
+            catch (Exception ex)
             {
                 IsConnected = false;
-                ConnectStatusUpdate?.Invoke(this, Resources.AllServersAreUnavailable);
-                ConnectFailed?.Invoke(this, tried);
             }
+            return IsConnected;
         }
 
         protected void Subscribe(HubConnection hubConnection)
@@ -115,6 +101,7 @@ namespace ClipboardSync.Common.Services
 
         protected async Task ConnectionClosed(Exception ex)
         {
+            IsConnected = false;
             LostConnection?.Invoke(this, ex);
         }
 

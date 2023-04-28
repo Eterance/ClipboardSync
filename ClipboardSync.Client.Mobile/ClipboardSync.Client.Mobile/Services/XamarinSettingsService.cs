@@ -66,5 +66,13 @@ namespace ClipboardSync.Client.Mobile.Services
             Preferences.Set($"{key}_RefreshToken_Token", value.RefreshToken.Token);
             Preferences.Set($"{key}_RefreshToken_Expiration", value.RefreshToken.Expiration ?? DateTime.Now);
         }
+
+        public async Task DeleteJwtTokensPairAsync(string key)
+        {
+            Preferences.Remove($"{key}_AccessToken_Token");
+            Preferences.Remove($"{key}_AccessToken_Expiration");
+            Preferences.Remove($"{key}_RefreshToken_Token");
+            Preferences.Remove($"{key}_RefreshToken_Expiration");
+        }
     }
 }

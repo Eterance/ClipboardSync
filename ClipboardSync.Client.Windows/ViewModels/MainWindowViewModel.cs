@@ -15,7 +15,7 @@ namespace ClipboardSync.Client.Windows.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public ClipboardManageService SubViewModel { get; set; }
+        public ClipboardViewModel SubViewModel { get; set; }
         public LocalizationModel SelectedLanguage
         {
             get 
@@ -61,7 +61,7 @@ namespace ClipboardSync.Client.Windows.ViewModels
         private readonly string localizationSettingName = "Localization";
         private ISettingsService settings;
 
-        public MainWindowViewModel(ClipboardManageService viewModel, ISettingsService _settings)
+        public MainWindowViewModel(ClipboardViewModel viewModel, ISettingsService _settings)
         {
             SubViewModel = viewModel;
             settings = _settings;

@@ -6,11 +6,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
-using ClipboardSync.Common.ViewModels;
+using ClipboardSync.Common.Models;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using ClipboardSync.Common.Services;
 
-namespace ClipboardSync.Common.Services
+namespace ClipboardSync.Common.ViewModels
 {
-    public class ClipboardManageService : ViewModelBase
+    public class ClipboardViewModel : ViewModelBase
     {
         public bool IsConnected
         {
@@ -91,7 +94,7 @@ namespace ClipboardSync.Common.Services
 
         public ISettingsService SettingsService
         {
-            get => settingsService;
+            get => _settingsService;
         }
 
         // Because Xamarin.Forms.Command can't use at WPF
@@ -101,6 +104,7 @@ namespace ClipboardSync.Common.Services
         public DelegateCommand ApplyServerCacheCapacityCommand { get; private set; }
         public DelegateCommand ApplyHistoryListCapacityCommand { get; private set; }
         public DelegateCommand ClearHistoryListCommand { get; private set; }
+        public Action<string, TaskCompletionSource<bool>>? LoginMethod { get; set; }
 
         private bool _isConnected = false;
         private bool _isInitialized = false;
@@ -114,23 +118,24 @@ namespace ClipboardSync.Common.Services
         private ClipboardSignalRService _signalRCoreService;
 
         private CancellationTokenSource? conncetingTokenSource;
-        private ISettingsService settingsService;
+        private ISettingsService _settingsService;
+        private AuthenticationService _authService;
         private ObservableCollection<string>? _historyList;
         private ObservableCollection<string>? _pinnedList;
 
-        public ClipboardManageService(
+        public ClipboardViewModel(
             ISettingsService settingsService,
-            ClipboardSignalRService? service = null,
+            ClipboardSignalRService signalrService,
+            AuthenticationService authService,
             Action<Action>? uiDispatcherInvoker = null,
             Action<string>? toast = null
             )
         {
-            this.settingsService = settingsService;
-            _signalRCoreService = service ?? new ClipboardSignalRService();
+            _settingsService = settingsService;
+            _authService = authService;
+            _signalRCoreService = signalrService;
             UIDispatcherInvoker = uiDispatcherInvoker ?? UIDispatcherInvoker;
             Toast = toast ?? Toast;
-            //_signalRCoreService.ConnectSuccessed += (sender, e) => ConnectionStatusInstruction = $"已连接到 {e}";
-            //_signalRCoreService.ConnectFailed += (sender, e) => ConnectionStatusInstruction = $"error: {e}";
             _signalRCoreService.ConnectStatusUpdate += (sender, e) => ConnectionStatusInstruction = e;
             _signalRCoreService.MessagesSync += SyncMessagesAsync;
             _signalRCoreService.MessageReceived += ReceiveMessage;
@@ -153,15 +158,13 @@ namespace ClipboardSync.Common.Services
 
             };
             _signalRCoreService.UnexpectedError += (sender, e) => UnexpectedError?.Invoke(sender, e);
-            _signalRCoreService.Connected += (sender, e) => IsConnected = true;
-            _signalRCoreService.ConnectFailed += (sender, e) => IsConnected = false;
             _signalRCoreService.LostConnection += async (sender, e) =>
             {
-                await ConnectAsync();
+                await TryConnectAllUrlAsync();
             };
 
             HistoryList = new();
-            HistoryListCapacity = this.settingsService.Get(_historyListCapacityKey, 30);
+            HistoryListCapacity = _settingsService.Get(_historyListCapacityKey, 30);
 
             SaveAndConnectCommand = new DelegateCommand(SetIPEndPointsAsync);
             ApplyServerCacheCapacityCommand = new DelegateCommand(ApplyServerCacheCapacity);
@@ -176,7 +179,7 @@ namespace ClipboardSync.Common.Services
 
         private void ApplyHistoryListCapacity()
         {
-            settingsService.Set(_historyListCapacityKey, HistoryListCapacity);
+            _settingsService.Set(_historyListCapacityKey, HistoryListCapacity);
             UseUIDispatcherInvoke(delegate // <--- HERE
             {
                 HistoryList.ApplyCapacityLimit(HistoryListCapacity);
@@ -201,38 +204,26 @@ namespace ClipboardSync.Common.Services
 
         private void SavePinnedList()
         {
-            settingsService.PinnedListFileHelper.Save(new List<string>(PinnedList));
+            _settingsService.PinnedListFileHelper.Save(new List<string>(PinnedList));
         }
 
         public async void Initialize()
         {
             if (_isInitialized) return;
-            PinnedList = new(await settingsService.PinnedListFileHelper.Load());
+            PinnedList = new(await _settingsService.PinnedListFileHelper.Load());
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
+            HistoryListCapacity = _settingsService.Get(_historyListCapacityKey, 30);
             ConnectionStatusInstruction = Resources.NotConnected;
+            IPEndPointsString = _settingsService.Get(_ipEndPointsKey, "");
 
-            HistoryListCapacity = settingsService.Get(_historyListCapacityKey, 30);
-
-            bool hasIpKey = settingsService.IsContainsKey(_ipEndPointsKey);
-            if (hasIpKey == true)
-            {
-                IPEndPointsString = settingsService.Get(_ipEndPointsKey, "");
-                _ = ConnectAsync();
-            }
-            else
-            {
-                IPEndPointsString = "";
-                ConnectionStatusInstruction = Resources.NoServerAddr;
-            }
-            // System.InvalidOperationException: 'Cannot change ObservableCollection during a CollectionChanged event.'
-            //HistoryList.CollectionChanged += (sender, e) => CheckHistoryListCapacity();
+            IsConnected = false;
             _isInitialized = true;
         }
 
         public async void Initialize(string serverUrl)
         {
             if (_isInitialized) return;
-            PinnedList = new(await settingsService.PinnedListFileHelper.Load());
+            PinnedList = new(await _settingsService.PinnedListFileHelper.Load());
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
             ConnectionStatusInstruction = Resources.NotConnected;
             var connectTask = ConnectAsync(serverUrl);
@@ -245,36 +236,89 @@ namespace ClipboardSync.Common.Services
         private async void SetIPEndPointsAsync()
         {
             IPEndPointsString = IPEndPointsString.Trim();
-            settingsService.Set(_ipEndPointsKey, IPEndPointsString);
-            await ConnectAsync();
+            _settingsService.Set(_ipEndPointsKey, IPEndPointsString);
+            await TryConnectAllUrlAsync();
         }
 
-        public async Task ConnectAsync()
+        public async Task TryConnectAllUrlAsync()
+        {
+            bool hasIpKey = _settingsService.IsContainsKey(_ipEndPointsKey);
+            IsConnected = false;
+            if (hasIpKey == true)
+            {
+                string ipEndPointsString = _settingsService.Get(_ipEndPointsKey, "");
+                conncetingTokenSource = new();
+                foreach (string ipEndpoint in SeperateIPEndPoints(ipEndPointsString))
+                {
+                    bool result = await ConnectAsync($"http://{ipEndpoint}/");
+                    if (result == true)
+                    {
+                        IsConnected = true;
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                IPEndPointsString = "";
+                ConnectionStatusInstruction = Resources.NoServerAddr;
+            }
+        }
+
+        public async Task<bool> ConnectAsync(string url)
         {
             if (conncetingTokenSource != null)
             {
                 conncetingTokenSource.Cancel();
             }
             IsConnected = false;
-            string ipEndPointsString = settingsService.Get(_ipEndPointsKey, "");
-            conncetingTokenSource = new();
-            List<string> urls = new List<string>();
-            foreach (string ipEndpoint in SeperateIPEndPoints(ipEndPointsString))
+            Tuple<bool, bool, string?>? result = default;
+            _authService.ServerUrl = url;
+            var connectivity = await _authService.Ping();
+            if (connectivity == false)
             {
-                urls.Add($"http://{ipEndpoint}/ServerHub");
+                return false;
             }
-            await _signalRCoreService.ConnectAsync(urls, conncetingTokenSource.Token);
-        }
-
-        public async Task ConnectAsync(string url)
-        {
-            if (conncetingTokenSource != null)
+            while (true)
             {
-                conncetingTokenSource.Cancel();
+                result = await _authService.GetAccessTokenAsync();
+                if (result.Item1 == false)// Network Error
+                {
+                    //TODO 
+                    throw new NotImplementedException();
+                }
+                else if (result.Item2 == false)// need login
+                {
+                    if (LoginMethod == null)
+                    {
+                        throw new NeedLoginException(url);
+                    }
+                    // https://blog.51cto.com/u_11283245/5236975
+                    TaskCompletionSource<bool> completionToken = new();
+                    LoginMethod(url, completionToken);
+                    var loginResult = await completionToken.Task;
+                    if (loginResult == false) // User cancal login this server
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        // Re-login completed, and got Access Token next turn
+                        continue;
+                    }
+                }
+                // Got Access Token
+                conncetingTokenSource = new();
+                try
+                {
+                    return await _signalRCoreService.ConnectAsync($"{url}ServerHub", result.Item3, conncetingTokenSource.Token);
+                }
+                catch (Exception ex) // 401 unauthorize, need re-login
+                {
+                    // delete stored jwt tokens to go to login
+                    await _authService.DeleteTokensPairAsync();
+                }
             }
-            IsConnected = false;
-            conncetingTokenSource = new();
-            await _signalRCoreService.ConnectAsync(new List<string> { url }, conncetingTokenSource.Token);
         }
 
 
@@ -418,6 +462,15 @@ namespace ClipboardSync.Common.Services
                 //HistoryList.Insert(0, message);
                 //CheckHistoryListCapacity();
             }
+        }
+    }
+
+    public class NeedLoginException : ApplicationException
+    {
+        public string URL { get; set; }
+        public NeedLoginException(string url)
+        {
+            URL = url;
         }
     }
 }

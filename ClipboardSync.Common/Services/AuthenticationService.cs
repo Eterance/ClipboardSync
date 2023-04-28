@@ -37,7 +37,7 @@ namespace ClipboardSync.Common.Services
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>(bool) false: Network error; (bool) false: username or password error; string?: 
+        /// <returns>(bool) false: Network error; (bool) false: need to re-login; string?: 
         /// refreshed AccessToken, will be null if not all true</returns>
         /// <exception cref="NullReferenceException"></exception>
         public async Task<Tuple<bool, bool, string?>> GetAccessTokenAsync()
@@ -77,6 +77,15 @@ namespace ClipboardSync.Common.Services
             { 
                 return Tuple.Create(true, false, default(string));
             }
+        }
+
+        public async Task DeleteTokensPairAsync()
+        {
+            if (ServerUrl == null)
+            {
+                throw new NullReferenceException("serverUri is null.");
+            }
+            await _settingService.DeleteJwtTokensPairAsync(ServerUrl);
         }
 
         /// <summary>
@@ -184,6 +193,58 @@ namespace ClipboardSync.Common.Services
             {
                 // Invalid Refresh Token
                 return Tuple.Create(true, false, default(string));
+            }
+        }
+
+        public async Task<bool> Ping()
+        {
+            if (ServerUrl == null)
+            {
+                throw new NullReferenceException("serverUri is null.");
+            }
+            Uri uri = new Uri($"{ServerUrl}api/auth/test/ping");
+            try
+            {
+                var response = await _httpClient.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else 
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Network Error
+                return false;
+            }
+        }
+
+        public async Task<bool> ValidateAccessToken()
+        {
+            if (ServerUrl == null)
+            {
+                throw new NullReferenceException("serverUri is null.");
+            }
+            Uri uri = new Uri($"{ServerUrl}api/auth/test/auth");
+            try
+            {
+                var response = await _httpClient.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Network Error
+                return false;
             }
         }
     }

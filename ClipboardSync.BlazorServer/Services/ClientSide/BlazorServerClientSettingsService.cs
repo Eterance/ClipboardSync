@@ -143,5 +143,10 @@ namespace ClipboardSync.BlazorServer.Services
         {
             await localStorage.SetItemAsync(key, value);
         }
+
+        public async Task DeleteJwtTokensPairAsync(string key)
+        {
+            await localStorage.RemoveItemAsync(key);
+        }
     }
 }

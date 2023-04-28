@@ -7,6 +7,6 @@ namespace ClipboardSync.Common.ViewModels
 {
     public interface IMainViewModel
     {
-        public ClipboardManageService SubViewModel { get; set; }
+        public ClipboardViewModel SubViewModel { get; set; }
     }
 }

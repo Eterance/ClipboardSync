@@ -7,8 +7,10 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Globalization;
-using ClipboardSync.Common.Services;
+using ClipboardSync.Common.ViewModels;
 using ClipboardSync.Common.Helpers;
+using System.Threading.Tasks;
+using ClipboardSync.Common.Services;
 
 namespace ClipboardSync.Client.Mobile
 {
@@ -16,26 +18,29 @@ namespace ClipboardSync.Client.Mobile
     {
 
         internal static XamarinSettingsService XamarinSettingsService { get; set; } = new(new LocalPinnedListFileHelper("ClipboardSync_Mobile"));
+        internal static AuthenticationService AuthenticationService { get; set; } = new(XamarinSettingsService);
 
 
-        static ClipboardManageService clipboardManagementViewModel;
+        static ClipboardViewModel clipboardManagementViewModel;
         
-        public static ClipboardManageService ClipboardManageService
+        public static ClipboardViewModel ClipboardVM
         {
             get
             {
                 if (clipboardManagementViewModel == null)
                 {
-                    clipboardManagementViewModel = new ClipboardManageService(
+                    clipboardManagementViewModel = new ClipboardViewModel(
                         settingsService: XamarinSettingsService,
+                        signalrService: new(),
+                        authService: AuthenticationService,
                         toast: (e) =>
+                        {
+                            MainThread.BeginInvokeOnMainThread(() =>
                             {
-                                MainThread.BeginInvokeOnMainThread(() =>
-                                {
-                                    DependencyService.Get<IToast>().ShortAlert(e);
-                                });
-                            }
-                        );
+                                DependencyService.Get<IToast>().ShortAlert(e);
+                            });
+                        }
+                    );
                     clipboardManagementViewModel.Initialize();
                 }
                 return clipboardManagementViewModel;
@@ -61,9 +66,9 @@ namespace ClipboardSync.Client.Mobile
 
         protected override async void OnResume()
         {
-            if (ClipboardManageService.IsConnected == false)
+            if (ClipboardVM.IsConnected == false)
             {
-                await ClipboardManageService.ConnectAsync();
+                await ClipboardVM.TryConnectAllUrlAsync();
             }
         }
         
