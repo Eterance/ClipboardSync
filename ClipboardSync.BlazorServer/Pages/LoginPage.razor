@@ -4,6 +4,7 @@
 @using ClipboardSync.Common.Models;
 @using ClipboardSync.Common.Services
 @using System.Text.Json
+@using ClipboardSync.Common.Exceptions;
 @inject NavigationManager Navigation
 @inject IConfiguration Config
 @inject AuthenticationService AuthService
@@ -55,24 +56,22 @@
         // https://github.com/Blazored/SessionStorage
         _disable = true;
         AuthService.ServerUrl = (Navigation.ToAbsoluteUri("")).ToString();
-        var loginResult = await AuthService.LoginAsync(userinfo);
-        if (loginResult.Item1 == false) // ntwork error
+
+        try
+        {
+            var loginResult = await AuthService.LoginAsync(userinfo);
+            Navigation.NavigateTo("/clipboard");
+        }
+        catch (HttpRequestException hrex)
         {
             _disable = false;
             ErrorMessage = "无法连接到服务器。";
         }
-        else
-        {            
-            if (loginResult.Item2 == false)
-            {
-                _disable = false;
-                ErrorMessage = "用户名或密码错误。";
-
-            }
-            else
-            {
-                Navigation.NavigateTo("/clipboard");
-            }
+        catch (UserNameOrPasswordWrongException upwe)
+        {
+            _disable = false;
+            ErrorMessage = "用户名或密码错误。";
         }
+        StateHasChanged();
     }
 }

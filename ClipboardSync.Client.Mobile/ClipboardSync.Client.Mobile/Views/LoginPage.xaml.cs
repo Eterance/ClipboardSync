@@ -1,8 +1,10 @@
-﻿using ClipboardSync.Common.Models;
+﻿using ClipboardSync.Common.Exceptions;
+using ClipboardSync.Common.Models;
 using ClipboardSync.Common.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -80,30 +82,25 @@ namespace ClipboardSync.Client.Mobile.Views
         private async void Button_Pressed(object sender, EventArgs e)
         {
             _authService.ServerUrl = _url;
-            var loginResult = await _authService.LoginAsync(new UserInfo()
+            try
             {
-                UserName = username,
-                Password = password,
-            });
-            if (loginResult.Item1 == false) // ntwork error
+                var loginResult = await _authService.LoginAsync(new UserInfo()
+                {
+                    UserName = username,
+                    Password = password,
+                });
+                _loginResult = true;
+                _ = Navigation.PopModalAsync();
+            }
+            catch (HttpRequestException hrex)
             {
                 ErrorMessageVisible = true;
                 ErrorMessage = "无法连接到服务器。";
             }
-            else
+            catch (UserNameOrPasswordWrongException upwe)
             {
-                if (loginResult.Item2 == false)
-                {
-                    ErrorMessageVisible = true;
-                    ErrorMessage = "用户名或密码错误。";
-
-                }
-                else
-                {
-                    _loginResult = true;
-                    _ = Navigation.PopModalAsync();
-                    //_taskCompletionSource.SetResult(true);
-                }
+                ErrorMessageVisible = true;
+                ErrorMessage = "用户名或密码错误。";
             }
         }
 

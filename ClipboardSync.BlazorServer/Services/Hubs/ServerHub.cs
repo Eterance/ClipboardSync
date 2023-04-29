@@ -1,4 +1,5 @@
 ﻿using ClipboardSync.BlazorServer.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,6 +10,7 @@ using System.Xml.Serialization;
 
 namespace ClipboardSync.BlazorServer.Services
 {
+    //[Authorize]
     public class ServerHub : Hub
     {
         private readonly ILogger _logger = null;

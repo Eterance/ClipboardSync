@@ -10,6 +10,7 @@ using ClipboardSync.Common.Models;
 using System.Net.Http.Headers;
 using System.Net.Http;
 using ClipboardSync.Common.Services;
+using ClipboardSync.Common.Exceptions;
 
 namespace ClipboardSync.Common.ViewModels
 {
@@ -272,7 +273,6 @@ namespace ClipboardSync.Common.ViewModels
                 conncetingTokenSource.Cancel();
             }
             IsConnected = false;
-            Tuple<bool, bool, string?>? result = default;
             _authService.ServerUrl = url;
             var connectivity = await _authService.Ping();
             if (connectivity == false)
@@ -281,13 +281,27 @@ namespace ClipboardSync.Common.ViewModels
             }
             while (true)
             {
-                result = await _authService.GetAccessTokenAsync();
-                if (result.Item1 == false)// Network Error
+                try
+                {
+                    string accessToken = await _authService.GetAccessTokenAsync();
+                    // Got Access Token
+                    conncetingTokenSource = new();
+                    try
+                    {
+                        return await _signalRCoreService.ConnectAsync($"{url}ServerHub", accessToken, conncetingTokenSource.Token);
+                    }
+                    catch (Exception ex) // 401 unauthorize, need re-login
+                    {
+                        // delete stored jwt tokens to go to login
+                        await _authService.DeleteTokensPairAsync();
+                    }
+                }
+                catch (HttpRequestException hre)
                 {
                     //TODO 
                     throw new NotImplementedException();
                 }
-                else if (result.Item2 == false)// need login
+                catch (NeedLoginException nle)
                 {
                     if (LoginMethod == null)
                     {
@@ -306,17 +320,6 @@ namespace ClipboardSync.Common.ViewModels
                         // Re-login completed, and got Access Token next turn
                         continue;
                     }
-                }
-                // Got Access Token
-                conncetingTokenSource = new();
-                try
-                {
-                    return await _signalRCoreService.ConnectAsync($"{url}ServerHub", result.Item3, conncetingTokenSource.Token);
-                }
-                catch (Exception ex) // 401 unauthorize, need re-login
-                {
-                    // delete stored jwt tokens to go to login
-                    await _authService.DeleteTokensPairAsync();
                 }
             }
         }
@@ -465,12 +468,4 @@ namespace ClipboardSync.Common.ViewModels
         }
     }
 
-    public class NeedLoginException : ApplicationException
-    {
-        public string URL { get; set; }
-        public NeedLoginException(string url)
-        {
-            URL = url;
-        }
-    }
 }

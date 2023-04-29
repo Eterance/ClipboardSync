@@ -5,9 +5,10 @@
 @using ClipboardSync.Common.Services
 @using System.Text.Json
 @using System.Net.Http.Headers;
+@using ClipboardSync.Common.Exceptions;
 @inject NavigationManager Navigation
 @inject IConfiguration Config
-@inject AuthenticationService AuthService
+@inject AuthenticationService _authService
 
 <body>
     @if (_isAuth == false)
@@ -29,23 +30,16 @@
     {
         if (firstRender)
         {
-            AuthService.ServerUrl = (Navigation.ToAbsoluteUri("")).ToString();
-            var aaa = await AuthService.GetAccessTokenAsync();
-            if (aaa.Item1 == false)
+            _authService.ServerUrl = (Navigation.ToAbsoluteUri("")).ToString();
+            
+
+            try
             {
-                _isAuth = false;
-                ErrorMessage = "连接至服务器出错。";
-            }
-            else if (aaa.Item2 == false)
-            {
-                _isAuth = false;
-                ErrorMessage = "你无权访问该页面。请重新登陆。2";
-            }
-            else
-            {
+                string accessToken = await _authService.GetAccessTokenAsync();
+                var url = $"{_authService.ServerUrl}TestAuthHub";
                 HttpClient httpClient = new();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", aaa.Item3);
-                var response = await httpClient.GetAsync(new Uri($"{AuthService.ServerUrl}api/testauthorize"));
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var response = await httpClient.GetAsync(new Uri($"{_authService.ServerUrl}api/testauthorize"));
                 if (response.IsSuccessStatusCode)
                 {
                     _isAuth = true;
@@ -55,6 +49,16 @@
                     _isAuth = false;
                     ErrorMessage = "你无权访问该页面。请重新登陆。3";
                 }
+            }
+            catch (HttpRequestException hre)
+            {
+                _isAuth = false;
+                ErrorMessage = "连接至服务器出错。";
+            }
+            catch (NeedLoginException nle)
+            {
+                _isAuth = false;
+                ErrorMessage = "你无权访问该页面。请重新登陆。2";
             }
             StateHasChanged();
         }

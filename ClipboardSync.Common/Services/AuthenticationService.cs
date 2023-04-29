@@ -1,4 +1,5 @@
-﻿using ClipboardSync.Common.Helpers;
+﻿using ClipboardSync.Common.Exceptions;
+using ClipboardSync.Common.Helpers;
 using ClipboardSync.Common.Models;
 using Microsoft.Extensions.Logging;
 using System;
@@ -40,7 +41,7 @@ namespace ClipboardSync.Common.Services
         /// <returns>(bool) false: Network error; (bool) false: need to re-login; string?: 
         /// refreshed AccessToken, will be null if not all true</returns>
         /// <exception cref="NullReferenceException"></exception>
-        public async Task<Tuple<bool, bool, string?>> GetAccessTokenAsync()
+        public async Task<string> GetAccessTokenAsync()
         {
             if (ServerUrl == null)
             {
@@ -52,16 +53,19 @@ namespace ClipboardSync.Common.Services
                 // Renew if AccessToken expired
                 if (tokens.AccessToken.Expiration < DateTime.UtcNow)
                 {
-                    var sss = await RefreshAccessTokenAsync(tokens.RefreshToken);
-                    if (sss.Item1 == false)// network error
+                    try
                     {
-                        return Tuple.Create(false, true, default(string));
+                        return await RefreshAccessTokenAsync(tokens.RefreshToken);
                     }
-                    if (sss.Item2 == false) // refreshtoken expired, re-login
+                    catch (HttpRequestException hre)
                     {
-                        return Tuple.Create(true, false, default(string));
+                        // Network Error
+                        throw hre;
                     }
-                    return Tuple.Create(true, true, sss.Item3);
+                    catch (NeedLoginException irte)
+                    {
+                        throw irte;
+                    }
                 }
                 else
                 { // Renew in background if AccessToken will expire within 10 sec
@@ -69,13 +73,13 @@ namespace ClipboardSync.Common.Services
                     {
                         _ = RefreshAccessTokenAsync(tokens.AccessToken);
                     }
-                    return Tuple.Create(true, true, tokens.AccessToken.Token);
+                    return tokens.AccessToken.Token;
                 }
             }
-            // Never login, need login
-            else 
-            { 
-                return Tuple.Create(true, false, default(string));
+            else
+            {
+                // Never login, need login
+                throw new NeedLoginException(ServerUrl);
             }
         }
 
@@ -95,7 +99,9 @@ namespace ClipboardSync.Common.Services
         /// <returns>(bool) false: Network error; (bool) false: username or password error; string?: 
         /// refreshed AccessToken, will be null if not all true</returns>
         /// <exception cref="NullReferenceException"></exception>
-        public async Task<Tuple<bool, bool, string?>> LoginAsync(UserInfo userInfo)
+        /// <exception cref="HttpRequestException">Connect fail</exception>
+        /// <exception cref="UserNameOrPasswordWrongException"></exception>
+        public async Task<string> LoginAsync(UserInfo userInfo)
         {
             if (ServerUrl == null)
             {
@@ -109,35 +115,26 @@ namespace ClipboardSync.Common.Services
             {
                 response = await _httpClient.PostAsync(uri, content);
             }
-            catch
+            catch (HttpRequestException hre)
             {
                 // Network Error
-                return Tuple.Create(false, true, default(string));
+                throw hre;
             }
             if (response.IsSuccessStatusCode)
             {
                 string response_content = await response.Content.ReadAsStringAsync();
-                try
-                {
-                    JwtTokensPairModel tokensPair = JsonSerializer.Deserialize<JwtTokensPairModel>(response_content, _serializerOptions) ?? new();
-                    await _settingService.SetJwtTokensPairAsync(ServerUrl, tokensPair);
-                    // Login success
-                    return Tuple.Create(true, true, tokensPair.AccessToken.Token);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    // WTF Error
-                    return Tuple.Create(false, true, default(string));
-                }
-
+                JwtTokensPairModel tokensPair = JsonSerializer.Deserialize<JwtTokensPairModel>(response_content, _serializerOptions) ?? new();
+                await _settingService.SetJwtTokensPairAsync(ServerUrl, tokensPair);
+                // Login success
+                return tokensPair.AccessToken.Token;
             }
             else
             {
                 // User name or password wrong
-                return Tuple.Create(true, false, default(string));
+                throw new UserNameOrPasswordWrongException();
             }
         }
+
 
         /// <summary>
         /// Refresh AccessToken using RefreshToken. RefreshToken is automatically refreshed if it is nearly to expire.
@@ -146,7 +143,9 @@ namespace ClipboardSync.Common.Services
         /// <returns>(bool) false: Network error; (bool) false: RefreshAccess expired, please login again; string?: 
         /// refreshed AccessToken, will be null if not all true</returns>
         /// <exception cref="NullReferenceException">serverUri is null.</exception>
-        private async Task<Tuple<bool, bool, string?>> RefreshAccessTokenAsync(JwtTokenModel RefreshToken)
+        /// <exception cref="HttpRequestException">Connect fail</exception>
+        /// <exception cref="NeedLoginException"></exception>
+        private async Task<string> RefreshAccessTokenAsync(JwtTokenModel RefreshToken)
         {
             if (ServerUrl == null)
             {
@@ -166,33 +165,24 @@ namespace ClipboardSync.Common.Services
             {
                 response = await _httpClient.PostAsync(uri, content);
             }
-            catch
+            catch (HttpRequestException hre)
             {
                 // Network Error
-                return Tuple.Create(false, true, default(string));
+                throw hre;
             }
             if (response.IsSuccessStatusCode)
             {
                 string response_content = await response.Content.ReadAsStringAsync();
-                try
-                {
-                    JwtTokensPairModel tokensPair = JsonSerializer.Deserialize<JwtTokensPairModel>(response_content, _serializerOptions) ?? new();
-                    await _settingService.SetJwtTokensPairAsync(ServerUrl, tokensPair);
-                    // Refresh success
-                    return Tuple.Create(true, true, tokensPair.AccessToken.Token);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    // WTF Error
-                    return Tuple.Create(false, true, default(string));
-                }
+                JwtTokensPairModel tokensPair = JsonSerializer.Deserialize<JwtTokensPairModel>(response_content, _serializerOptions) ?? new();
+                await _settingService.SetJwtTokensPairAsync(ServerUrl, tokensPair);
+                // Refresh success
+                return tokensPair.AccessToken.Token;
 
             }
             else
             {
                 // Invalid Refresh Token
-                return Tuple.Create(true, false, default(string));
+                throw new NeedLoginException(ServerUrl);
             }
         }
 

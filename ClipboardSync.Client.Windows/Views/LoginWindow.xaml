@@ -22,6 +22,7 @@
                 Margin="8 8 8 0"
                 Content="{Binding URL}"
                 FontSize="{StaticResource FontSize.Description}"
+                HorizontalContentAlignment="Center"
                 />
             <Label
                 Margin="8 8 8 0"
