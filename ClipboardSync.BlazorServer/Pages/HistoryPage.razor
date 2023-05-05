@@ -53,7 +53,7 @@
             string text2 = await JSRuntime.InvokeAsync<string>("clipboardRead.readText");
             if (text2 != null && text2.Trim() != "")
             {
-                SubViewModel.SendText(text2);
+                _ = SubViewModel.SendTextAsync(text2);
                 cb?.SuccessAndBack();
             }
         }
@@ -64,13 +64,13 @@
         StateHasChanged();
     }
 
-    public void Send(CustomButton cb)
+    public async void Send(CustomButton cb)
     {
         try
         {
             if (text != null && text.Trim() != "")
             {
-                SubViewModel.SendText(text);
+                _ = SubViewModel.SendTextAsync(text);
                 cb?.SuccessAndBack();
             }
         }

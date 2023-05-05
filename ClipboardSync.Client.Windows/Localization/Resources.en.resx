@@ -194,4 +194,31 @@ When multiple addresses are specified, The front of the line is tried more first
   <data name="BrandName" xml:space="preserve">
     <value>ClipBoardSync Desktop</value>
   </data>
+  <data name="Sent" xml:space="preserve">
+    <value>Sent.</value>
+  </data>
+  <data name="ClipboardHistoryCapacityChanged2" xml:space="preserve">
+    <value>Clipboard history capacity changed to </value>
+  </data>
+  <data name="Period" xml:space="preserve">
+    <value>. </value>
+  </data>
+  <data name="Unlimited" xml:space="preserve">
+    <value>Unlimited</value>
+  </data>
+  <data name="Try2Connect2" xml:space="preserve">
+    <value>Try to connect to</value>
+  </data>
+  <data name="AllServersAreUnavailable" xml:space="preserve">
+    <value>All servers are unavailable.</value>
+  </data>
+  <data name="Connected2" xml:space="preserve">
+    <value>Connected to</value>
+  </data>
+  <data name="SendFail" xml:space="preserve">
+    <value>Sending failed. It may be that the server is not yet connected, or it may be an attempt to send empty text.</value>
+  </data>
+  <data name="NotAValidUrl" xml:space="preserve">
+    <value>not a valid Url.</value>
+  </data>
 </root>

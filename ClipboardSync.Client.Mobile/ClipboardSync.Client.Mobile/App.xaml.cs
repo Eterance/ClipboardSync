@@ -32,14 +32,7 @@ namespace ClipboardSync.Client.Mobile
                     clipboardManagementViewModel = new ClipboardViewModel(
                         settingsService: XamarinSettingsService,
                         signalrService: new(),
-                        authService: AuthenticationService,
-                        toast: (e) =>
-                        {
-                            MainThread.BeginInvokeOnMainThread(() =>
-                            {
-                                DependencyService.Get<IToast>().ShortAlert(e);
-                            });
-                        }
+                        authService: AuthenticationService
                     );
                     clipboardManagementViewModel.Initialize();
                 }

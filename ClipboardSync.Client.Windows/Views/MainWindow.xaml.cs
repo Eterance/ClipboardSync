@@ -54,14 +54,7 @@ namespace ClipboardSync.Client.Windows.Views
                         {
                             act();
                         });
-                    },
-                toast: (e) =>
-                    {
-                        // https://learn.microsoft.com/zh-cn/windows/apps/design/shell/tiles-and-notifications/send-local-toast?tabs=desktop-msix
-                        new ToastContentBuilder()
-                            .AddText(e)
-                            .Show();
-                    }
+                    }                    
                 );
             clipboardVM.NeedClipboardSetText += (sender, e) =>
             {
@@ -72,7 +65,6 @@ namespace ClipboardSync.Client.Windows.Views
                     Clipboard.SetText(e)
                 );                
             };
-            clipboardVM.SuppressSendTextToastMessage = true;
             clipboardVM.Initialize();
             clipboardVM.LoginMethod = async (url, completionToken) =>
             {
@@ -331,9 +323,9 @@ namespace ClipboardSync.Client.Windows.Views
 
         public EventHandler<string> ClipBroadChangedEvent;
 
-        private void ClipBroadChanged(object? sender, string e)
+        private async void ClipBroadChanged(object? sender, string e)
         {
-            mainViewModel.SendClipboardText(e);
+            await mainViewModel.SendClipboardTextAsync(e);
         }
         
         private void OnHotKeyAltV()

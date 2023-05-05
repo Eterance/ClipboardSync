@@ -61,6 +61,15 @@ namespace ClipboardSync.Client.Mobile.Localization {
         }
         
         /// <summary>
+        ///   查找类似 所有服务器均无法连接。 的本地化字符串。
+        /// </summary>
+        public static string AllServersAreUnavailable {
+            get {
+                return ResourceManager.GetString("AllServersAreUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 取消 的本地化字符串。
         /// </summary>
         public static string Cancel {
@@ -97,11 +106,29 @@ namespace ClipboardSync.Client.Mobile.Localization {
         }
         
         /// <summary>
+        ///   查找类似 剪贴板历史记录容量更改为  的本地化字符串。
+        /// </summary>
+        public static string ClipboardHistoryCapacityChanged2 {
+            get {
+                return ResourceManager.GetString("ClipboardHistoryCapacityChanged2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 关闭 的本地化字符串。
         /// </summary>
         public static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 已连接至 的本地化字符串。
+        /// </summary>
+        public static string Connected2 {
+            get {
+                return ResourceManager.GetString("Connected2", resourceCulture);
             }
         }
         
@@ -224,6 +251,24 @@ namespace ClipboardSync.Client.Mobile.Localization {
         }
         
         /// <summary>
+        ///   查找类似 不是有效的Url。 的本地化字符串。
+        /// </summary>
+        public static string NotAValidUrl {
+            get {
+                return ResourceManager.GetString("NotAValidUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 。 的本地化字符串。
+        /// </summary>
+        public static string Period {
+            get {
+                return ResourceManager.GetString("Period", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 固定 的本地化字符串。
         /// </summary>
         public static string Pin {
@@ -278,6 +323,24 @@ namespace ClipboardSync.Client.Mobile.Localization {
         }
         
         /// <summary>
+        ///   查找类似 发送失败。可能是尚未连接到服务器，也可能是尝试发送空文本。 的本地化字符串。
+        /// </summary>
+        public static string SendFail {
+            get {
+                return ResourceManager.GetString("SendFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 已发送。 的本地化字符串。
+        /// </summary>
+        public static string Sent {
+            get {
+                return ResourceManager.GetString("Sent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 服务器地址 的本地化字符串。
         /// </summary>
         public static string ServerAddr {
@@ -321,6 +384,24 @@ namespace ClipboardSync.Client.Mobile.Localization {
         public static string ServerCacheCapacityDescription {
             get {
                 return ResourceManager.GetString("ServerCacheCapacityDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 尝试连接到 的本地化字符串。
+        /// </summary>
+        public static string Try2Connect2 {
+            get {
+                return ResourceManager.GetString("Try2Connect2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 无限 的本地化字符串。
+        /// </summary>
+        public static string Unlimited {
+            get {
+                return ResourceManager.GetString("Unlimited", resourceCulture);
             }
         }
         

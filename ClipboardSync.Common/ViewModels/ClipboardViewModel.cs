@@ -1,13 +1,10 @@
 ﻿using ClipboardSync.Common.ExtensionMethods;
-using ClipboardSync.Common.Localization;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
-using ClipboardSync.Common.Models;
-using System.Net.Http.Headers;
 using System.Net.Http;
 using ClipboardSync.Common.Services;
 using ClipboardSync.Common.Exceptions;
@@ -40,8 +37,21 @@ namespace ClipboardSync.Common.ViewModels
         public Action<Action>? UIDispatcherInvoker { get; set; }
         public EventHandler<string>? NeedClipboardSetText { get; set; }
         public EventHandler<Exception>? UnexpectedError { get; set; }
-        public Action<string>? Toast { get; set; }
-        public bool SuppressSendTextToastMessage { get; set; } = false;
+        public EventHandler<int>? ServerCacheCapacityUpdated { get; set; }
+        public EventHandler<int>? HistoryListCapacityUpdated { get; set; }
+        /// <summary>
+        /// Invoked when fail to connect all urls.
+        /// </summary>
+        public EventHandler<string>? FailToConnectAll { get; set; }
+        public EventHandler<string>? BeginConnect { get; set; }
+        public EventHandler<string>? ConnectSuccess { get; set; }
+        public EventHandler<string>? ConnectFail { get; set; }
+        public EventHandler<string>? InvalidUrl { get; set; }
+        /// <summary>
+        /// Invoked when lost signalr connections.
+        /// </summary>
+        public EventHandler<string>? LostConnection { get; set; }
+        //public Action<string>? Toast { get; set; }
 
         public ObservableCollection<string>? HistoryList
         {
@@ -56,12 +66,20 @@ namespace ClipboardSync.Common.ViewModels
             get => _pinnedList;
             set => SetValue(ref _pinnedList, value);
         }
-        public string IPEndPointsString
+        public string UrlsString
         {
-            get => _ipEndPointsString;
+            get => _urlsString;
             set
             {
-                SetValue(ref _ipEndPointsString, value);
+                SetValue(ref _urlsString, value);
+            }
+        }
+        public string CurrentUrl
+        {
+            get => _currentUrl;
+            set
+            {
+                SetValue(ref _currentUrl, value);
             }
         }
 
@@ -83,16 +101,6 @@ namespace ClipboardSync.Common.ViewModels
             }
         }
 
-
-        public string ConnectionStatusInstruction
-        {
-            get => _connectionStatusInstruction;
-            set
-            {
-                SetValue(ref _connectionStatusInstruction, value);
-            }
-        }
-
         public ISettingsService SettingsService
         {
             get => _settingsService;
@@ -109,12 +117,13 @@ namespace ClipboardSync.Common.ViewModels
 
         private bool _isConnected = false;
         private bool _isInitialized = false;
-        private string _ipEndPointsString = "";
+        private string _urlsString = "";
+        private string _currentUrl = "";
         private int _serverCacheCapacity;
         //private int _historyListCapacity = Preferences.Get(_historyListCapacityKey, 30);
         private int _historyListCapacity = 30;
-        private string _connectionStatusInstruction = "";
-        private static readonly string _ipEndPointsKey = "IPEndPoints";
+        //private string _connectionStatusInstruction = "";
+        private static readonly string _urlKey = "Urls";
         private static readonly string _historyListCapacityKey = "HistoryListCapacity";
         private ClipboardSignalRService _signalRCoreService;
 
@@ -128,21 +137,20 @@ namespace ClipboardSync.Common.ViewModels
             ISettingsService settingsService,
             ClipboardSignalRService signalrService,
             AuthenticationService authService,
-            Action<Action>? uiDispatcherInvoker = null,
-            Action<string>? toast = null
+            Action<Action>? uiDispatcherInvoker = null
             )
         {
             _settingsService = settingsService;
             _authService = authService;
             _signalRCoreService = signalrService;
             UIDispatcherInvoker = uiDispatcherInvoker ?? UIDispatcherInvoker;
-            Toast = toast ?? Toast;
-            _signalRCoreService.ConnectStatusUpdate += (sender, e) => ConnectionStatusInstruction = e;
+            //Toast = toast ?? Toast;
             _signalRCoreService.MessagesSync += SyncMessagesAsync;
             _signalRCoreService.MessageReceived += ReceiveMessage;
-            _signalRCoreService.ServerCacheCapacityUpdated += (sender, e) =>
+            _signalRCoreService.ServerCacheCapacityUpdated += (sender, capacity) =>
             {
-                ServerCacheCapacity = e;
+                ServerCacheCapacity = capacity;
+                /*
                 if (e <= 0)
                 {
                     Toast?.Invoke($"{Resources.ServerCacheCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
@@ -155,19 +163,22 @@ namespace ClipboardSync.Common.ViewModels
                     Toast?.Invoke(
                         $"{Resources.ServerCacheCapacityChanged2}{_serverCacheCapacity}{Resources.Period}"
                         );
-                }
-
+                }*/
+                ServerCacheCapacityUpdated?.Invoke(this, capacity);
             };
             _signalRCoreService.UnexpectedError += (sender, e) => UnexpectedError?.Invoke(sender, e);
             _signalRCoreService.LostConnection += async (sender, e) =>
             {
-                await TryConnectAllUrlAsync();
+                var oldIp = CurrentUrl;
+                var reconnectTask =  TryConnectAllUrlAsync();
+                LostConnection?.Invoke(this, oldIp);
+                await reconnectTask;
             };
 
             HistoryList = new();
             HistoryListCapacity = _settingsService.Get(_historyListCapacityKey, 30);
 
-            SaveAndConnectCommand = new DelegateCommand(SetIPEndPointsAsync);
+            SaveAndConnectCommand = new DelegateCommand(SetUrlsAsync);
             ApplyServerCacheCapacityCommand = new DelegateCommand(ApplyServerCacheCapacity);
             ApplyHistoryListCapacityCommand = new DelegateCommand(ApplyHistoryListCapacity);
             ClearHistoryListCommand = new DelegateCommand(ClearHistoryList);
@@ -183,23 +194,16 @@ namespace ClipboardSync.Common.ViewModels
             _settingsService.Set(_historyListCapacityKey, HistoryListCapacity);
             UseUIDispatcherInvoke(delegate // <--- HERE
             {
-                HistoryList.ApplyCapacityLimit(HistoryListCapacity);
+                HistoryList?.ApplyCapacityLimit(HistoryListCapacity);
             });
-            if (HistoryListCapacity <= 0)
-            {
-                Toast?.Invoke($"{Resources.ClipboardHistoryCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
-            }
-            else
-            {
-                Toast?.Invoke($"{Resources.ClipboardHistoryCapacityChanged2}{HistoryListCapacity}{Resources.Period}");
-            }
+            HistoryListCapacityUpdated?.Invoke(this, HistoryListCapacity);
         }
 
         private void ClearHistoryList()
         {
             UseUIDispatcherInvoke(delegate // <--- HERE
             {
-                HistoryList.Clear();
+                HistoryList?.Clear();
             });
         }
 
@@ -214,8 +218,7 @@ namespace ClipboardSync.Common.ViewModels
             PinnedList = new(await _settingsService.PinnedListFileHelper.Load());
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
             HistoryListCapacity = _settingsService.Get(_historyListCapacityKey, 30);
-            ConnectionStatusInstruction = Resources.NotConnected;
-            IPEndPointsString = _settingsService.Get(_ipEndPointsKey, "");
+            UrlsString = _settingsService.Get(_urlKey, "");
 
             IsConnected = false;
             _isInitialized = true;
@@ -226,43 +229,64 @@ namespace ClipboardSync.Common.ViewModels
             if (_isInitialized) return;
             PinnedList = new(await _settingsService.PinnedListFileHelper.Load());
             PinnedList.CollectionChanged += (sender, e) => SavePinnedList();
-            ConnectionStatusInstruction = Resources.NotConnected;
             var connectTask = ConnectAsync(serverUrl);
-            // System.InvalidOperationException: 'Cannot change ObservableCollection during a CollectionChanged event.'
-            //HistoryList.CollectionChanged += (sender, e) => CheckHistoryListCapacity();
-            //connectTask.Wait();
             _isInitialized = true;
         }
 
-        private async void SetIPEndPointsAsync()
+        private async void SetUrlsAsync()
         {
-            IPEndPointsString = IPEndPointsString.Trim();
-            _settingsService.Set(_ipEndPointsKey, IPEndPointsString);
+            UrlsString = UrlsString.Trim();
+            _settingsService.Set(_urlKey, UrlsString);
             await TryConnectAllUrlAsync();
+        }
+
+        private bool ValidateUrl(string url)
+        {
+            try 
+            {
+                Uri uri = new Uri($"{url}");
+                return true;
+            }
+            catch (Exception ex)
+            { 
+                return false; 
+            }
         }
 
         public async Task TryConnectAllUrlAsync()
         {
-            bool hasIpKey = _settingsService.IsContainsKey(_ipEndPointsKey);
+            bool hasIpKey = _settingsService.IsContainsKey(_urlKey);
             IsConnected = false;
             if (hasIpKey == true)
             {
-                string ipEndPointsString = _settingsService.Get(_ipEndPointsKey, "");
+                string UrlString = _settingsService.Get(_urlKey, "");
                 conncetingTokenSource = new();
-                foreach (string ipEndpoint in SeperateIPEndPoints(ipEndPointsString))
+                foreach (string url in SeperateUrls(UrlString))
                 {
-                    bool result = await ConnectAsync($"http://{ipEndpoint}/");
+                    if (ValidateUrl(url) == false)
+                    {
+                        InvalidUrl?.Invoke(this, url);
+                        continue;
+                    }
+                    BeginConnect?.Invoke(this, url);
+                    bool result = await ConnectAsync($"{url}/");
                     if (result == true)
                     {
                         IsConnected = true;
+                        CurrentUrl = url;
+                        ConnectSuccess?.Invoke(this, url);
                         return;
                     }
+                    else 
+                    {
+                        ConnectFail?.Invoke(this, url);
+                    }
                 }
+                FailToConnectAll?.Invoke(this, "");
             }
             else
             {
-                IPEndPointsString = "";
-                ConnectionStatusInstruction = Resources.NoServerAddr;
+                UrlsString = "";
             }
         }
 
@@ -325,17 +349,17 @@ namespace ClipboardSync.Common.ViewModels
         }
 
 
-        private List<string> SeperateIPEndPoints(string ipEndPointsString)
+        private List<string> SeperateUrls(string urlString)
         {
             // ipEndPoints: ip1:port1; ip2:port2; etc...
             // seprate by ';' and trim
-            List<string> ipEndPointList = new();
-            string[] ipEndPointArray = ipEndPointsString.Split(';');
-            foreach (string ipEndPoint in ipEndPointArray)
+            List<string> urlList = new();
+            string[] urlArray = urlString.Split(';');
+            foreach (string url in urlArray)
             {
-                ipEndPointList.Add(ipEndPoint.Trim());
+                urlList.Add(url.Trim());
             }
-            return ipEndPointList;
+            return urlList;
         }
 
         /// <summary>
@@ -365,11 +389,11 @@ namespace ClipboardSync.Common.ViewModels
             try
             {
                 // 两张表里都没有，加进剪贴板
-                if (HistoryList.Contains(message) != true && PinnedList.Contains(message) != true)
+                if (HistoryList?.Contains(message) != true && PinnedList?.Contains(message) != true)
                 {
                     UseUIDispatcherInvoke(delegate // <--- HERE
                     {
-                        HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                        HistoryList?.InsertWithCapacityLimit(0, message, HistoryListCapacity);
                     });
                     OnPropertyChanged();
                     //HistoryList.Insert(0, message);
@@ -378,7 +402,7 @@ namespace ClipboardSync.Common.ViewModels
                     return true;
                 }
                 // 剪贴板有，并且不在第一位，移到前面
-                else if (HistoryList.Contains(message) == true && PinnedList.Contains(message) != true && HistoryList[0] != message)
+                else if (HistoryList?.Contains(message) == true && PinnedList?.Contains(message) != true && HistoryList[0] != message)
                 {
                     UseUIDispatcherInvoke(delegate // <--- HERE
                     {
@@ -417,18 +441,18 @@ namespace ClipboardSync.Common.ViewModels
             AddNewHistory(message);
         }
 
-        public void SendText(string text)
+        public async Task<bool> SendTextAsync(string text)
         {
-            if (text == null || text.Trim() == "") return;
-            _ = _signalRCoreService.SendMessage(text);
-            if (HistoryList.Contains(text) != true && PinnedList.Contains(text) != true)
+            if (text == null || text.Trim() == "" || _isConnected == false)
             {
-                if (!SuppressSendTextToastMessage)
-                {
-                    Toast?.Invoke(Resources.Sent);
-                }
+                return false;
+            }
+            await _signalRCoreService.SendMessageAsync(text);
+            if (HistoryList?.Contains(text) != true && PinnedList?.Contains(text) != true)
+            {
                 AddNewHistory(text);
             }
+            return true;
         }
 
         /// <summary>
@@ -437,12 +461,12 @@ namespace ClipboardSync.Common.ViewModels
         /// <param name="message"></param>
         public void Pin(string message)
         {
-            if (HistoryList.Contains(message))
+            if (HistoryList?.Contains(message) == true)
             {
                 UseUIDispatcherInvoke(delegate // <--- HERE
                 {
                     HistoryList.Remove(message);
-                    PinnedList.Insert(0, message);
+                    PinnedList?.Insert(0, message);
                     OnPropertyChanged();
                 });
             }
@@ -454,12 +478,12 @@ namespace ClipboardSync.Common.ViewModels
         /// <param name="message"></param>
         public void Unpin(string message)
         {
-            if (PinnedList.Contains(message))
+            if (PinnedList?.Contains(message) == true)
             {
                 UseUIDispatcherInvoke(delegate // <--- HERE
                 {
                     PinnedList.Remove(message);
-                    HistoryList.InsertWithCapacityLimit(0, message, HistoryListCapacity);
+                    HistoryList?.InsertWithCapacityLimit(0, message, HistoryListCapacity);
                     OnPropertyChanged();
                 });
                 //HistoryList.Insert(0, message);

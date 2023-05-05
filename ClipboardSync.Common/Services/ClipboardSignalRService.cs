@@ -1,8 +1,6 @@
-﻿using ClipboardSync.Common.Localization;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,19 +8,17 @@ namespace ClipboardSync.Common.Services
 {
     public class ClipboardSignalRService
     {
-        public EventHandler<string> MessageReceived { get; set; }
-        public EventHandler<string> ConnectStatusUpdate { get; set; }
-        public EventHandler<List<string>> MessagesSync { get; set; }
-        public EventHandler<int> ServerCacheCapacityUpdated { get; set; }
-        public EventHandler<List<string>> GotServerPinnedList { get; set; }
-        public EventHandler<Exception> UnexpectedError { get; set; }
+        public EventHandler<string>? MessageReceived { get; set; }
+        public EventHandler<List<string>>? MessagesSync { get; set; }
+        public EventHandler<int>? ServerCacheCapacityUpdated { get; set; }
+        public EventHandler<Exception>? UnexpectedError { get; set; }
         /// <summary>
         /// CHS: 丢失与服务器的连接。
         /// ENG: Lost connection to server.
         /// </summary>
-        public EventHandler<Exception> LostConnection { get; set; }
+        public EventHandler<Exception>? LostConnection { get; set; }
 
-        protected HubConnection _connection;
+        protected HubConnection? _connection;
         /// <summary>
         /// CHS: 指示是否已连接到服务器。
         /// ENG: Indicate whether connected to the hub.
@@ -105,16 +101,9 @@ namespace ClipboardSync.Common.Services
             LostConnection?.Invoke(this, ex);
         }
 
-        public async Task SendMessage(string message)
+        public async Task SendMessageAsync(string message)
         {
-            try
-            {
-                await _connection.InvokeAsync("BroadcastMessage", message);
-            }
-            catch (Exception ex)
-            {
-                UnexpectedError?.Invoke(this, ex);
-            }
+            await _connection.InvokeAsync("BroadcastMessage", message);
         }
 
         public async Task SetServerCacheCapacity(int capacity)

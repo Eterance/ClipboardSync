@@ -15,16 +15,24 @@ namespace ClipboardSync.Client.Windows.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        public string ConnectionStatusInstruction
+        {
+            get => _connectionStatusInstruction;
+            private set
+            {
+                SetValue(ref _connectionStatusInstruction, value);
+            }
+        }
         public ClipboardViewModel SubViewModel { get; set; }
         public LocalizationModel SelectedLanguage
         {
-            get 
+            get
             {
                 if (selectedLanguage == null)
                 {
                     return SearchLanguage(settings.Get(localizationSettingName, "en"));
                 }
-                return selectedLanguage; 
+                return selectedLanguage;
             }
             set
             {
@@ -55,15 +63,52 @@ namespace ClipboardSync.Client.Windows.ViewModels
             }
         }
 
-        
-        private string _playgroundText;
-        private LocalizationModel selectedLanguage;
+        public void Toast(string message)
+        {
+            // https://learn.microsoft.com/zh-cn/windows/apps/design/shell/tiles-and-notifications/send-local-toast?tabs=desktop-msix
+            new ToastContentBuilder()
+                .AddText(message)
+                .Show();
+        }
+
+        private string _playgroundText = "";
+        private LocalizationModel? selectedLanguage;
         private readonly string localizationSettingName = "Localization";
         private ISettingsService settings;
+        private string _connectionStatusInstruction;
 
         public MainWindowViewModel(ClipboardViewModel viewModel, ISettingsService _settings)
         {
             SubViewModel = viewModel;
+
+            SubViewModel.HistoryListCapacityUpdated += (sender, newCapacity) =>
+            {
+                if (newCapacity <= 0)
+                {
+                    Toast($"{Resources.ClipboardHistoryCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
+                }
+                else
+                {
+                    Toast($"{Resources.ClipboardHistoryCapacityChanged2}{newCapacity}{Resources.Period}");
+                }
+            };
+            SubViewModel.BeginConnect += (_, url) =>
+            {
+                ConnectionStatusInstruction = $"{Resources.Try2Connect2} {url}{Resources.Period}";
+            };
+            SubViewModel.FailToConnectAll += (_, _) =>
+            {
+                ConnectionStatusInstruction = $"{Resources.AllServersAreUnavailable}";
+            };
+            SubViewModel.ConnectSuccess += (_, url) =>
+            {
+                ConnectionStatusInstruction = $"{Resources.Connected2} {url}{Resources.Period}";
+            };
+            SubViewModel.InvalidUrl += (_, url) =>
+            {
+                Toast($"\"{url}\"{Resources.NotAValidUrl}");
+            };
+
             settings = _settings;
 
             if (LanguageList == null)
@@ -76,9 +121,17 @@ namespace ClipboardSync.Client.Windows.ViewModels
             }
         }
         
-        public void SendClipboardText(string text)
+        public async Task SendClipboardTextAsync(string text)
         {
-            SubViewModel.SendText(text);
+            bool result = await SubViewModel.SendTextAsync(text);
+            if (result == true) 
+            {
+                Toast(Resources.Sent);
+            }
+            else 
+            { 
+                Toast(Resources.SendFail); 
+            }
         }
 
         private LocalizationModel SearchLanguage(string id)

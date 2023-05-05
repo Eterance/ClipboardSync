@@ -2,6 +2,7 @@
 using ClipboardSync.Common.Helpers;
 using ClipboardSync.Common.Models;
 using ClipboardSync.Common.Services;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -17,7 +18,8 @@ namespace ClipboardSync.Client.Windows.Services
         private string intSettingsFileName = "intSettings.ini";
         private string stringSettingsFileName = "stringSettings.ini";
         private string tokenPairsFileName = "tokenPairs.xml";
-        private string _directoryPath = "";
+        private string rootFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        private string _directoryPath = "ClipboardSync_Desktop";
 
         public IPinnedListFileHelper PinnedListFileHelper { get; set; }
 
@@ -26,9 +28,9 @@ namespace ClipboardSync.Client.Windows.Services
             string directoryPath)
         {
             PinnedListFileHelper = pinnedListFileService;
-            intSettings = DeserializeInt(Path.Combine(_directoryPath, intSettingsFileName));
-            stringSettings = DeserializeString(Path.Combine(_directoryPath, stringSettingsFileName));
-            tokenPairsDict = XmlDeserialize<SerializableDictionary<string, JwtTokensPairModel>>(Path.Combine(_directoryPath, tokenPairsFileName))??new();
+            intSettings = DeserializeInt(Path.Combine(rootFolder, _directoryPath, intSettingsFileName));
+            stringSettings = DeserializeString(Path.Combine(rootFolder, _directoryPath, stringSettingsFileName));
+            tokenPairsDict = XmlDeserialize<SerializableDictionary<string, JwtTokensPairModel>>(Path.Combine(rootFolder, _directoryPath, tokenPairsFileName))??new();
             _directoryPath = directoryPath;
         }
 
@@ -66,13 +68,13 @@ namespace ClipboardSync.Client.Windows.Services
         public void Set(string key, int value)
         {
             intSettings[key] = value;
-            Serialize(intSettings, Path.Combine(_directoryPath, intSettingsFileName));
+            Serialize(intSettings, Path.Combine(rootFolder, _directoryPath, intSettingsFileName));
         }
 
         public void Set(string key, string value)
         {
             stringSettings[key] = value;
-            Serialize(stringSettings, Path.Combine(_directoryPath, stringSettingsFileName));
+            Serialize(stringSettings, Path.Combine(rootFolder, _directoryPath, stringSettingsFileName));
         }
 
         private void Serialize<T>(Dictionary<string, T> dict, string dictFileName)

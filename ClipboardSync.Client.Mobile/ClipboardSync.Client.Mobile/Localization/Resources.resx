@@ -213,4 +213,32 @@ Restart the application to apply the language change.</value>
   <data name="Clear" xml:space="preserve">
     <value>清空</value>
   </data>
+  <data name="Sent" xml:space="preserve">
+    <value>已发送。</value>
+  </data>
+  <data name="ClipboardHistoryCapacityChanged2" xml:space="preserve">
+    <value>剪贴板历史记录容量更改为 </value>
+  </data>
+  <data name="Period" xml:space="preserve">
+    <value>。</value>
+    <comment>@MutedRule(WhiteSpaceTail)</comment>
+  </data>
+  <data name="Unlimited" xml:space="preserve">
+    <value>无限</value>
+  </data>
+  <data name="Try2Connect2" xml:space="preserve">
+    <value>尝试连接到</value>
+  </data>
+  <data name="AllServersAreUnavailable" xml:space="preserve">
+    <value>所有服务器均无法连接。</value>
+  </data>
+  <data name="Connected2" xml:space="preserve">
+    <value>已连接至</value>
+  </data>
+  <data name="SendFail" xml:space="preserve">
+    <value>发送失败。可能是尚未连接到服务器，也可能是尝试发送空文本。</value>
+  </data>
+  <data name="NotAValidUrl" xml:space="preserve">
+    <value>不是有效的Url。</value>
+  </data>
 </root>

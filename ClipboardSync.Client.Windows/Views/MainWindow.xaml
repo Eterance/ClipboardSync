@@ -260,7 +260,7 @@
                        VerticalContentAlignment="Center" 
                        FontWeight="Bold">
                     <TextBlock TextWrapping="Wrap"
-                               Text="{Binding SubViewModel.ConnectionStatusInstruction}" />
+                               Text="{Binding ConnectionStatusInstruction}" />
                 </Label>
                 <!-- Server Address -->
                 <Label Margin="0,20,0,0"
@@ -278,7 +278,7 @@
                          FontSize="{StaticResource FontSize.Description}"
                          TextWrapping="Wrap" 
                          HorizontalAlignment="Stretch"
-                         Text="{Binding SubViewModel.IPEndPointsString}"/>
+                         Text="{Binding SubViewModel.UrlsString}"/>
                 <Button Content="{x:Static localization:Resources.SaveAndReconnect}" 
                         Margin="20,8,20,0"
                         Height="40"

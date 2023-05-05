@@ -13,7 +13,7 @@
             <StackLayout x:Name="MainStackLayout"
                          Margin="0, 0, 16, 0">
                 <Label x:Name="ConnectionStatusLabel"
-                       Text="{Binding SubViewModel.ConnectionStatusInstruction}"
+                       Text="{Binding ConnectionStatusInstruction}"
                        HorizontalTextAlignment="Center"
                        FontSize="Large"
                    />
@@ -51,7 +51,7 @@
                 <Editor x:Name="IpEndPointsEditor"
                         AutoSize="TextChanges"
                         Placeholder="{x:Static localization:Resources.ServerAddrPlaceholder}"
-                        Text="{Binding SubViewModel.IPEndPointsString}"/>
+                        Text="{Binding SubViewModel.UrlsString}"/>
                 <Button Text="{x:Static localization:Resources.SaveAndReconnect}" 
                             Margin="0,0,0,0"
                             Command="{Binding SubViewModel.SaveAndConnectCommand}"/>

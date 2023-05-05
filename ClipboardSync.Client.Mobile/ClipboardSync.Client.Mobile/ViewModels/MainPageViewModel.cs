@@ -17,6 +17,14 @@ namespace ClipboardSync.Client.Mobile.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
+        public string ConnectionStatusInstruction
+        {
+            get => _connectionStatusInstruction;
+            private set
+            {
+                SetValue(ref _connectionStatusInstruction, value);
+            }
+        }
         public ClipboardViewModel SubViewModel { get; set; }
         public LocalizationModel SelectedLanguage
         {
@@ -58,14 +66,52 @@ namespace ClipboardSync.Client.Mobile.ViewModels
         }
 
         
-        private string _playgroundText;
-        private LocalizationModel selectedLanguage;
+        private string _playgroundText = "";
+        private LocalizationModel? selectedLanguage;
         private readonly string localizationSettingName = "Localization";
         private ISettingsService settings;
+        private string _connectionStatusInstruction;
+
+        private void Toast(string message)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                DependencyService.Get<IToast>().ShortAlert(message);
+            });
+        }
 
         public MainPageViewModel(ClipboardViewModel viewModel, ISettingsService _settings)
         {
             SubViewModel = viewModel;
+
+            SubViewModel.HistoryListCapacityUpdated += (sender, newCapacity) =>
+            {
+                if (newCapacity <= 0)
+                {
+                    Toast($"{Resources.ClipboardHistoryCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
+                }
+                else
+                {
+                    Toast($"{Resources.ClipboardHistoryCapacityChanged2}{newCapacity}{Resources.Period}");
+                }
+            };
+            SubViewModel.BeginConnect += (_, url) =>
+            {
+                ConnectionStatusInstruction = $"{Resources.Try2Connect2} {url}{Resources.Period}";
+            };
+            SubViewModel.FailToConnectAll += (_, _) =>
+            {
+                ConnectionStatusInstruction = $"{Resources.AllServersAreUnavailable}";
+            };
+            SubViewModel.ConnectSuccess += (_, url) =>
+            {
+                ConnectionStatusInstruction = $"{Resources.Connected2} {url}{Resources.Period}";
+            };
+            SubViewModel.InvalidUrl += (_, url) =>
+            {
+                Toast($"\"{url}\"{Resources.NotAValidUrl}");
+            };
+
 
             SendPlaygroundTextCommand = new Command(SendPlaygroundText);
             SendClipboardTextAsyncCommand = new Command(SendClipboardTextAsync);
@@ -85,16 +131,28 @@ namespace ClipboardSync.Client.Mobile.ViewModels
         private async void SendClipboardTextAsync()
         {
             string text = await Clipboard.GetTextAsync();
-            if (text != null && text.Trim() != "") 
-            { 
-                SubViewModel.SendText(text); 
+            var result = await SubViewModel.SendTextAsync(text);
+            if (result == true)
+            {
+                Toast(Resources.Sent);
             }
-            
+            else
+            {
+                Toast(Resources.SendFail);
+            }
         }
 
-        private void SendPlaygroundText()
+        private async void SendPlaygroundText()
         {
-            SubViewModel.SendText(PlaygroundText);
+            bool result = await SubViewModel.SendTextAsync(PlaygroundText);
+            if (result == true)
+            {
+                Toast(Resources.Sent);
+            }
+            else
+            {
+                Toast(Resources.SendFail);
+            }
         }
 
         private LocalizationModel SearchLanguage(string id)
