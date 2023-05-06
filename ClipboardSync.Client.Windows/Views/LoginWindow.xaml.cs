@@ -110,12 +110,12 @@ namespace ClipboardSync.Client.Windows.Views
             catch (HttpRequestException hrex)
             {
                 ErrorMessageVisible = true;
-                ErrorMessage = "无法连接到服务器。";
+                ErrorMessage = Localization.Resources.CannotConnect2Server;
             }
             catch (UserNameOrPasswordWrongException upwe)
             {
                 ErrorMessageVisible = true;
-                ErrorMessage = "用户名或密码错误。";
+                ErrorMessage = Localization.Resources.UsernameOrPasswordError;
             }
         }
 

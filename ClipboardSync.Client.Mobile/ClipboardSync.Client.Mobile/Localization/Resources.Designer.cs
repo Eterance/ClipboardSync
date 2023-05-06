@@ -79,6 +79,24 @@ namespace ClipboardSync.Client.Mobile.Localization {
         }
         
         /// <summary>
+        ///   查找类似 取消登入 的本地化字符串。
+        /// </summary>
+        public static string CancelLogin {
+            get {
+                return ResourceManager.GetString("CancelLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 无法连接到服务器。请检查你的网络，或者检查服务器是否开启。 的本地化字符串。
+        /// </summary>
+        public static string CannotConnect2Server {
+            get {
+                return ResourceManager.GetString("CannotConnect2Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 清空 的本地化字符串。
         /// </summary>
         public static string Clear {
@@ -251,11 +269,29 @@ namespace ClipboardSync.Client.Mobile.Localization {
         }
         
         /// <summary>
+        ///   查找类似 登入 的本地化字符串。
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 不是有效的Url。 的本地化字符串。
         /// </summary>
         public static string NotAValidUrl {
             get {
                 return ResourceManager.GetString("NotAValidUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 密码 的本地化字符串。
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
@@ -283,6 +319,15 @@ namespace ClipboardSync.Client.Mobile.Localization {
         public static string Pinned {
             get {
                 return ResourceManager.GetString("Pinned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 请登入到服务器 的本地化字符串。
+        /// </summary>
+        public static string PleaseLogin2TheServer {
+            get {
+                return ResourceManager.GetString("PleaseLogin2TheServer", resourceCulture);
             }
         }
         
@@ -411,6 +456,24 @@ namespace ClipboardSync.Client.Mobile.Localization {
         public static string Unpin {
             get {
                 return ResourceManager.GetString("Unpin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 用户名 的本地化字符串。
+        /// </summary>
+        public static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 用户名或密码错误。 的本地化字符串。
+        /// </summary>
+        public static string UsernameOrPasswordError {
+            get {
+                return ResourceManager.GetString("UsernameOrPasswordError", resourceCulture);
             }
         }
     }

@@ -44,7 +44,6 @@ namespace ClipboardSync.Client.Mobile
         {
             InitializeComponent();
             Localization.Resources.Culture = new CultureInfo(XamarinSettingsService.Get("Localization", "en"));
-            ClipboardSync.Common.Localization.Resources.Culture = new CultureInfo(XamarinSettingsService.Get("Localization", "en"));
             MainPage = new AppShell();
         }
         

@@ -2,10 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ClipboardSync.Client.Mobile.Views.MainPage"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit" 
-             xmlns:clipboardsync_client_mobile="clr-namespace:ClipboardSync.Client.Mobile" 
              xmlns:localization="clr-namespace:ClipboardSync.Client.Mobile.Localization"
-             xmlns:views="clr-namespace:ClipboardSync.Client.Mobile.Views"
              x:Name="Mainpage"
              Title="{x:Static localization:Resources.Home}">
     <ContentPage.Content>

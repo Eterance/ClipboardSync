@@ -30,7 +30,6 @@ namespace ClipboardSync.Client.Windows
         {
             InitializeComponent();
             Localization.Resources.Culture = new CultureInfo(WindowsSettingsService.Get("Localization", "en"));
-            ClipboardSync.Common.Localization.Resources.Culture = new CultureInfo(WindowsSettingsService.Get("Localization", "en"));
         }
 
     }

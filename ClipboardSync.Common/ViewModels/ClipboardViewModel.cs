@@ -120,9 +120,7 @@ namespace ClipboardSync.Common.ViewModels
         private string _urlsString = "";
         private string _currentUrl = "";
         private int _serverCacheCapacity;
-        //private int _historyListCapacity = Preferences.Get(_historyListCapacityKey, 30);
         private int _historyListCapacity = 30;
-        //private string _connectionStatusInstruction = "";
         private static readonly string _urlKey = "Urls";
         private static readonly string _historyListCapacityKey = "HistoryListCapacity";
         private ClipboardSignalRService _signalRCoreService;
@@ -144,26 +142,11 @@ namespace ClipboardSync.Common.ViewModels
             _authService = authService;
             _signalRCoreService = signalrService;
             UIDispatcherInvoker = uiDispatcherInvoker ?? UIDispatcherInvoker;
-            //Toast = toast ?? Toast;
             _signalRCoreService.MessagesSync += SyncMessagesAsync;
             _signalRCoreService.MessageReceived += ReceiveMessage;
             _signalRCoreService.ServerCacheCapacityUpdated += (sender, capacity) =>
             {
                 ServerCacheCapacity = capacity;
-                /*
-                if (e <= 0)
-                {
-                    Toast?.Invoke($"{Resources.ServerCacheCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
-                    Toast?.Invoke(
-                        $"{Resources.ServerCacheCapacityChanged2}{Resources.Unlimited}{Resources.Period}"
-                        );
-                }
-                else
-                {
-                    Toast?.Invoke(
-                        $"{Resources.ServerCacheCapacityChanged2}{_serverCacheCapacity}{Resources.Period}"
-                        );
-                }*/
                 ServerCacheCapacityUpdated?.Invoke(this, capacity);
             };
             _signalRCoreService.UnexpectedError += (sender, e) => UnexpectedError?.Invoke(sender, e);

@@ -2,10 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ClipboardSync.Client.Mobile.Views.LoginPage"
+             xmlns:localization="clr-namespace:ClipboardSync.Client.Mobile.Localization"
              Disappearing="ContentPage_Disappearing">
     <ContentPage.Content>
         <StackLayout Margin="20, 0, 16, 4">
-            <Label  Text="请登录到服务器"
+            <Label  Text="{x:Static localization:Resources.PleaseLogin2TheServer}"
                     Margin="16"
                     HorizontalTextAlignment="Center"
                     FontSize="Large"/>
@@ -14,19 +15,19 @@
                     HorizontalTextAlignment="Center"
                     FontSize="Medium"/>
             <Entry  Margin="0,20,0,0"
-                    Placeholder="用户名"
+                    Placeholder="{x:Static localization:Resources.UserName}"
                     Text="{Binding UserName}"/>
             <Entry  Margin="0,20,0,0"
-                    Placeholder="密码"
+                    Placeholder="{x:Static localization:Resources.Password}"
                     IsPassword="True"
                     Text="{Binding Password}"/>
             <Button Margin="0,40,0,0"
-                    Text="登录"
+                    Text="{x:Static localization:Resources.Login}"
                     HeightRequest = "60"
                     IsEnabled="True"
                     Pressed="Button_Pressed"/>
             <Button Margin="0,40,0,0"
-                    Text="取消登录"
+                    Text="{x:Static localization:Resources.CancelLogin}"
                     HeightRequest = "60"
                     IsEnabled="True"
                     Pressed="Button_Exit_Pressed"/>

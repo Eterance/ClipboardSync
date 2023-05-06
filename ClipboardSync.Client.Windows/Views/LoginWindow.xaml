@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClipboardSync.Client.Windows.Views"
+        xmlns:localization="clr-namespace:ClipboardSync.Client.Windows.Localization"
         mc:Ignorable="d"
         Title="LoginWindow" 
         Height="500" 
@@ -15,7 +16,7 @@
         <StackPanel>
             <Label
                 Margin="8 8 8 0"
-                Content="请登录"
+                Content="{x:Static localization:Resources.PleaseLogin2TheServer}"
                 FontSize="{StaticResource FontSize.Title}"
                 />
             <Label
@@ -26,7 +27,7 @@
                 />
             <Label
                 Margin="8 8 8 0"
-                Content="用户名"
+                Content="{x:Static localization:Resources.UserName}"
                 FontSize="{StaticResource FontSize.Description}"
                 />
             <TextBox 
@@ -39,7 +40,7 @@
                 Text="{Binding UserName}"/>
             <Label
                 Margin="8 8 8 0"
-                Content="密码"
+                Content="{x:Static localization:Resources.Password}"
                 FontSize="{StaticResource FontSize.Description}"
                 />
             <TextBox 
@@ -60,7 +61,7 @@
                 <Button 
                     Grid.Column="0"
                     Margin="8 8 8 8"
-                    Content="取消登录" 
+                    Content="{x:Static localization:Resources.CancelLogin}" 
                     Height="40"
                     FontSize="{StaticResource FontSize.Normal}"
                     Click="Button_Exit_Click"
@@ -68,7 +69,7 @@
                 <Button 
                     Grid.Column="1"
                     Margin="8 8 8 8"
-                    Content="登录" 
+                    Content="{x:Static localization:Resources.Login}" 
                     Height="40"
                     FontSize="{StaticResource FontSize.Normal}"
                     Click="Button_Click"/>

@@ -221,4 +221,28 @@ When multiple addresses are specified, The front of the line is tried more first
   <data name="NotAValidUrl" xml:space="preserve">
     <value>not a valid Url.</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CancelLogin" xml:space="preserve">
+    <value>Cancel Login</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PleaseLogin2TheServer" xml:space="preserve">
+    <value>Please Login to the Server</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>UserName</value>
+  </data>
+  <data name="UsernameOrPasswordError" xml:space="preserve">
+    <value>UserName or Password Error.</value>
+  </data>
+  <data name="CannotConnect2Server" xml:space="preserve">
+    <value>Cannot connect to the server. Please check your network, or check if the server is turned on.</value>
+  </data>
 </root>
