@@ -245,4 +245,7 @@ When multiple addresses are specified, The front of the line is tried more first
   <data name="CannotConnect2Server" xml:space="preserve">
     <value>Cannot connect to the server. Please check your network, or check if the server is turned on.</value>
   </data>
+  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
+    <value>Server history cache capacity changed to </value>
+  </data>
 </root>

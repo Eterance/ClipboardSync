@@ -262,4 +262,7 @@ Restart the application to apply the language change.</value>
   <data name="UsernameOrPasswordError" xml:space="preserve">
     <value>用户名或密码错误。</value>
   </data>
+  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
+    <value>服务器历史记录缓存容量更改为 </value>
+  </data>
 </root>

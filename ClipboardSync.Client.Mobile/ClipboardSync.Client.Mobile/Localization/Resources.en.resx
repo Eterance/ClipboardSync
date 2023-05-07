@@ -258,4 +258,7 @@ Restart the application to apply the language change.</value>
   <data name="UsernameOrPasswordError" xml:space="preserve">
     <value>UserName or Password Error.</value>
   </data>
+  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
+    <value>Server history cache capacity changed to </value>
+  </data>
 </root>

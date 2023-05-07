@@ -151,15 +151,6 @@ namespace ClipboardSync.Common.Localization {
         }
         
         /// <summary>
-        ///   查找类似 服务器历史记录缓存容量更改为  的本地化字符串。
-        /// </summary>
-        public static string ServerCacheCapacityChanged2 {
-            get {
-                return ResourceManager.GetString("ServerCacheCapacityChanged2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 尝试连接到 的本地化字符串。
         /// </summary>
         public static string Try2Connect2 {

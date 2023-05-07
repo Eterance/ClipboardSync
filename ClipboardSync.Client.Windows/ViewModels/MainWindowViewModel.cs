@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Toolkit.Uwp.Notifications;
 using ClipboardSync.Client.Windows.Localization;
+using System.Globalization;
 
 namespace ClipboardSync.Client.Windows.ViewModels
 {
@@ -90,6 +91,17 @@ namespace ClipboardSync.Client.Windows.ViewModels
                 else
                 {
                     Toast($"{Resources.ClipboardHistoryCapacityChanged2}{newCapacity}{Resources.Period}");
+                }
+            };
+            SubViewModel.ServerCacheCapacityUpdated += (sender, newCapacity) =>
+            {
+                if (newCapacity <= 0)
+                {
+                    Toast($"{Resources.ServerCacheCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
+                }
+                else
+                {
+                    Toast($"{Resources.ServerCacheCapacityChanged2}{newCapacity}{Resources.Period}");
                 }
             };
             SubViewModel.BeginConnect += (_, url) =>

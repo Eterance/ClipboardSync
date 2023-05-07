@@ -153,7 +153,4 @@
   <data name="Unlimited" xml:space="preserve">
     <value>Unlimited</value>
   </data>
-  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
-    <value>Server history cache capacity changed to </value>
-  </data>
 </root>

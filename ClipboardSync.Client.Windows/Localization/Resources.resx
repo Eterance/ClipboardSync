@@ -248,4 +248,7 @@ Restart the application to apply the language change.</value>
   <data name="CannotConnect2Server" xml:space="preserve">
     <value>无法连接到服务器。请检查你的网络，或者检查服务器是否开启。</value>
   </data>
+  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
+    <value>服务器历史记录缓存容量更改为 </value>
+  </data>
 </root>

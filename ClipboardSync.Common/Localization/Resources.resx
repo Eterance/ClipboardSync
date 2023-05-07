@@ -155,7 +155,4 @@
   <data name="Unlimited" xml:space="preserve">
     <value>无限</value>
   </data>
-  <data name="ServerCacheCapacityChanged2" xml:space="preserve">
-    <value>服务器历史记录缓存容量更改为 </value>
-  </data>
 </root>

@@ -424,6 +424,15 @@ namespace ClipboardSync.Client.Mobile.Localization {
         }
         
         /// <summary>
+        ///   查找类似 服务器历史记录缓存容量更改为  的本地化字符串。
+        /// </summary>
+        public static string ServerCacheCapacityChanged2 {
+            get {
+                return ResourceManager.GetString("ServerCacheCapacityChanged2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 输入非正数表示不限制大小。 的本地化字符串。
         /// </summary>
         public static string ServerCacheCapacityDescription {

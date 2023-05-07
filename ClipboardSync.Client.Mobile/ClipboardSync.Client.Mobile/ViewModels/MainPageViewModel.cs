@@ -95,6 +95,17 @@ namespace ClipboardSync.Client.Mobile.ViewModels
                     Toast($"{Resources.ClipboardHistoryCapacityChanged2}{newCapacity}{Resources.Period}");
                 }
             };
+            SubViewModel.ServerCacheCapacityUpdated += (sender, newCapacity) =>
+            {
+                if (newCapacity <= 0)
+                {
+                    Toast($"{Resources.ServerCacheCapacityChanged2}{Resources.Unlimited}{Resources.Period}");
+                }
+                else
+                {
+                    Toast($"{Resources.ServerCacheCapacityChanged2}{newCapacity}{Resources.Period}");
+                }
+            };
             SubViewModel.BeginConnect += (_, url) =>
             {
                 ConnectionStatusInstruction = $"{Resources.Try2Connect2} {url}{Resources.Period}";
